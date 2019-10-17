@@ -1,0 +1,253 @@
+*  TITLE Molecular Dynamics for Azurin in Water
+*
+
+set Restart 1
+set RefillWater 0
+set RefillRestart 0
+set run 1
+set Solvent 1
+set FixProtein 0
+set CryWater 1
+set NumberofSteps 50
+set Steplength 0.001
+set freqsave 1
+set trajskip 1
+set Temperature 300.0
+set Timeseries 0
+set WritePDB 1
+set NumberofPDB 50
+
+set Minimize 0
+set minstep 100
+set tolfun 0.0001
+set ConstrainResidue 0
+set Forceconst1  10.0
+set Forceconst2  10.0
+
+set Radius 28
+set OverlayDiam 2.8
+
+BOMLEV -1
+set Switch1 0
+set Switch2 0
+set Start 0
+let Start = 1 - @Restart
+let Switch1 = @Refillwater * @Restart
+let Switch2 = @Start * @Solvent
+
+set fact 0.0
+
+set IndexofOverlay 0
+set xphi 1.0
+set yphi 0.0
+set zphi 0.0
+set phi  0.0
+set xdir 0.0
+set ydir 0.0
+set zdir 0.0
+
+set MainDir      /home/xie/charmm
+set WaterDir     /home/xie/charmm/bpot
+set PDBDir       /home/xie/strk/pdb
+
+set rstfi  @MainDir/scratch/azurin.rst
+set dcdfi  @MainDir/scratch/azurin.dcd
+set velfi  @MainDir/scratch/azurin.vel
+set dcdor  @MainDir/scratch/azurinorie.dcd
+
+open read card unit 10 name @MainDir/toppar/top_all22_prot_na.inp
+read rtf  card unit 10
+open read card unit 10 name @MainDir/toppar/par_all22_prot_na2.inp
+read para  card unit 10
+
+label BEGIN
+if RefillWater eq 1 goto BUILD1
+
+if RefillRestart eq 1 goto BUILD4
+
+if Restart eq 1 goto BUILD1
+
+  open read card unit 10 name @MainDir/azurin/azuh.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+  
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+!  open read card unit 10 name @MainDir/azurin/azu4a.pdb
+!  read coor pdb unit 10 sele segid AZUA end
+!  hbuild
+!  open write card unit 10 name @MainDir/azurin/azuh.pdb
+!  write coor pdb unit 10 sele segid AZUA end
+!  stop
+
+  open read card unit 10 name @MainDir/azurin/azuh.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/wath.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/wath.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+
+if Restart eq 0 goto BUILD2
+label BUILD1
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+  
+  if Solvent eq 1 open read card unit 30 name water.pdb
+  if Solvent eq 1 read sequence pdb unit 30
+  if Solvent eq 1 generate SOLV noangle nodihe setup warn
+  if Solvent eq 1 read coor pdb unit 30 sele segid SOLV end
+
+label BUILD2
+
+! Overlay water, rotate more, and overlay again
+if Switch1 eq 0 goto BUILD3
+  stream azurin.rfl.str
+  incr IndexofOverlay by 1
+  incr phi by 90
+  if IndexofOverlay lt 2 goto BUILD2
+  STOP
+label BUILD3
+
+goto BUILD5
+
+label BUILD4
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+  
+  open read card unit 30 name water.pdb
+  read sequence pdb unit 30
+  generate SOLV noangle nodihe setup warn
+  read coor pdb unit 30 sele segid SOLV end
+
+  let Restart = 0
+  let Start = 1
+
+label BUILD5
+
+! modify the charges of the copper ligands
+
+! HIS 46
+SCALAR CHARGE SET  0.98 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE CU  ) END
+SCALAR CHARGE SET -0.62 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE ND1 ) END
+SCALAR CHARGE SET  0.22 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE CG  ) END
+SCALAR CHARGE SET -0.08 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE CB  ) END
+SCALAR CHARGE SET  0.05 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE CD2 ) END
+SCALAR CHARGE SET  0.11 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE HD2 ) END
+SCALAR CHARGE SET -0.42 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE NE2 ) END
+SCALAR CHARGE SET  0.37 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE HE2 ) END
+SCALAR CHARGE SET  0.15 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE HE1 ) END
+SCALAR CHARGE SET  0.28 SELE (  SEGID AZUA .AND. RESID 46 - 
+.AND. TYPE CE1 ) END
+! HIS 117
+SCALAR CHARGE SET -0.62 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE ND1 ) END
+SCALAR CHARGE SET  0.22 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE CG  ) END
+SCALAR CHARGE SET -0.08 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE CB  ) END
+SCALAR CHARGE SET  0.05 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE CD2 ) END
+SCALAR CHARGE SET  0.11 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE HD2 ) END
+SCALAR CHARGE SET -0.42 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE NE2 ) END
+SCALAR CHARGE SET  0.37 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE HE2 ) END
+SCALAR CHARGE SET  0.15 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE HE1 ) END
+SCALAR CHARGE SET  0.28 SELE (  SEGID AZUA .AND. RESID 117  - 
+.AND. TYPE CE1 ) END
+! CYS 112
+SCALAR CHARGE SET -0.43 SELE (  SEGID AZUA .AND. RESID 112  - 
+.AND. TYPE SG ) END
+SCALAR CHARGE SET -0.21 SELE (  SEGID AZUA .AND. RESID 112  - 
+.AND. TYPE CB ) END
+
+! =============================================
+scalar wmain = charge sele all end
+coor statistics sele all end
+set TotalCharge ?WAVE
+Multiply TotalCharge by ?NATO
+
+! define and constrain the improper dihedrals for the copper complex
+
+ic edit
+dihe  AZUA  46  ND1  AZUA 112 SG  AZUA 46  CU  AZUA 117   ND1    180.0
+dihe  AZUA 112  SG   AZUA 117 ND1 AZUA 46  CU  AZUA  46   ND1    180.0
+dihe  AZUA 117  ND1  AZUA  46 ND1 AZUA 46  CU  AZUA 112    SG    180.0
+end
+
+ic fill
+
+cons dihe AZUA  46 ND1 AZUA 112 SG  AZUA 46 CU AZUA 117 ND1 force 10.0 min 180.0
+cons dihe AZUA 112 SG  AZUA 117 ND1 AZUA 46 CU AZUA  46 ND1 force 10.0 min 180.0
+cons dihe AZUA 117 ND1 AZUA  46 ND1 AZUA 46 CU AZUA 112  SG force 10.0 min 180.0
+  
+if RefillRestart eq 1 goto MAIN001
+  if Switch2 eq 1 stream azurin.ini.str
+label MAIN001
+
+if Solvent eq 1 stream azurin.set.str
+
+if run eq 1 stream azurin.dyn.str
+
+open write card unit 10 name @MainDir/azurin/total.pdb
+write coor pdb unit 10 sele all end
+
+if Solvent eq 1 open write card unit 10 name @MainDir/azurin/water.pdb
+if Solvent eq 1 write coor pdb unit 10 sele segid SOLV end
+
+open write card unit 10 name @MainDir/azurin/azurin.pdb
+write coor pdb unit 10 sele segid AZUA end
+
+if CryWater eq 1 open write card unit 10 name @MainDir/azurin/crywat.pdb
+if CryWater eq 1 write coor pdb unit 10 sele segid WATE end
+
+if WritePDB eq 1 stream azurin.cb1.str
+
+if Timeseries eq 1 stream azurin.tim.str
+
+stop

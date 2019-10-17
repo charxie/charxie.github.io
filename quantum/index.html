@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>The Quantum Workbench</title>
+  <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+  <script type="text/javascript" src="library.js"></script>
+</head>
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+	<div id="logo">
+		<h1>Quantum Leap</h1>
+		<p>Interactive quantum design and simulation (under development)
+            </p>
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="https://github.com/charxie/quantumworkbench">GitHub</a></li>
+			<li><a href="https://medium.com/@charlesxie">Blog</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div><img src="banner.png"></div><br>
+	<div id="content">
+	<div class="post">
+	<h1 class="title">Demo applets (no longer working on most browsers)</h1>
+	<div class="entry">
+
+
+<table cellspacing=10 width="100%">
+
+<tr valign=top>
+<td><h5>Quantum wave in a box</h5>
+<font size=1>
+</font>
+</td>
+<td><h5>Quantum wave in a circle</h5>
+<font size=1>
+</font>
+</td>
+</tr>
+
+<tr>
+<td>
+<applet id="demo1" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
+<param name="script" value="load box1.qwb;"/> 
+<param name="permissions" value="sandbox"/>
+<param name="MAYSCRIPT" value="true"/>
+</applet>
+<br>
+<center>
+<form>
+<input type="button" value="Run" onclick="run('demo1')">
+<input type="button" value="Stop" onclick="stop('demo1')">
+<input type="button" value="Reset" onclick="jsReset('demo1')">
+<input type="button" value="Reload" onclick="jsReload('demo1')">
+</form>
+</center>
+</td>
+
+<td>
+<applet id="demo2" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
+<param name="script" value="load circle1.qwb"/> 
+<param name="permissions" value="sandbox"/>
+<param name="MAYSCRIPT" value="true"/>
+</applet>
+<br>
+<center>
+<form>
+<input type="button" value="Run" onclick="run('demo2')">
+<input type="button" value="Stop" onclick="stop('demo2')">
+<input type="button" value="Reset" onclick="jsReset('demo2')">
+<input type="button" value="Reload" onclick="jsReload('demo2')">
+</form>
+</center>
+</td>
+</tr>
+
+<tr valign=top>
+<td><h5>Quantum tunneling</h5>
+<font size=1>
+</font>
+</td>
+<td><h5>Quantum wave interference</h5>
+<font size=1>
+</font>
+</td>
+</tr>
+
+<tr>
+<td>
+<applet id="demo3" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
+<param name="script" value="load tunneling2d.qwb"/> 
+<param name="permissions" value="sandbox"/>
+<param name="MAYSCRIPT" value="true"/>
+</applet>
+<br>
+<center>
+<form>
+<input type="button" value="Run" onclick="run('demo3')">
+<input type="button" value="Stop" onclick="stop('demo3')">
+<input type="button" value="Reset" onclick="jsReset('demo3')">
+<input type="button" value="Reload" onclick="jsReload('demo3')">
+</form>
+</center>
+</td>
+
+<td>
+<applet id="demo4" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
+<param name="script" value="load doubleslit.qwb"/> 
+<param name="permissions" value="sandbox"/>
+<param name="MAYSCRIPT" value="true"/>
+</applet>
+<br>
+<center>
+<form>
+<input type="button" value="Run" onclick="run('demo4')">
+<input type="button" value="Stop" onclick="stop('demo4')">
+<input type="button" value="Reset" onclick="jsReset('demo4')">
+<input type="button" value="Reload" onclick="jsReload('demo4')">
+</form>
+</center>
+</td>
+</tr>
+
+</table>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- end #content -->
+	<div id="sidebar">
+		<div id="sidebar-bgtop"></div>
+		<div id="sidebar-content">
+			<div id="sidebar-bgbtm">
+			<ul>
+			<li>
+			<h2>Download</h2>
+			<ul>
+			 <li><a href="qw.jar">qw.jar</a></li>
+			</ul>
+			</li>
+			<li>
+			<h2>Basic simulations</h2>
+			<ul>
+			 <li>Quantum tunneling</li>
+			</ul>
+			</li>
+			<li>
+			<h2>Advanced topics</h2>
+			<ul>
+			 <li>The scanning tunneling microscopy</li>
+			</ul>
+			</li>
+			<li>
+			<h2>The computational engine</h2>
+			<ul>
+			 <li>The time-dependent Schr&ouml;dinger equation</li>
+			 <li>The Imaginary Time Propagation Method</li>
+			</ul>
+			</li>
+			</ul>
+		</div>
+		</div>
+	</div>
+
+	<div id="sidebar2">
+
+<iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
+<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+
+	</div>
+	<!-- end #sidebar -->
+	<div style="clear:both; margin:0;"></div>
+</div>
+<!-- end #page -->
+
+</div>
+
+<div id="footer">
+<iframe src="nsf.html" width="100%" height="400" frameborder="0">
+<a href="nsf.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+</div>
+<br><br><br><br><br><br>
+<!-- end #footer -->
+</body>
+</html>

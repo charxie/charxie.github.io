@@ -1,0 +1,46 @@
+* Time series analysis
+*
+
+  open read  file name @dcdfi unit 61
+  coor dyna comp firstunit 61 nunit 1 sele segid AZUA end
+
+  open read  file name @dcdfi unit 61
+  open write file name @dcdor unit 50
+  merge firstunit 61 nunit 1 outputunit 50 orient mass sele all end
+  
+  open read  file name @dcdor unit 51
+  coor dyna comp fistunit 51 nunit 1 sele segid AZUA end
+  
+  open write card unit 80 name aver.pdb
+  write coor comp card unit 80 sele segid AZUA end
+
+  correl maxtime 100000 maxseries 200 maxat 100
+
+  open write card unit 15 name hb01.time
+  open write card unit 16 name hb02.time
+  open write card unit 17 name hb03.time
+  open write card unit 21 name pb01.time
+  open write card unit 22 name pb02.time
+  open write card unit 23 name pb03.time
+  open write card unit 24 name pb04.time
+  
+  enter hb01 bond  AZUA 112 HN  AZUA 121 O    geometry
+  enter hb02 bond  AZUA 123 HN  AZUA 110 O    geometry
+  enter hb03 bond  AZUA 110 HN  AZUA 123 O    geometry
+
+  enter pb01 bond  AZUA 112 N   AZUA 111 C    geometry
+  enter pb02 bond  AZUA 111 N   AZUA 110 C    geometry
+  enter pb03 bond  AZUA 123 N   AZUA 122 C    geometry
+  enter pb04 bond  AZUA 122 N   AZUA 121 C    geometry
+  
+  open read file name @dcdfi unit 61
+  traj firstunit 61 nunit 1 skip @trajskip begin 0 stop 2000000
+
+  write hb01 dumb time unit 15
+  write hb02 dumb time unit 16
+  write hb03 dumb time unit 17
+  write pb01 dumb time unit 21
+  write pb02 dumb time unit 22
+  write pb03 dumb time unit 23
+  write pb04 dumb time unit 24
+

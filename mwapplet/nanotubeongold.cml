@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adsorption of a nanotube on a gold surface</page_title>
+<text> </text>
+<section start="0" end="2">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.modeler.PageMd3d</class><resource>nanotubeongold$0.mdd</resource><coordinate>nanotubeongold$0.xyz</coordinate><width>1000</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,10 @@
+wnhyda.prod1.pdb             ! Name of a PDB file
+wnhyda.prod2.pdb             ! Name of the reference PDB file
+wnhyda.prod1.dcd             ! Name of the DCD file
+0                            ! Flag of 'dogrid' -- water distribution in grid
+1                            ! Flag of 'getint' -- compute interaction energies
+0                            ! Flag of 'getrms' -- compute RMS deviation to a structure
+0                            ! Flag of 'getdis' -- detect water positions
+0                            ! Flag of 'getpos' -- deposit water coordinates
+3                            ! Switch for reference structures 1(reference),2(initial),3(average)
+0                            ! Resid selected for interacting with the ligand, e.g. 283 for Asp283

@@ -1,0 +1,89 @@
+<html> 
+<head> 
+<title> 
+  TSA
+</title> 
+</head>
+<body>
+
+<h4>The effective two-state approximation</h4>
+
+<a name="construct">
+<h5><i>Construct the two-state Hamiltonian</i></h5>
+
+We have known three levels of two-state approximation for
+electron transfer: Larsson's perturbative approximation (LPA), 
+two renormalized eigenstates approximation (TREA), and two exact
+eigenstates approximation (TEEA). The latter two are nonperturbative
+approximations. The TEEA explains the validity of the
+empirical TREA, which performs much better than does the LPA in
+approximating the time-dependent electronic dynamics.
+
+<br><br>
+<center>
+<center><img src="pix/tsa.gif"></center>
+<br>
+<font size=2 color="#0000ff"><i>The three levels of the effective two-state
+approximation.</i></font>
+</center>
+
+<p>The reason that the LPA doesn't work is obvious. Because the
+time Green functions is the integration of the Schroedinger equation
+of motion therefore a time cumulative, 
+the LPA result will certainly disagree more and more
+with the exact ones as the propogation goes, since the
+perturbative results always have more or less deviations from the
+exact ones that will sooner or later have amplified influence to an 
+important amount in a time cumulative no matter how small it might have 
+been. In my opinion, changing <i>E<sub>tunneling</sub></i> to get
+a series of <i>T<sub>DA</sub></i> that could reproduce the exact
+propogation is theoretically not right, because it is theoretically
+right to have higher order deviations.
+
+
+
+
+<p>Code: LPA: 
+<ul>
+<li>Orthogonal basis: <a href="ed/green.f">
+<code>caltda(n,h,e,tda,hdd,haa)</code></a>
+<li>Nonorthogonal basis: <a href="eh/hpux/tda.f">
+<code>caltda(natom,ndim,e,tda,hdd,haa)</code></a>
+</ul>
+
+<a name="propogate">
+<h5><i>Propogate a two-state system</i></h5>
+
+
+Code: <a href="ed/tsa.f"><code>tsa.f</code></a>
+
+<a name="signal">
+<h5><i>A signal processing point of view of the two-state approximation</i></h5>
+
+<p>The process of constructing a TSA which is valid for describing
+the electronic dynamics of a system with large dimension resembles
+retrieving a signal from a background of noise. In our theory, the
+interested 'signal' is the superexchange part of electron current
+(or the tunneling current), the 'noise' is the transport-like part
+which inevitably arises from the multisite hopping.
+
+<p><b>The question is, does the TSA thus constructed
+continue to be legitimate when the 'signal' gets weaker and weaker than the 
+'noise'?</b> We know that in weak coupling cases, it is the weak one of the D
+and A characters that plays the decisive role on deriving the TSA.
+Suppose, in an extreme case, that the contributions from the 'heat bath',
+namely, the wave function scatterings from the bridge sites to the D and
+A states, constitute 99% of the whole character, do we believe that we
+would still be able to restore the 1% 'signal' from such a noisy background?
+
+<p>Perhaps yes. But an ensemble average point of view must enter our sight.
+
+<p>Perhaps no. Because the 'signal' is simply too weak to be restored.
+
+<center>
+<p><a href="index.html"><i>Back to the Index Page</i></a>
+<p><font size=1 color="#000000"><i>&copy; 2000, Qian Xie</i></font>
+</center>
+
+</body>
+</html>

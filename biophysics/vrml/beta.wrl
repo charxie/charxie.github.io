@@ -1,0 +1,4263 @@
+#VRML V2.0 utf8
+
+Group {
+  children  [
+    Group {
+      children  [
+        WorldInfo {
+          title "1.wrl"
+          info  "Concord Consortium Pdb2Wrl Converter"
+        }
+        Background { skyColor 0 0 0 }
+        NavigationInfo { type [ "EXAMINE", "ANY" ] }
+        Collision {
+          children   Group {
+            children   [
+              Shape {
+                appearance Appearance {
+                  material DEF mat_gray Material {
+                    diffuseColor 0.7 0.7 0.7
+                  }
+                  material DEF mat_red Material {
+                    diffuseColor 1 0 0
+                  }
+                  material DEF mat_blue Material {
+                    diffuseColor 0 0 1
+                  }
+                  material DEF mat_yellow Material {
+                    diffuseColor 1 1 0
+                  }
+                  material DEF mat_magenta Material {
+                    diffuseColor 1 0 1
+                  }
+                  material DEF mat_white Material {
+                    diffuseColor 0.9 0.9 0.9
+                  }
+                }
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 1.9112501 0.573 0.0
+                scale 0.1 0.7275000810623169 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 1.1837499 0.573 0.0
+                scale 0.1 0.7275000810623169 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345854368894316 0.0 -0.3557387540797185 5.165027533785353
+                translation 2.5345 0.21825 -0.68175
+                scale 0.1 0.5407693480326257 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345854368894316 0.0 -0.3557387540797185 5.165027533785353
+                translation 2.3615 0.45475003 -0.22725
+                scale 0.1 0.5407693480326257 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9327353885190851 0.0 -0.360561638286925 5.164681211185695
+                translation 2.53825 0.21825 0.681
+                scale 0.1 0.5411547576795451 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9327353885190851 0.0 -0.360561638286925 5.164681211185695
+                translation 2.36275 0.45475003 0.227
+                scale 0.1 0.5411547576795451 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.4722148769995487
+                translation 2.6395001 1.635 0.0
+                scale 0.1 0.7485404989527787 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.4722148769995487
+                translation 2.3965 0.92700005 0.0
+                scale 0.1 0.7485404989527787 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.439766122481054
+                translation 2.16625 2.6924999 0.0
+                scale 0.1 0.6141443110865089 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.439766122481054
+                translation 2.56275 2.2235 0.0
+                scale 0.1 0.6141443110865089 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.56126209500285
+                translation 3.7607498 2.14125 0.0
+                scale 0.1 0.6741842908311662 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.56126209500285
+                translation 3.0942497 2.0397499 0.0
+                scale 0.1 0.6741842908311662 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441828695142
+                translation 4.565 1.60925 0.0
+                scale 0.1 0.4995280894857715 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441828695142
+                translation 4.251 1.9977499 0.0
+                scale 0.1 0.4995280894857715 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852736214482013
+                translation 4.56275 3.1782498 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852736214482013
+                translation 4.25025 2.52075 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9559834854253944 0.0 -0.2934204757577677 2.0671819769431146
+                translation 4.5097504 3.89325 0.68175
+                scale 0.1 0.5406816800681564 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9559834854253944 0.0 -0.2934204757577677 2.0671819769431146
+                translation 4.64925 3.6357498 0.22725
+                scale 0.1 0.5406816800681564 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9564823270908008 0.0 -0.2917902636534781 2.0711115613725313
+                translation 4.5112495 3.89625 -0.681
+                scale 0.1 0.5409607227208727 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9564823270908008 0.0 -0.2917902636534781 2.0711115613725313
+                translation 4.6497498 3.63675 -0.227
+                scale 0.1 0.5409607227208727 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825554992422532
+                translation 5.8342495 3.3802502 0.0
+                scale 0.1 0.7482863649140513 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825554992422532
+                translation 5.0907497 3.46475 0.0
+                scale 0.1 0.7482863649140513 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.858106177251989
+                translation 6.58625 2.498 0.0
+                scale 0.1 0.6147050607334287 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.858106177251989
+                translation 6.33275 3.0579998 0.0
+                scale 0.1 0.6147050607334287 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.7363881680774327
+                translation 6.77225 4.1749997 0.0
+                scale 0.1 0.6736989372705979 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.7363881680774327
+                translation 6.3947496 3.6169999 0.0
+                scale 0.1 0.6736989372705979 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945056160123437
+                translation 6.637 5.1297503 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945056160123437
+                translation 6.8529997 4.67925 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 8.053 4.454 0.0
+                scale 0.1 0.7279999256134033 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 7.3250003 4.454 0.0
+                scale 0.1 0.7279999256134033 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345855183871268 0.0 -0.3557385399715152 5.164195621472525
+                translation 8.6765 4.1 -0.68175
+                scale 0.1 0.5405507972309458 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345855183871268 0.0 -0.3557385399715152 5.164195621472525
+                translation 8.5035 4.336 -0.22725
+                scale 0.1 0.5405507972309458 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9327353885190851 0.0 -0.360561638286925 5.164681235952759
+                translation 8.68025 4.09925 0.681
+                scale 0.1 0.5411547641917763 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9327353885190851 0.0 -0.360561638286925 5.164681235952759
+                translation 8.504749 4.3357496 0.227
+                scale 0.1 0.5411547641917763 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.472215027629972
+                translation 8.7815 5.516 0.0
+                scale 0.1 0.7485405376518914 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.472215027629972
+                translation 8.5385 4.8079996 0.0
+                scale 0.1 0.7485405376518914 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4402912185161645
+                translation 8.30825 6.57425 0.0
+                scale 0.1 0.6145263612088759 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4402912185161645
+                translation 8.70475 6.1047497 0.0
+                scale 0.1 0.6145263612088759 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561262034221195
+                translation 9.90275 6.02225 0.0
+                scale 0.1 0.67418441765533 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561262034221195
+                translation 9.23625 5.9207497 0.0
+                scale 0.1 0.67418441765533 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441828695142
+                translation 10.707001 5.4902496 0.0
+                scale 0.1 0.4995280894857715 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441828695142
+                translation 10.393 5.87875 0.0
+                scale 0.1 0.4995280894857715 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852736214482013
+                translation 10.70475 7.0592504 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852736214482013
+                translation 10.39225 6.40175 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9559833447566245 0.0 -0.293420934065613 2.0671819153227005
+                translation 10.651751 7.77425 0.68175
+                scale 0.1 0.5406817415819756 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9559833447566245 0.0 -0.293420934065613 2.0671819153227005
+                translation 10.79125 7.5167503 0.22725
+                scale 0.1 0.5406817415819756 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9564821869033234 0.0 -0.29179072318467536 2.0719220749110443
+                translation 10.65325 7.778 -0.681
+                scale 0.1 0.5412007952237119 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9564821869033234 0.0 -0.29179072318467536 2.0719220749110443
+                translation 10.79175 7.5179996 -0.227
+                scale 0.1 0.5412007952237119 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825555186693271
+                translation 11.97625 7.26125 0.0
+                scale 0.1 0.748286141482181 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825555186693271
+                translation 11.23275 7.3457503 0.0
+                scale 0.1 0.748286141482181 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.857770433145072
+                translation 12.72825 6.3797503 0.0
+                scale 0.1 0.6142495167163262 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.857770433145072
+                translation 12.47475 6.93925 0.0
+                scale 0.1 0.6142495167163262 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.736586789794856
+                translation 12.915 8.05675 0.0
+                scale 0.1 0.6743936313039949 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.736586789794856
+                translation 12.537 7.49825 0.0
+                scale 0.1 0.6743936313039949 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945056160123437
+                translation 12.780001 9.011751 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945056160123437
+                translation 12.996 8.561251 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 14.196001 8.336 0.0
+                scale 0.1 0.7280001640319824 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 13.468 8.336 0.0
+                scale 0.1 0.7280001640319824 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345855183871269 0.0 -0.3557385399715153 5.165027989350922
+                translation 14.8195 7.981251 -0.68175
+                scale 0.1 0.5407694206827366 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345855183871269 0.0 -0.3557385399715153 5.165027989350922
+                translation 14.6465 8.217751 -0.22725
+                scale 0.1 0.5407694206827366 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9330806975457142 0.0 -0.35966708477090775 5.164827146182512
+                translation 14.8225 7.981251 0.681
+                scale 0.1 0.5409928566079939 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9330806975457142 0.0 -0.35966708477090775 5.164827146182512
+                translation 14.647501 8.217751 0.227
+                scale 0.1 0.5409928566079939 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.472214528506922
+                translation 14.9244995 9.398001 0.0
+                scale 0.1 0.7485401573495555 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.472214528506922
+                translation 14.6814995 8.690001 0.0
+                scale 0.1 0.7485401573495555 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4391446499414613
+                translation 14.4505005 10.4555 0.0
+                scale 0.1 0.6144670381265007 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4391446499414613
+                translation 14.8475 9.9865 0.0
+                scale 0.1 0.6144670381265007 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561150358568498
+                translation 16.045 9.90425 0.0
+                scale 0.1 0.6736903923632546 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561150358568498
+                translation 15.379 9.802751 0.0
+                scale 0.1 0.6736903923632546 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441528675108
+                translation 16.849 9.37225 0.0
+                scale 0.1 0.49952790405956066 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.603441528675108
+                translation 16.535002 9.76075 0.0
+                scale 0.1 0.49952790405956066 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852734808613134
+                translation 16.84675 10.94125 0.0
+                scale 0.1 0.7279854745411852 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852734808613134
+                translation 16.53425 10.283751 0.0
+                scale 0.1 0.7279854745411852 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9562780751572394 0.0 -0.2924589594687865 2.067310626108723
+                translation 16.7945 11.65625 0.68175
+                scale 0.1 0.540552787938171 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9562780751572394 0.0 -0.2924589594687865 2.067310626108723
+                translation 16.9335 11.39875 0.22725
+                scale 0.1 0.540552787938171 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9567756249317312 0.0 -0.29082710247928273 2.0712398461704753
+                translation 16.796 11.65925 -0.681
+                scale 0.1 0.5408328278522219 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9567756249317312 0.0 -0.29082710247928273 2.0712398461704753
+                translation 16.934 11.39975 -0.227
+                scale 0.1 0.5408328278522219 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825480138887647
+                translation 18.119 11.1432495 0.0
+                scale 0.1 0.7487826993806584 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825480138887647
+                translation 17.375 11.227751 0.0
+                scale 0.1 0.7487826993806584 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.858106097276936
+                translation 18.87125 10.261001 0.0
+                scale 0.1 0.6147049521330403 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.858106097276936
+                translation 18.617748 10.821 0.0
+                scale 0.1 0.6147049521330403 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.736388655162633
+                translation 19.057251 11.938001 0.0
+                scale 0.1 0.6736993031979797 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.736388655162633
+                translation 18.679749 11.38 0.0
+                scale 0.1 0.6736993031979797 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945047553968027
+                translation 18.921999 12.89275 0.0
+                scale 0.1 0.4996063459485107 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.6945047553968027
+                translation 19.137999 12.442249 0.0
+                scale 0.1 0.4996063459485107 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 20.338 12.217 0.0
+                scale 0.1 0.7279996871948242 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 1.0 1.5707963267948966
+                translation 19.609999 12.217 0.0
+                scale 0.1 0.7279996871948242 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345851923961366 0.0 -0.35573939640399205 5.164195682870921
+                translation 20.9615 11.863 -0.68175
+                scale 0.1 0.5405510018856182 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9345851923961366 0.0 -0.35573939640399205 5.164195682870921
+                translation 20.7885 12.099 -0.22725
+                scale 0.1 0.5405510018856182 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9330803686534114 0.0 -0.35966793801173536 5.164826214869215
+                translation 20.964499 11.86225 0.681
+                scale 0.1 0.540992802401139 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9330803686534114 0.0 -0.35966793801173536 5.164826214869215
+                translation 20.7895 12.09875 0.227
+                scale 0.1 0.540992802401139 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.4722149242311375
+                translation 21.0665 13.279 0.0
+                scale 0.1 0.7485407631578398 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.4722149242311375
+                translation 20.8235 12.571 0.0
+                scale 0.1 0.7485407631578398 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.439669173413723
+                translation 20.5925 14.33725 0.0
+                scale 0.1 0.6148488525739461 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.439669173413723
+                translation 20.9895 13.86775 0.0
+                scale 0.1 0.6148488525739461 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561150358568498
+                translation 22.187 13.785251 0.0
+                scale 0.1 0.6736903923632546 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.561150358568498
+                translation 21.521 13.683751 0.0
+                scale 0.1 0.6736903923632546 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.602664576827012
+                translation 22.991749 13.25325 0.0
+                scale 0.1 0.4998425500157825 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.602664576827012
+                translation 22.67725 13.64175 0.0
+                scale 0.1 0.4998425500157825 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852737620351727
+                translation 22.98875 14.822249 0.0
+                scale 0.1 0.7279850438725127 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.5852737620351727
+                translation 22.67625 14.16475 0.0
+                scale 0.1 0.7279850438725127 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9562780751572393 0.0 -0.2924589594687865 2.06731140171866
+                translation 22.9365 15.5372505 0.68175
+                scale 0.1 0.5405530150862189 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9562780751572393 0.0 -0.2924589594687865 2.06731140171866
+                translation 23.0755 15.279751 0.22725
+                scale 0.1 0.5405530150862189 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9567756249317313 0.0 -0.2908271024792828 2.0720509425402796
+                translation 22.938 15.540999 -0.681
+                scale 0.1 0.5410730101986351 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9567756249317313 0.0 -0.2908271024792828 2.0720509425402796
+                translation 23.076 15.280999 -0.227
+                scale 0.1 0.5410730101986351 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825479506139106
+                translation 24.261 15.02425 0.0
+                scale 0.1 0.748782645569617 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 4.825479506139106
+                translation 23.517 15.108749 0.0
+                scale 0.1 0.748782645569617 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.907690739448517
+                translation 24.979498 14.103 0.0
+                scale 0.1 0.6298864461862276 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.907690739448517
+                translation 24.748499 14.689 0.0
+                scale 0.1 0.6298864461862276 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.743022718405139
+                translation 25.167751 15.76125 0.0
+                scale 0.1 0.6300577086103577 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 3.743022718405139
+                translation 24.811249 15.241751 0.0
+                scale 0.1 0.6300577086103577 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.44306003651203407
+                translation 21.644 18.424751 0.0
+                scale 0.1 0.7277698285557289 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.44306003651203407
+                translation 21.956 19.082249 0.0
+                scale 0.1 0.7277698285557289 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780751572394 0.0 -0.29245895946878653 5.208904830917738
+                translation 21.6965 17.709751 0.68175
+                scale 0.1 0.540553242234592 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780751572394 0.0 -0.29245895946878653 5.208904830917738
+                translation 21.5575 17.96725 0.22725
+                scale 0.1 0.540553242234592 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9567761841716955 0.0 -0.2908252626610178 5.212834292926145
+                translation 21.695 17.706749 -0.681
+                scale 0.1 0.540833042098501 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9567761841716955 0.0 -0.2908252626610178 5.212834292926145
+                translation 21.557 17.966251 -0.227
+                scale 0.1 0.540833042098501 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838860760726513
+                translation 20.372 18.22275 0.0
+                scale 0.1 0.7487835393412716 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838860760726513
+                translation 21.116 18.13825 0.0
+                scale 0.1 0.7487835393412716 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161782601170072
+                translation 19.619751 19.104252 0.0
+                scale 0.1 0.6142501682196692 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161782601170072
+                translation 19.87325 18.54475 0.0
+                scale 0.1 0.6142501682196692 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.594379841395685
+                translation 19.433752 17.427252 0.0
+                scale 0.1 0.6741123361674058 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.594379841395685
+                translation 19.81125 17.98575 0.0
+                scale 0.1 0.6741123361674058 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.835198007355491
+                translation 19.56975 16.47225 0.0
+                scale 0.1 0.49982261776718967 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.835198007355491
+                translation 19.35325 16.92275 0.0
+                scale 0.1 0.49982261776718967 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 18.153 17.148 0.0
+                scale 0.1 0.7280006408691406 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 18.881 17.148 0.0
+                scale 0.1 0.7280006408691406 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345858443775599 0.0 -0.3557376835381423 2.0226033032933994
+                translation 17.529501 17.502 -0.68175
+                scale 0.1 0.5405506966682231 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345858443775599 0.0 -0.3557376835381423 2.0226033032933994
+                translation 17.702501 17.266 -0.22725
+                scale 0.1 0.5405506966682231 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9330803686534116 0.0 -0.3596679380117354 2.0224024474571323
+                translation 17.526499 17.502 0.681
+                scale 0.1 0.5407745298200451 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9330803686534116 0.0 -0.3596679380117354 2.0224024474571323
+                translation 17.701498 17.266 0.227
+                scale 0.1 0.5407745298200451 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.329989485747715
+                translation 17.425251 16.086 0.0
+                scale 0.1 0.7483783767293175 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.329989485747715
+                translation 17.667751 16.794 0.0
+                scale 0.1 0.7483783767293175 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.581884464928801
+                translation 17.89875 15.027751 0.0
+                scale 0.1 0.6145260535476729 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.581884464928801
+                translation 17.50225 15.497251 0.0
+                scale 0.1 0.6145260535476729 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4189360895060643
+                translation 16.30425 15.579 0.0
+                scale 0.1 0.674260376940835 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4189360895060643
+                translation 16.97075 15.681 0.0
+                scale 0.1 0.674260376940835 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4618502175311407
+                translation 15.5 16.11075 0.0
+                scale 0.1 0.4995279751755193 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4618502175311407
+                translation 15.813999 15.72225 0.0
+                scale 0.1 0.4995279751755193 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.4430603475616433
+                translation 15.503 14.541751 0.0
+                scale 0.1 0.7277704637744219 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.4430603475616433
+                translation 15.815001 15.19925 0.0
+                scale 0.1 0.7277704637744219 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780751572393 0.0 -0.2924589594687865 5.2089040553084525
+                translation 15.5555 13.82675 0.68175
+                scale 0.1 0.5405530150862189 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780751572393 0.0 -0.2924589594687865 5.2089040553084525
+                translation 15.4165 14.0842495 0.22725
+                scale 0.1 0.5405530150862189 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9567759045520738 0.0 -0.2908261825705536 5.212833396343578
+                translation 15.554001 13.8237505 -0.681
+                scale 0.1 0.5408329349749517 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9567759045520738 0.0 -0.2908261825705536 5.212833396343578
+                translation 15.416 14.083251 -0.227
+                scale 0.1 0.5408329349749517 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838867806848572
+                translation 14.231001 14.33975 0.0
+                scale 0.1 0.7487831193607791 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838867806848572
+                translation 14.975 14.255251 0.0
+                scale 0.1 0.7487831193607791 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161779397426353
+                translation 13.47875 15.22125 0.0
+                scale 0.1 0.6142497338840914 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161779397426353
+                translation 13.73225 14.66175 0.0
+                scale 0.1 0.6142497338840914 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.5943800313211086
+                translation 13.29275 13.54425 0.0
+                scale 0.1 0.674112998251524 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.5943800313211086
+                translation 13.670251 14.10275 0.0
+                scale 0.1 0.674112998251524 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.836098269602137
+                translation 13.4279995 12.589251 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.836098269602137
+                translation 13.212 13.039751 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 12.011999 13.265 0.0
+                scale 0.1 0.7280001640319824 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 12.74 13.265 0.0
+                scale 0.1 0.7280001640319824 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345855183871269 0.0 -0.3557385399715152 2.0226031662873902
+                translation 11.3885 13.619 -0.68175
+                scale 0.1 0.5405508492767319 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345855183871269 0.0 -0.3557385399715152 2.0226031662873902
+                translation 11.561501 13.383 -0.22725
+                scale 0.1 0.5405508492767319 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9327353885190852 0.0 -0.360561638286925 2.0222572623500907
+                translation 11.38475 13.619 0.681
+                scale 0.1 0.5409364527259807 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9327353885190852 0.0 -0.360561638286925 2.0222572623500907
+                translation 11.560249 13.383 0.227
+                scale 0.1 0.5409364527259807 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.33040547697885086
+                translation 11.2835 12.20225 0.0
+                scale 0.1 0.7490138922474809 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.33040547697885086
+                translation 11.5265 12.910749 0.0
+                scale 0.1 0.7490138922474809 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.580736711226243
+                translation 11.7575 11.1445 0.0
+                scale 0.1 0.614467346205418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.580736711226243
+                translation 11.3605 11.6135 0.0
+                scale 0.1 0.614467346205418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4195582980596015
+                translation 10.163 11.69575 0.0
+                scale 0.1 0.6736898491276166 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4195582980596015
+                translation 10.829 11.79725 0.0
+                scale 0.1 0.6736898491276166 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4610713229979346
+                translation 9.35825 12.227751 0.0
+                scale 0.1 0.49984217939648884 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4610713229979346
+                translation 9.67275 11.839251 0.0
+                scale 0.1 0.49984217939648884 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.4436808272715204
+                translation 9.36125 10.658751 0.0
+                scale 0.1 0.7279854745411852 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.4436808272715204
+                translation 9.67375 11.31625 0.0
+                scale 0.1 0.7279854745411852 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9559833447566245 0.0 -0.29342093406561304 5.208774956652085
+                translation 9.414249 9.94375 0.68175
+                scale 0.1 0.5406818551289765 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9559833447566245 0.0 -0.29342093406561304 5.208774956652085
+                translation 9.27475 10.20125 0.22725
+                scale 0.1 0.5406818551289765 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9564821869033235 0.0 -0.29179072318467536 5.212704153271989
+                translation 9.41275 9.940749 -0.681
+                scale 0.1 0.5409607837622616 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9564821869033235 0.0 -0.29179072318467536 5.212704153271989
+                translation 9.27425 10.20025 -0.227
+                scale 0.1 0.5409607837622616 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6839621805420335
+                translation 8.08975 10.456749 0.0
+                scale 0.1 0.7482863514523966 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6839621805420335
+                translation 8.83325 10.37225 0.0
+                scale 0.1 0.7482863514523966 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.715436795240344
+                translation 7.337 11.33825 0.0
+                scale 0.1 0.6144562369702922 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.715436795240344
+                translation 7.5909996 10.77875 0.0
+                scale 0.1 0.6144562369702922 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.5943800313211086
+                translation 7.1517496 9.66125 0.0
+                scale 0.1 0.674112998251524 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.5943800313211086
+                translation 7.52925 10.21975 0.0
+                scale 0.1 0.674112998251524 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.836098269602137
+                translation 7.2869997 8.706249 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.836098269602137
+                translation 7.071 9.15675 0.0
+                scale 0.1 0.4996061397922036 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 5.871 9.382 0.0
+                scale 0.1 0.7279999256134033 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 6.5989995 9.382 0.0
+                scale 0.1 0.7279999256134033 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345853553917014 0.0 -0.35573896818786566 2.0226030977842906
+                translation 5.2474995 9.736 -0.68175
+                scale 0.1 0.5405509255811278 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345853553917014 0.0 -0.35573896818786566 2.0226030977842906
+                translation 5.4205 9.5 -0.22725
+                scale 0.1 0.5405509255811278 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9327353885190852 0.0 -0.360561638286925 2.0222572623500907
+                translation 5.24375 9.736 0.681
+                scale 0.1 0.5409364527259807 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9327353885190852 0.0 -0.360561638286925 2.0222572623500907
+                translation 5.41925 9.5 0.227
+                scale 0.1 0.5409364527259807 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.3304056835154087
+                translation 5.1425 8.31925 0.0
+                scale 0.1 0.7490134412020439 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.3304056835154087
+                translation 5.3855 9.02775 0.0
+                scale 0.1 0.7490134412020439 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.580737258066449
+                translation 5.6165004 7.2615004 0.0
+                scale 0.1 0.6144673741419502 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.580737258066449
+                translation 5.2195 7.7305 0.0
+                scale 0.1 0.6144673741419502 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4195576249995039
+                translation 4.022 7.81275 0.0
+                scale 0.1 0.6736900388176308 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4195576249995039
+                translation 4.688 7.9142504 0.0
+                scale 0.1 0.6736900388176308 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4610711376298506
+                translation 3.2172499 8.344749 0.0
+                scale 0.1 0.49984225440278107 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.4610711376298506
+                translation 3.5317497 7.956249 0.0
+                scale 0.1 0.49984225440278107 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.44368096785840827
+                translation 3.22025 6.7757497 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.44368096785840827
+                translation 3.53275 7.43325 0.0
+                scale 0.1 0.7279852592068418 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780050101447 0.0 -0.29245918883464367 5.208903636779698
+                translation 3.2725 6.06075 0.68175
+                scale 0.1 0.5405529321661209 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9562780050101447 0.0 -0.29245918883464367 5.208903636779698
+                translation 3.1335 6.3182497 0.22725
+                scale 0.1 0.5405529321661209 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9564822569970846 0.0 -0.291790493419102 5.212704184117167
+                translation 3.27175 6.0577497 -0.681
+                scale 0.1 0.5409607532415549 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9564822569970846 0.0 -0.291790493419102 5.212704184117167
+                translation 3.1332498 6.3172503 -0.227
+                scale 0.1 0.5409607532415549 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838870970589412
+                translation 1.948 6.57375 0.0
+                scale 0.1 0.7487831462662453 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.6838870970589412
+                translation 2.692 6.4892497 0.0
+                scale 0.1 0.7487831462662453 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161777795552795
+                translation 1.19575 7.45525 0.0
+                scale 0.1 0.6142495167163262 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 2.7161777795552795
+                translation 1.44925 6.89575 0.0
+                scale 0.1 0.6142495167163262 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.594379760008405
+                translation 1.0097499 5.7782497 0.0
+                scale 0.1 0.6741131624020331 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.594379760008405
+                translation 1.38725 6.33675 0.0
+                scale 0.1 0.6741131624020331 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.8351964117988855
+                translation 1.1457499 4.82325 0.0
+                scale 0.1 0.49982247198140356 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.8351964117988855
+                translation 0.9292499 5.2737503 0.0
+                scale 0.1 0.49982247198140356 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation -0.271 5.499 0.0
+                scale 0.1 0.7279999852180481 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.5707963267948966
+                translation 0.457 5.499 0.0
+                scale 0.1 0.7279999852180481 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345854165150022 0.0 -0.3557388076067605 2.0226031234729605
+                translation -0.89449996 5.853 -0.68175
+                scale 0.1 0.5405508969669683 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.9345854165150022 0.0 -0.3557388076067605 2.0226031234729605
+                translation -0.7215 5.617 -0.22725
+                scale 0.1 0.5405508969669683 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9330804919880894 0.0 -0.3596676180465308 2.0224024993589533
+                translation -0.89750004 5.853 0.681
+                scale 0.1 0.5407744719540464 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.9330804919880894 0.0 -0.3596676180465308 2.0224024993589533
+                translation -0.72249997 5.617 0.227
+                scale 0.1 0.5407744719540464 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.3297739763941271
+                translation -0.99875 4.4362497 0.0
+                scale 0.1 0.7488515951628293 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 0.3297739763941271
+                translation -0.75625 5.1447496 0.0
+                scale 0.1 0.7488515951628293 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.5314821549188835
+                translation -0.475 3.3919997 0.0
+                scale 0.1 0.6296824053234094 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation -0.0 0.0 -1.0 5.5314821549188835
+                translation -0.905 3.8519998 0.0
+                scale 0.1 0.6296824053234094 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4129565483489697
+                translation -2.0530002 3.9334998 0.0
+                scale 0.1 0.6298293577729934 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry Cylinder {
+                    radius 1
+                    height 1
+                  }
+                }
+                rotation 0.0 0.0 -1.0 1.4129565483489697
+                translation -1.4310001 4.0325 0.0
+                scale 0.1 0.6298293577729934 0.1
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 0.82 0.573 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 2.275 0.573 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 2.621 0.1 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 2.626 0.1 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 2.761 1.989 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 1.968 2.927 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 4.094 2.192 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 4.722 1.415 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 4.719 3.507 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 4.44 4.022 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 4.442 4.026 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 6.206 3.338 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 6.713 2.218 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 6.961 4.454 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 6.529 5.355 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 8.417 4.454 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 8.763 3.982 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 8.768 3.981 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 8.903 5.87 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 8.11 6.809 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 10.236 6.073 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 10.864 5.296 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 10.861 7.388 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 10.582 7.903 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 10.584 7.908 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 12.348 7.219 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 12.855 6.1 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 13.104 8.336 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 12.672 9.237 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 14.56 8.336 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 14.906 7.863 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 14.91 7.863 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.046 9.752 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 14.252 10.69 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 16.378 9.955 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.006 9.178 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.003 11.27 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 16.725 11.785 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 16.727 11.789 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 18.491 11.101 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 18.998 9.981 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 19.246 12.217 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 18.814 13.118 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 20.702 12.217 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.048 11.745 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.052 11.744 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.188 13.633 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 20.394 14.572 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 22.52 13.836 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 23.149 13.059 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 23.145 15.151 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 22.867 15.666 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 22.869 15.671 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 24.633 14.982 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 25.095 13.81 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 25.346 16.021 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 22.112 19.411 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.488 18.096 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.766 17.581 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 21.764 17.577 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 20.0 18.265 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 19.493 19.384 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 19.245 17.148 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 19.678 16.247 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.789 17.148 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.443 17.62 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.439 17.62 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 17.304 15.732 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 18.097 14.793 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.971 15.528 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.343 16.305 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.347 14.213 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.625 13.698 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 15.623 13.694 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 13.859 14.382 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 13.352 15.501 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 13.104 13.265 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 13.536 12.364 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 11.648 13.265 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 11.302 13.737 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 11.297 13.737 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 11.162 11.848 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 11.956 10.91 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 9.83 11.645 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 9.201 12.422 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 9.205 10.33 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 9.484 9.815 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 9.482 9.811 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 7.718 10.499 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 7.21 11.618 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 6.963 9.382 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 7.395 8.481 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 5.507 9.382 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 5.161 9.854 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 5.156 9.854 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 5.021 7.965 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 5.815 7.027 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 3.689 7.762 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 3.06 8.539 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 3.064 6.447 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 3.342 5.932 0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 3.341 5.928 -0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 1.576 6.616 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 1.069 7.735 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_blue
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 0.821 5.499 0.0
+                scale 0.55 0.55 0.55
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation 1.254 4.598 0.0
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -0.635 5.499 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -0.981 5.971 -0.909
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_white
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -0.985 5.971 0.908
+                scale 0.25 0.25 0.25
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_gray
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -1.12 4.082 0.0
+                scale 0.5 0.5 0.5
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -0.26 3.162 0.0
+                scale 0.6 0.6 0.6
+              }
+              Transform {
+                children Shape {
+                  appearance Appearance {
+                    material USE mat_red
+                  }
+                  geometry DEF sphere Sphere {}
+                }
+                translation -2.364 3.884 0.0
+                scale 0.6 0.6 0.6
+              }
+            ]
+          }
+          collide TRUE
+        }
+      ]
+    }
+    DEF VP1 Viewpoint {
+      position 11.578537 9.813653 16.818
+      orientation 0 0 1   0
+      fieldOfView 0.785398
+      description "viewpoint1"
+    }
+    DEF VP2 Viewpoint {
+      position 11.578537 9.813653 16.818
+      orientation 0 1 0   0
+      fieldOfView 0.785398
+      description "viewpoint2"
+    }
+    DEF VP3 Viewpoint {
+      position 11.578537 9.813653 16.818
+      orientation 1 0 0   0
+      fieldOfView 0.785398
+      description "viewpoint3"
+    }
+  ]
+}

@@ -1,0 +1,1051 @@
+<html> 
+<head> 
+   <script language="JavaScript" src="javascript/aminoacid.js"> 
+   </script> 
+   <script language="JavaScript" src="javascript/periodictable.js"> 
+   </script> 
+   <title> 
+     Molecular Dynamics
+   </title> 
+</head>
+<body>
+
+<h4>Classical molecular dynamics simulation</h4>
+
+<a name="graphics">
+<h5><i>Molecular graphics tools</i></h5>
+
+Molecular graphics is the software technology for visualizing structures
+for molecules and macromolecules. For workstations, 
+<a href="http://www.ks.uiuc.edu/Research/vmd/">Visual Molecular
+Dynamics</a> may be a good choice. For wintels, 
+<a href="http://www.umass.edu/microbio/rasmol/">Rasmol</a>
+offers very fast rendering. Of course, VMD and Rasmol present both
+Wintel and Unix versions. 
+For web sites, the Virtual Reality
+Modeling Language (VRML) may present a nice medium for displaying
+molecular structures. The VRML was an effort for 3D graphics
+on the Web by Silicon Graphics.
+For details, visit the <a href="http://www.web3d.org">Web 3D Consortium</a>.
+Our group has also developed <a href="vrml/chemvrml.html">
+a PDB-VRML converter</a>, which converts the PDB format into the VRML format.
+The <a href="http://www.cosmosoftware.com">Cosmo Player</a> is 
+recommended for viewing the VRML files. We have an example which
+demonstrates the folding dynamics of an extended polypeptide chain into
+an alpha-helix.
+
+<p>In MD simulation, molecular graphics tools are very useful in
+understanding the bonding structures and 
+the dynamical behaviors, which may be difficult to
+understand from a sea of data.
+
+<a name="prepare">
+<h5><i>Prepare a structure</i></h5>
+
+<p><a href="http://pdb.pdb.bnl.gov/">Brookhaven Protein Data Bank</a>
+presents a large number of cystallographic structures for proteins. 
+If the resolution is not high enough to reveal the hydrogen atoms
+(as is the usual case),
+the PDB file will not contain the coordinates for the hydrogens. 
+The <code>HBUILD</code> command has to be used to set the hydrogen
+positions.
+
+<p>If the
+size of the protein is too big for a workstation case, consideration
+should be taken to cut the most important part of the protein out,
+usually containing the reaction site and the interesting region.
+Harmonic restraints can be used to clinch the residues which cross 
+the cutoff boundary. Energy minization is normally performed to
+remove bad contacts in the cystallographic structure. It is
+advised that the protein be equilibrated for some time with harmonic
+restraints around the crystallographic positions.
+
+<br><br>
+<center>
+<img src="pix/react.gif" width="500" height="320">
+</center>
+
+<p>Care has to be taken to establish the disulfide bonds, decide
+the protonation of the residues, install the terminals,
+and manage charge neutrality for
+the neutral amino acids and ligands.
+
+<a name="parameter">
+<h5><i>Define force fields</i></h5>
+
+<p>Force fields in molecular simulations play the decisive role on
+the results. To some extent, 
+determination of the force fields parameters is to
+quantify the potential terms in the Hamiltonian. Therefore the
+quantitative results produced by a given Hamiltonian 
+will rest on the input of the force fields parameters, provided
+that the simulation protocols are identical.
+
+<p>There are two important Charmm files: The structure builder
+(<a href="toppar/top_all22_prot_na.inp">
+<code>top_all22_prot_na.inp</code></a>) 
+that contains the nuts and bolts for building proteins and nucleic acids,
+and the parameter file (<a href="toppar/par_all22_prot_na.inp">
+<code>par_all22_prot_na.inp</code></a>) that contains the force fields
+paramters. Besides loading existing structure data, 
+Charmm's structure builder enables the user to construct 
+proteins and nucleic acids from scratch.
+
+<p>If the protein consists of a ligand which is not one of 
+the 20 amino acids, or, none of the nuts and bolts the CHARMM parameter 
+and topology files present, we will have to build it into
+the parameter and topology files.
+
+<p>Definition of a component in the topology input is 
+composed of defining the following information:
+(1) Type of atoms; (2) Charge of atoms; (3) Bonds; (4) Dihedral
+angles (proper and improper); 
+(5) Internal coordinates; (6) Donor and acceptor of hydrogen bonds;
+(7) Patches to modify the structure locally.
+
+<p>The following is an example for building a triple hybrid that
+is composed of
+three different groups (<code>hydan, nhydan, mhydan</code>).
+
+<pre>
+RESI HYBR         0.000  ! hybrid: hydan+nhydan+mhydan
+                         !
+GROU                     !                    
+ATOM C1   CTS     0.220  !                  O6-HO6
+ATOM C7    CF     0.510  !                  |
+ATOM O7    OF    -0.510  !              H61-C6-H62
+ATOM N1  NH1F    -0.430  !                  |          O7      *
+ATOM HN1   HF     0.310  !                  |          ||     /
+ATOM C8    CF     0.630  !               H5-C5---O5    ||    /
+ATOM O8    OF    -0.510  !            H4   /       \   C7--N1
+ATOM N2  NH1F    -0.470  !              \ /     HO2 \  /    \
+ATOM HN2   HF     0.310  !               C4      |   C1      C8=O8
+ATOM C5   CTS     0.250  !              / \ H3   O2 /  \    /
+ATOM H5   HAS     0.090  !         HO4-O4  \|    | /     N2   
+ATOM O5   OES    -0.400  !                  C3---C2      |
+ATOM C7B   CF     0.510  !                  |    |      HN2
+ATOM O7B   OF    -0.510  !              HO3-O3   H2    
+ATOM N1B NH1F    -0.111  !                                     
+ATOM N3B  NH2    -0.629  !                                    
+ATOM HN31   H     0.310  !
+ATOM HN32   H     0.310  !
+ATOM C8B   CF     0.630  !                        
+ATOM O8B   OF    -0.510  !             
+ATOM N2B  NH1F   -0.470  !               
+ATOM HN2B  HF     0.310  !                
+ATOM C7C   CF     0.510  !
+ATOM O7C   OF    -0.510  !
+ATOM N1C NH1F    -0.220  !
+ATOM C9C  CT3    -0.170  !
+ATOM H91   HA     0.090  !
+ATOM H92   HA     0.090  !
+ATOM H93   HA     0.090  !
+ATOM C8C   CF     0.630  !
+ATOM O8C   OF    -0.510  !
+ATOM N2C NH1F    -0.470  !
+ATOM HN2C  HF     0.310  !
+GROU                     !                    
+ATOM C2   CTS     0.140  !               
+ATOM H2   HAS     0.090  !
+ATOM O2   OHS    -0.660  !
+ATOM HO2  HOS     0.430  !
+GROU                     !
+ATOM C3   CTS     0.140  !                  
+ATOM H3   HAS     0.090  !
+ATOM O3   OHS    -0.660  !
+ATOM HO3  HOS     0.430  !
+GROU
+ATOM C4   CTS     0.140
+ATOM H4   HAS     0.090
+ATOM O4   OHS    -0.660
+ATOM HO4  HOS     0.430
+GROU
+ATOM C6   CTS     0.050
+ATOM H61  HAS     0.090
+ATOM H62  HAS     0.090
+ATOM O6   OHS    -0.660
+ATOM HO6  HOS     0.430
+BOND C1   O5        C1   C2
+BOND C2   H2        C2   O2        O2   HO2       C2   C3        C3   H3 
+BOND C3   O3        O3   HO3       C3   C4        C4   H4        C4   O4 
+BOND O4   HO4       C4   C5        C5   H5        C5   C6        C6   H61 
+BOND C6   H62       C6   O6        O6   HO6       C5   O5 
+BOND C1   C7        C7   N1        N1   HN1       
+BOND N1   C8        C8   N2
+BOND N2   C1        N2  HN2
+BOND C7   O7        C8   O8 
+BOND C1   C7B      C7B  N1B        N1B   N3B      N3B HN31       N3B  HN32
+BOND N1B  C8B      C8B  N2B
+BOND N2B  C1       N2B  HN2B
+BOND C7B  O7B      C8B  O8B
+BOND C1   C7C       C7C  N1C        
+BOND N1C  C9C       C9C  H91       C9C  H92       C9C H93       
+BOND N1C  C8C       C8C  N2C
+BOND N2C  C1        N2C HN2C
+BOND C7C  O7C       C8C  O8C
+IMPR      C7   C1   N1   O7     N1  C7   C8   HN1   C8   N1    N2    O8
+IMPR      N2   C1   C8 HN2
+IMPR     C7B   C1  N1B  O7B    N1B C7B  C8B  N3B       C8B  N1B   N2B   O8B
+IMPR     N2B   C1  C8B HN2B    N3B N1B HN31 HN32       N3B  N1B  HN32  HN31
+IMPR     C7C   C1  N1C  O7C    N1C C7C  C8C  C9C       C8C  N1C   N2C   O8C
+IMPR     N2C   C1  C8C HN2C
+DONO BLNK HO2
+DONO BLNK HO3
+DONO BLNK HO4
+DONO BLNK HO6
+DONO BLNK HN1
+DONO BLNK HN2
+DONO BLNK HN2B
+DONO BLNK HN2C
+DONO BLNK HN31
+DONO BLNK HN32
+ACCE O2
+ACCE O3
+ACCE O4
+ACCE O5
+ACCE O6
+ACCE O7
+ACCE O8
+ACCE O7B
+ACCE O8B
+ACCE O7C
+ACCE O8C
+PATC FIRS NONE LAST NONE
+!
+! patch residue to delete the angles  
+!  N2-C1-N2B
+!  C7-C1-C7B
+!  N2-C1-N2C
+!  C7-C1-C7C
+! N2B-C1-N2C
+! C7B-C1-C7C
+!
+PRES DEL2 0.00
+DELE ANGLE N2  C1  N2B
+DELE ANGLE N2  C1  C7B
+DELE ANGLE C7  C1  C7B
+DELE ANGLE C7  C1  N2B
+DELE ANGLE N2  C1  N2C
+DELE ANGLE N2  C1  C7C
+DELE ANGLE C7  C1  C7C
+DELE ANGLE C7  C1  N2C
+DELE ANGLE N2B C1  N2C
+DELE ANGLE N2B C1  C7C
+DELE ANGLE C7B C1  C7C
+DELE ANGLE C7B C1  N2C
+</pre>
+
+<p>In the lines that start with <code>ATOM</code>, the second column
+list the names of the atoms, the third are the types of the atoms,
+and the fourth are the charges. Atoms that are grouped together with
+a <code>GROU</code> tag may receive some sort of treatment for electrostatic
+interactions. Lines that start with <code>BOND</code> define the bonds.
+Lines that start with <code>IMPR</code> define the improper dihedral angles.
+Lines that start with <code>DONO</code> and <code>ACCE</code> 
+list the hydrogen bond donors and acceptors.
+
+<p>In the above example, the internal coordinates are not presented.
+The coordinates are input from an PDB file which contains the Cartesian
+coordinates of the hybrid. Part of the structure is for free energy
+calculation (lambda dynamics), which may not be relevant for electron
+transfer simulation. But yet it shows how to create a structure in
+Charmm.
+
+<p>Once a structure is built, Charmm will ask for the corresponding 
+force fields, namely, the bonds, angles, and dihedrals. These parameters
+have to be defined in the parameter file. For example, if one wants
+to add a bond to the parameter file, just add a line like this in the
+BOND category
+
+<pre>
+A     B    305.000     1.3750 ! A-B BOND, by Blah Blah Blah
+</pre>
+The first number is the bond stretching constant, the second number
+is the bondlength. In the Charmm Hamiltonian, a bond is represented
+by a harmonical potential which restraints the distance between the
+two bond participants to be around the bondlength with a large force
+constant. The characters after the exclamation are regarded as the 
+explanation field. If the user wants to add an angle, add a line like
+this in the ANGLES category
+
+<pre>
+A   B   C    48.00    123.50  ! A-B-C Angle, by Blah Blah Blah
+</pre>
+The first number is the angle bending force constant, the second number is
+the angle which it will be restrained to.
+If the user wants to add a dihedral angle, add a line like
+this in the DIHEDRALS category
+
+<pre>
+A  B  C  D   0.2000  1   180.00 ! A-B-C-D Dihedral, by Blah Blah Blah
+</pre>
+The first number is the barrier height for the torsional potential,
+the second is the multiplicity, which gives the number of minima in
+the function as the bond is rotated through 360 degree, the third
+is the phase factor that determines where the torsion angle passes
+through its minimum value. Improper dihedrals are defined in a similiar
+way except that they should be put in the IMPROPER category
+and have zero multiplicity.
+
+<a name="pt">
+<p>Charmm's parameter file has parameters for biologically
+important elements on many different occasions. There are elements that
+may not have well tested parameter sets for the time being. 
+For instance, for
+a complex containing metallic groups, the user usually needs to
+develop his own parameter sets. FYI, a periodic table shows
+how many elements we have to live with
+
+<center>
+<FORM METHOD="Post" ACTION="" name="PeriodicTable">
+<font size=2>
+<TABLE border=5 bgcolor="#aaaaaa" cellspacing=2 cellpadding=1>
+
+<tr bgcolor="#eecc00">
+<td><a href="javascript: fillitin('Hydrogen','1','1.0079','1','1s1','-259.14 C','-252.87 C');">H</a>
+<td colspan=16 align=center bgcolor="#dddddd"><font color="red"><b>PERIODIC TABLE</b></font>
+<td><a href="javascript: fillitin('Helium','2','4.0026','2','1s2','-272C @ 26ATM','-268.6 C');">He</a>
+
+<tr bgcolor="#eebb00">
+<td><a href="javascript: fillitin('Lithium','3','6.94','2,1','2s1','180.54 C','1347 C');">Li</a>
+<td><a href="javascript: fillitin('Beryllium','4','9.01218','2,2','2s2','1278 C','2970 C');">Be</a>
+<td colspan=10 bgcolor="#ffffff">
+<td><a href="javascript: fillitin('Boron','5','10.81','2,3','2p1','2300 C','2550 C');">B</a>
+<td><a href="javascript: fillitin('Carbon','6','12.011','2,4','2p2','3500 C','4827 C');">C</a> 
+<td><a href="javascript: fillitin('Nitrogen','7','14.0067','2,5','2p3','-209.9 C','-195.8 C');">N</a>
+<td><a href="javascript: fillitin('Oxygen','8','15.9994','2,6','2p4','-218.4 C','-183.0 C');">O</a>
+<td><a href="javascript: fillitin('Flourine','9','18.998403','2,7','2p5','-219.62 C','-188.14 C');">F</a>
+<td><a href="javascript: fillitin('Neon','10','20.17','2,8',' 2p6','-248.6 C','-246.1 C');">Ne</a>
+
+<tr bgcolor="#eeaa00">
+<td><a href="javascript: fillitin('Sodium','11','22.98977','2,8,1',' 3s1','97.8 C','882.9 C');">Na</a> 
+<td><a href="javascript: fillitin('Magnesium','12','24.305','2,8,2',' 3s2','638.8 C','1090 C');">Mg</a>
+<td colspan=10>
+<td><a href="javascript: fillitin('Aluminum','13','26.98154','2,8,3',' 3p1','660.37 C','2467 C');">Al</a>
+<td><a href="javascript: fillitin('Silicon','14','28.0855','2,8,4',' 3p2','1410 C','2355 C');">Si</a>
+<td><a href="javascript: fillitin('Phosphorous','15','30.97376','2,8,5',' 3p3','44.1 C','280 C');">P</a>
+<td><a href="javascript: fillitin('Sulfur','16','32.06','2,8,6',' 3p4','112.8 C','444.6 C');">S</a>
+<td><a href="javascript: fillitin('Chlorine','17','35.453','2,8,7',' 3p5','-100.98 C','-34.6 C');">Cl</a>
+<td><a href="javascript: fillitin('Argon','18','39.948','2,8,8',' 3p6','-189.3 C','-186 C');">Ar</a>
+
+<tr bgcolor="#ee9900">
+<td><a href="javascript: fillitin('Potassium','19','39.0983','2,8,8,1',' 4s1','63.65 C','774 C');">K</a>
+<td><a href="javascript: fillitin('Calcium','20','40.08','2,8,8,2',' 4s2','839 C','1484.4 C');">Ca</a>
+<td><a href="javascript: fillitin('Scandium','21','44.9559','2,8,9,2',' 3d1','1539 C','2832 C');">Sc</a>
+<td><a href="javascript: fillitin('Titanium','22','47.90','2,8,10,2',' 3d2','1660 C','3287 C');">Ti</a>
+<td><a href="javascript: fillitin('Vandium','23','50.9415','2,8,11,2',' 3d3','1890±10 C','3380 C');">V</a>
+<td><a href="javascript: fillitin('Chromium','24','51.996','2,8,13,1',' 3d5','1857 C','2672 C');">Cr</a>
+<td><a href="javascript: fillitin('Manganese','25','54.9380','2,8,13,2',' 3d5','1245 C','1962 C');">Mn</a>
+<td><a href="javascript: fillitin('Iron','26','55.847','2,8,14,2',' 3d6','1535 C','2750 C');">Fe</a>
+<td><a href="javascript: fillitin('Cobalt','27','58.9332','2,8,15,2',' 3d7','1495 C','2870 C');">Co</a>
+<td><a href="javascript: fillitin('Nickel','28','58.71','2,8,16,2',' 3d8','1453 C','2732 C');">Ni</a>
+<td><a href="javascript: fillitin('Copper','29','63.546','2,8,18,1',' 3d10','1803 C','2567 C');">Cu</a>
+<td><a href="javascript: fillitin('Zinc','30','65.38','2,8,18,2',' 3d10','419.58 C','907 C');">Zn</a>
+<td><a href="javascript: fillitin('Gallium','31','69.735','2,8,18,3',' 4p1','29.78 C','2403 C');">Ga</a>
+<td><a href="javascript: fillitin('Germanium','32','72.59','2,8,18,4',' 4p2','937.4 C','2830 C');">Ge</a>
+<td><a href="javascript: fillitin('Arsenic','33','74.9216','2,8,18,5',' 4p3','81 C @ 28ATM','Sublimes at 613')">As</a>
+<td><a href="javascript: fillitin('Selenium','34','78.96','2,8,18,6',' 4p4','217 C','684.9 C');">Se</a>
+<td><a href="javascript: fillitin('Bromine','35','79.904','2,8,18,7',' 4p5','-7.2 C','58.78 C');">Br</a>
+<td><a href="javascript: fillitin('Krypton','36','83.80','2,8,18,8',' 4p6','-157.2 C','-153.4 C');">Kr</a>
+
+<tr bgcolor="#00cc88">
+<td><a href="javascript: fillitin('Rubidium','37','85.467','2,8,18,8,1',' 5s1','38.89 C','688 C');">Rb</a>
+<td><a href="javascript: fillitin('Strontium','38','87.62','2,8,18,8,2',' 5s2','769C','1384 C');">Sr</a>
+<td><a href="javascript: fillitin('Yttrium','39','88.9059','2,8,18,9,2',' 4d1','1523 C','3337 C');">Y</a>
+<td><a href="javascript: fillitin('Zirconium','40','91.22','2,8,18,10,2',' 4d2','1852±2 C','4377 C');">Zr</a>
+<td><a href="javascript: fillitin('Niobium','41','92.9064','2,8,18,13,1',' 4d4','2468±10 C','4927 C');">Nb</a>
+<td><a href="javascript: fillitin('Molybdenum','42','95.94','2,8,18,13,1',' 4d5','2617 C','4612 C');">Mo</a>
+<td><a href="javascript: fillitin('Technetium','43','98.9062','2,8,18,14,1',' 4d6','2200±50 C','4877 C');">Tc</a>
+<td><a href="javascript: fillitin('Ruthenium','44','101.07','2,8,18,15,1',' 4d7','2250 C','3900 C');">Ru</a>
+<td><a href="javascript: fillitin('Rhodium','45','102.9055','2,8,18,16,1',' 4d8','1966±3 C','3727 C');">Rh</a>
+<td><a href="javascript: fillitin('Palladium','46','106.4','2,8,18,18',' 4d10','1552 C','2927 C');">Pd</a>
+<td><a href="javascript: fillitin('Silver','47','107.868','2,8,18,18,1',' 4d10','961.93 C','2212 C');">Ag</a>
+<td><a href="javascript: fillitin('Cadmium','48','112.41','2,8,18,18,2',' 4d10','320.9 C','765 C');">Cd</a>
+<td><a href="javascript: fillitin('Indium','49','114.82','2,8,18,18,3',' 5p1','156.61 C','2000±10 C');">In</a>
+<td><a href="javascript: fillitin('Tin','50','118.69','2,8,18,18,4',' 5p2','231.9 C','2270 C');">Sn</a>
+<td><a href="javascript: fillitin('Antimony','51','121.75','2,8,18,18,5',' 5p3','630 C','1750 C');">Sb</a>
+<td><a href="javascript: fillitin('Tellurium','52','127.60','2,8,18,18,6',' 5p4','449.5 C','989.8 C');">Te</a>
+<td><a href="javascript: fillitin('Iodine','53','126.9045','2,8,18,18,7',' 5p5','113.5 C','184 C @ 35 atm')">I</a>
+<td><a href="javascript: fillitin('Xenon','54','131.30','2,8,18,18,8',' 5p6','-111.9 C','-108.1 C');">Xe</a>
+
+<tr bgcolor="#00aa99">
+<td><a href="javascript: fillitin('Cesium','55','132.9054','2,8,18,18,8',' 6s1','28.5 C','678.4 C');">Cs</a>
+<td><a href="javascript: fillitin('Barium','56','137.33','2,8,18,18,8',' 6s2','725 C','1140 C');">Ba</a>
+<td><a href="javascript: fillitin('Lanthanum','57','138.9055','2,8,18,18,9',' 5d1','920 C','3469 C');">La</a>
+<td><a href="javascript: fillitin('Hafnium','72','178.49','2,8,18,32,10',' 5d2','2150 C','5400 C');">Hf</a>
+<td><a href="javascript: fillitin('Tantalum','73','180.947','2,8,18,32,11',' 5d3','2996 C','5425±100 C');">Ta</a>
+<td><a href="javascript: fillitin('Tungsten','74','183.85','2,8,18,32,12',' 5d4','3410±20 C','5660 C');">W</a>
+<td><a href="javascript: fillitin('Rhenium','75','186.207','2,8,18,32,13',' 5d5','3180 C','5627 C');">Re</a>
+<td><a href="javascript: fillitin('Osmium','76','190.2','2,8,18,32,14',' 5d6','3045 C','5027 C');">Os</a>
+<td><a href="javascript: fillitin('Iridium','77','192.22','2,8,18,32,15',' 5d7','2410 C','4527±100 C');">Ir</a>
+<td><a href="javascript: fillitin('Platinum','78','195.09','2,8,18,32,17',' 5d9','1772 C','3827 C');">Pt</a>
+<td><a href="javascript: fillitin('Gold','79','196.9665','2,8,18,32,18',' 5d10','1064.43 C','2807 C');">Au</a>
+<td><a href="javascript: fillitin('Mercury','80','200.59','2,8,18,32,18',' 5d10','-38.87 C','356.58 C');">Hg</a>
+<td><a href="javascript: fillitin('Thallium','81','204.37','2,8,18,32,18',' 6p1','303.5 C','1457±10C');">Tl</a>
+<td><a href="javascript: fillitin('Lead','82','207.2','2,8,18,32,18',' 6p2','327.5 C','1740 C');">Pb</a>
+<td><a href="javascript: fillitin('Bismuth','83','208.9804','2,8,18,32,18',' 6p3','271.3 C','1560±5C');">Bi</a>
+<td><a href="javascript: fillitin('Polonium','84','(209)','2,8,18,32,18',' 6p4','254 C','962 C');">Po</a>
+<td><a href="javascript: fillitin('Astatine','85','(210)','2,8,18,32,18',' 6p5','302 C','337 C');">At</a>
+<td><a href="javascript: fillitin('Radon','86','(222)','2,8,18,32,18',' 6p6','-71 C\t','-61.8 C');">Rn</a>
+
+<tr bgcolor="#99dddd">
+<td><a href="javascript: fillitin('Francium','87','(223)','2,8,18,32,18,8',' 7s1','27 C\t','677 C');">Fr</a>
+<td><a href="javascript: fillitin('Radium','88','226.0254','2,8,18,32,18,8',' 7s2','700 C','1737 C');">Ra</a>
+<td><a href="javascript: fillitin('Actinium','89','(227)','2,8,18,32,18,9',' 6d1','1050 C','3200±300 C');">Ac</a>
+<td><a href="javascript: fillitin('Unnilquadium','104','(260)','2,8,18,32,32,10',' 6d2','N/A C','N/A C');">Unq</a>
+<td><a href="javascript: fillitin('Unnilpentium','105','(260)','2,8,18,32,32,11',' 6d3','N/A C','N/A C');">Unp</a>
+<td><a href="javascript: fillitin('Unnilhexium','106','(263)','2,8,18,32,32,12',' 6d4','N/A C','N/A C');">Unh</a>
+<td><a href="javascript: fillitin('Unnilseptium','107','(262)','2,8,18,32,32,13',' 6d5','N/A C','N/A C');">Uns</a>
+<td>Uno
+<td>Une
+<td>Uun
+<td>Uuu
+<td>Uub
+<td>Uut
+<td>Uuq
+<td>Uup
+<td>Uuh
+<td>Uus
+<td>Uuo
+
+<tr bgcolor="#ffff00">
+<td rowspan=2 colspan=3 bgcolor="#aaaaaa" align=center valign=center>
+<input type="button" value="About"
+onClick="alert('Periodic Table written in Javascript, 1999, University of Cyprus')">
+<td><a href="javascript: fillitin('Cerium','58','140.12','2,8,18,20,8',' 4f2','795 C','3257 C');">Ce</a>
+<td><a href="javascript: fillitin('Praseodymium','59','140.9077','2,8,18,21,8',' 4f3','935 C','3127 C');">Pr</a>
+<td><a href="javascript: fillitin('Neodymium','60','144.24','2,8,18,22,8',' 4f4','1010 C','3127 C');">Nd</a>
+<td><a href="javascript: fillitin('Promethium','61','(145)','2,8,18,23,8',' 4f5','N/A C','N/A C');">Pm</a>
+<td><a href="javascript: fillitin('Samarium','62','150.4','2,8,18,24,8',' 4f6','1072 C','1900 C');">Sm</a>
+<td><a href="javascript: fillitin('Europium','63','151.96','2,8,18,25,8',' 4f7','822 C','1597 C');">Eu</a>
+<td><a href="javascript: fillitin('Gadolinium','64','157.25','2,8,18,25,9',' 4f7','1311 C','3233 C');">Gd</a>
+<td><a href="javascript: fillitin('Terbium','65','158.9254','2,8,18,27,8',' 4f9','1360 C','3041 C');">Tb</a>
+<td><a href="javascript: fillitin('Dysprosium','66','162.50','2,8,18,28,8',' 4f10','1412 C','2562 C');">Dy</a>
+<td><a href="javascript: fillitin('Holmium','67','164.9304','2,8,18,29,8',' 4f11','1470 C','2720 C');">Ho</a>
+<td><a href="javascript: fillitin('Erbium','68','167.26','2,8,18,30,8',' 4f12','1522 C','2510 C');">Er</a>
+<td><a href="javascript: fillitin('Thulium','69','168.9342','2,8,18,31,8',' 4f13','1545 C','1727 C');">Tm</a>
+<td><a href="javascript: fillitin('Ytterbium','70','173.04','2,8,18,32,8',' 4f14','824 C','1466 C');">Yb</a>
+<td><a href="javascript: fillitin('Lutetium','71','174.96','2,8,18,32,9',' 4f14','1656 C','3315 C');">Lu</a>
+<td>
+
+<tr bgcolor="lightyellow">
+<td><a href="javascript: fillitin('Thorium','90','232.0381','2,8,18,32,18,10',' 6d2','1750 C','4790 C');">Th</a>
+<td><a href="javascript: fillitin('Proactinium','91','231.0359','2,8,18,32,20,9',' 5f2','1600 C','N/A C');">Pa</a>
+<td><a href="javascript: fillitin('Uranium','92','238.029','2,8,18,32,21,9',' 5f3','1132 C','3818 C');">U</a>
+<td><a href="javascript: fillitin('Neptunium','93','237.0482','2,8,18,32,23,8',' 5f4','640 C','3902 C');">Np</a>
+<td><a href="javascript: fillitin('Plutonium','94','(244)','2,8,18,32,24,8',' 5f6','639.5±2 C','3235±19 C');">Pu</a>
+<td><a href="javascript: fillitin('Americium','95','(243)','2,8,18,32,25,8',' 5f7','994 C','2607 C');">Am</a>
+<td><a href="javascript: fillitin('Curium','96','(247)','2,8,18,32,25,9',' 5f7','1340 C','N/A C');">Cm</a>
+<td><a href="javascript: fillitin('Berkelium','97','(247)','2,8,18,32,26,9',' 5f8','N/A C','N/A C');">Bk</a>
+<td><a href="javascript: fillitin('Californium','98','(251)','2,8,18,32,28,8',' 5f9','N/A C','N/A C');">Cf</a>
+<td><a href="javascript: fillitin('Einsteinium','99','(254)','2,8,18,32,29,8',' 5f11','N/A C','N/A C');">Es</a>
+<td><a href="javascript: fillitin('Fremium','100','(257)','2,8,18,32,30,8',' 5f12','N/A C','N/A C');">Fm</a>
+<td><a href="javascript: fillitin('Mendelevium','101','(258)','2,8,18,32,31,8',' 5f13','N/A C','N/A C');">Md</a>
+<td><a href="javascript: fillitin('Nobelium','102','(259)','2,8,18,32,32,8',' 5f14','N/A C','N/A C');">No</a>
+<td><a href="javascript: fillitin('Lawrencium','103','(260)','2,8,18,32,32,9',' 5f14','N/A C','N/A C');">Lr</a>
+<td> 
+ 
+ 
+</table></font>
+<i>Element Datasheet</i>
+<br>
+<table cellpadding=0 border=10 cellspacing=0 bgcolor="#aaaaaa">
+<tr>
+<td>Name:
+<td>Number:
+<td>Weight:
+<td>Shells:
+<td>Orbital:
+<td>Melt:
+<td>Freeze:
+<tr>
+<td align=center><input type=text name=Name size=15>
+<td align=center><input type=text name=AtomicNumber size=3>
+<td align=center><input type=text name=AtomicWeight size=7>
+<td align=center><input type=text name=Shells size=15>
+<td align=center><input type=text name=FillingOrbital size=4>
+<td align=center><input type=text name=MeltingPoint size=7>
+<td align=center><input type=text name=FreezingPoint size=7>
+</table> 
+</form>
+</center> 
+
+
+<a name="script">
+<h5><i>Write a Charmm script for MD simulation</i></h5>
+
+The following is the template script for performing molecular
+dynamics simulation for azurin in either vacuum or solution. 
+This script tries
+to automate the job with a single main file plus a few plug-in inputs
+(the so-called 'streams' in Charmm), starting from experimental
+protein structure(<code>azuh.pdb</code>---the crystallographic structure
+for azurin augmented with hydrogen atoms built using <code>HBUILD</code>,
+and <code>wath.pdb</code>---the file containing crystallographic waters). 
+Azurin is a small protein, so no cutoff procedure is needed to downsize
+the system.
+The switches are summarized as follows:
+
+<ul>
+<li><code>Restart</code>: 1/0---restart from history/start from scratch;
+<li><code>Solvent</code>: 1/0---with/without solvent;
+<li><code>CryWater</code>: 1/0---intake/ignore crystallographic waters;
+<li><code>RefillWater</code>: 1/0---add/do not add more waters;
+<li><code>RefillRestart</code>: 1/0---restart after adding more waters/do not restart;
+<li><code>FixProtein</code>: 1/0---fix protein/do not fix protein;
+<li><code>run</code>: 1/0---run/do not run a MD simulation;
+<li><code>TimeSeries</code>: 1/0---create/do not create time series;
+<li><code>WritePDB</code>: 1/0---write/do not write PDB series;
+<li><code>Minimize</code>: 1/0---minimize/do not minimize the structure;
+<li><code>Switch1</code>: composite switch;
+<li><code>Switch2</code>: composite switch;
+</ul>
+
+<center>
+<img src="images/azurin.GIF" width=280>
+<img src="images/azurinribbon.GIF" width="280">
+<br>
+<font size="2" color="#ff00ff"><i>
+The azurin molecule: rendered in space-filled and ribbon display modes.
+Images created by Rasmol and Photoshop.
+</i></font>
+</center>
+
+To do a vacuum simulation for azurin, just switch off <code>Solvent</code>
+and <code>CryWater</code>. When the user wishes to add more waters to the
+system, he can simply turn on the <code>RefillWater</code>. After this
+step, he has to turn it off and turn on the <code>RefillRestart</code>
+switch in order to continue the simulation. If he mistakenly turns on
+the <code>Restart</code>, the script will refuse to work as Charmm will
+detect that the total number of atoms has been changed and exit.
+
+<pre>
+*  TITLE Molecular Dynamics for Azurin
+*
+
+set Restart 1
+set RefillWater 0
+set RefillRestart 0
+set run 1
+set Solvent 1
+set FixProtein 0
+set CryWater 1
+set NumberofSteps 50
+set Steplength 0.001
+set freqsave 1
+set trajskip 1
+set Temperature 300.0
+set Timeseries 0
+set WritePDB 1
+set NumberofPDB 50
+
+set Minimize 0
+set minstep 100
+set tolfun 0.0001
+
+set Radius 28
+set OverlayDiam 2.8
+
+BOMLEV -1
+set Switch1 0
+set Switch2 0
+set Start 0
+let Start = 1 - @Restart
+let Switch1 = @Refillwater * @Restart
+let Switch2 = @Start * @Solvent
+
+set fact 0.0
+
+set IndexofOverlay 0
+set xphi 1.0
+set yphi 0.0
+set zphi 0.0
+set phi  0.0
+set xdir 0.0
+set ydir 0.0
+set zdir 0.0
+
+set MainDir      /home/xie/charmm
+set WaterDir     /home/xie/charmm/bpot
+set PDBDir       /home/xie/strk/pdb
+
+set rstfi  @MainDir/scratch/azurin.rst
+set dcdfi  @MainDir/scratch/azurin.dcd
+set velfi  @MainDir/scratch/azurin.vel
+set dcdor  @MainDir/scratch/azurinorie.dcd
+
+open read card unit 10 name @MainDir/toppar/top_all22_prot_na.inp
+read rtf  card unit 10
+open read card unit 10 name @MainDir/toppar/par_all22_prot_na2.inp
+read para  card unit 10
+
+label BEGIN
+if RefillWater eq 1 goto BUILD1
+
+if RefillRestart eq 1 goto BUILD4
+
+if Restart eq 1 goto BUILD1
+
+  open read card unit 10 name @MainDir/azurin/azuh.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+  
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+  open read card unit 10 name @MainDir/azurin/azuh.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/wath.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/wath.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+
+if Restart eq 0 goto BUILD2
+label BUILD1
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+  
+  if Solvent eq 1 open read card unit 30 name water.pdb
+  if Solvent eq 1 read sequence pdb unit 30
+  if Solvent eq 1 generate SOLV noangle nodihe setup warn
+  if Solvent eq 1 read coor pdb unit 30 sele segid SOLV end
+
+label BUILD2
+
+! Overlay water, rotate more, and overlay again
+if Switch1 eq 0 goto BUILD3
+  stream <a href="charmm/azurin.rfl.str">azurin.rfl.str</a>
+  incr IndexofOverlay by 1
+  incr phi by 90
+  if IndexofOverlay lt 2 goto BUILD2
+  STOP
+label BUILD3
+
+goto BUILD5
+
+label BUILD4
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read sequence pdb unit 10
+  generate AZUA  setup warn first NTER last CTER 
+
+  PATCH DISU     AZUA 3    AZUA  26
+  patch HSQP     AZUA 46   AZUA  117
+  patch HSQC     AZUA 46   AZUA  112
+
+  open read card unit 10 name @MainDir/azurin/azurin.pdb
+  read coor pdb unit 10 sele segid AZUA end
+
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read sequence pdb unit 10
+  if CryWater eq 1 generate WATE noangle nodihedral setup warn
+  if CryWater eq 1 open read card unit 10 name @MainDir/azurin/crywat.pdb
+  if CryWater eq 1 read coor pdb sele segid WATE end unit 10
+
+  open read card unit 30 name water.pdb
+  read sequence pdb unit 30
+  generate SOLV noangle nodihe setup warn
+  read coor pdb unit 30 sele segid SOLV end
+
+  let Restart = 0
+  let Start = 1
+
+label BUILD5
+
+! modify the charges of the copper ligands
+ 
+ .
+ .(ignored here, check <a href="charmm/azurin.main">azurin.main</a> for details)
+ .
+
+! =============================================
+scalar wmain = charge sele all end
+coor statistics sele all end
+set TotalCharge ?WAVE
+Multiply TotalCharge by ?NATO
+
+! define and constrain the improper dihedrals for the copper complex
+
+ic edit
+dihe  AZUA  46  ND1  AZUA 112 SG  AZUA 46  CU  AZUA 117   ND1    180.0
+dihe  AZUA 112  SG   AZUA 117 ND1 AZUA 46  CU  AZUA  46   ND1    180.0
+dihe  AZUA 117  ND1  AZUA  46 ND1 AZUA 46  CU  AZUA 112    SG    180.0
+end
+
+ic fill
+
+cons dihe AZUA  46 ND1 AZUA 112 SG  AZUA 46 CU AZUA 117 ND1 force 10.0 min 180.0
+cons dihe AZUA 112 SG  AZUA 117 ND1 AZUA 46 CU AZUA  46 ND1 force 10.0 min 180.0
+cons dihe AZUA 117 ND1 AZUA  46 ND1 AZUA 46 CU AZUA 112  SG force 10.0 min 180.0
+  
+if RefillRestart eq 1 goto MAIN001
+  if Switch2 eq 1 stream <a href="charmm/azurin.ini.str">azurin.ini.str</a>
+label MAIN001
+
+if Solvent eq 1 stream <a href="charmm/azurin.set.str">azurin.set.str</a>
+
+if run eq 1 stream <a href="charmm/azurin.dyn.str">azurin.dyn.str</a>
+
+open write card unit 10 name @MainDir/azurin/total.pdb
+write coor pdb unit 10 sele all end
+
+if Solvent eq 1 open write card unit 10 name @MainDir/azurin/water.pdb
+if Solvent eq 1 write coor pdb unit 10 sele segid SOLV end
+
+open write card unit 10 name @MainDir/azurin/azurin.pdb
+write coor pdb unit 10 sele segid AZUA end
+
+if CryWater eq 1 open write card unit 10 name @MainDir/azurin/crywat.pdb
+if CryWater eq 1 write coor pdb unit 10 sele segid WATE end
+
+if WritePDB eq 1 stream <a href="charmm/azurin.pdb.str">azurin.pdb.str</a>
+
+if Timeseries eq 1 stream <a href="charmm/azurin.tim.str">azurin.tim.str</a>
+
+stop
+</pre>
+
+<a name="post">
+<h5><i>Postprocess a MD simulation</i></h5>
+
+<p>While it is being done, an MD simulation carries rich information about
+the atomic coordinates and the velocities. Considering the number
+of atoms and the structure complexity involved in protein simulations,
+data management and analysis become a very time-consuming job, and
+sometimes, could be intimidating and frustrating for a novice.
+
+<p>Although it is desirable that data analysis be performed simultaneously
+while the MD simulation is going on, for simulation of complicated systems
+it can be very difficult to decide what we want to know at the stage of
+preparing script inputs. Particularly when we are using a generic simulation
+client such as Charmm that claims to be able to run any kind of MD job,
+it can be sometimes awkward to manipulate the MD machine on a 
+developer-provided scripting environment.
+
+<p>A better way of working with Charmm is to deposit a long trajectory
+into a file so that we can get back to this file and postprocess it at
+any time. This file is normally called dynamical coordinate data (DCD),
+any file with an extention name 'dcd' is recognized as an DCD trajectory
+file, and can be played by the DCD player built in the VMD.
+In this way, Charmm looks somehow like a DCD recorder---it records the 
+important information for the evolution of the system(of course,
+guided by the equation of motion and the selected simulation protocols). 
+Once the DCD file is saved, nothing is actually lost after the simulation
+is completed.
+
+<p>Postprocessing a simulation in Charmm 
+
+<ul>
+<li>Time series analysis: correlations and their Fourier spectra;
+<li>Quasiharmonic approximation analysis;
+<li>Calculation of specified interactions;
+<li>Conformation analysis;
+<li>Whatsoever the user can think of should be extractable from the DCD;
+</ul>
+
+<p>We have also written up a <a href="DCDParser/">DCD parser</a>
+which is independent of the Charmm platform. The program takes
+a DCD and two PDB files (a starting and a reference structure)
+as selected in the <a href="DCDParser/input">input</a> file and
+can do some simple calculations much faster because the overheads of the
+whole Charmm platform are avoided. The DCD parser can handle the following
+tasks:
+
+<ul>
+<li>Calculate the van der Waals and electrostatic potentials between
+any given pair of atoms or residues;
+<li>Calculate the RMS deviations per atom, per residue, or per type;
+<li>Calculate the radial distribution function of waters around a solvated
+ligand;
+<li>Detect the closest atoms of a given type to a certain atom in the whole
+trajectory and sort them out;
+<li>Grid analysis of water molecules in a cavity formed by protein residues;
+</ul>
+
+
+<a name="pdb">
+<h5><i>Prune the structure and create the PDB series</i></h5>
+
+The plug-in file (<a href="charmm/azurin.pdb.str">
+<code>azurin.pdb.str</code></a>) truncates part of the beta-sheet from
+the whole azurin molecule. When installing <code>ACE</code> and 
+<code>CT3</code> terminals
+to the two ends of both strands, care is taken such that the terminal atoms 
+sit on the positions of the corresponding atoms of the excluded residues that
+are right next to the end residues. This can be obviously seen from the
+following script.
+
+<p>The reason that we add <code>ACE</code> and <code>CT3</code> terminals
+is that they satisfy the close-shell requirement for the electronic
+structure calculation (CNDO level).
+
+<pre>
+* extract the pathway from the whole protein and patch ACE and CT3 to the
+* two ends of the pathway
+
+  OPEN READ FILE UNIT 61 NAME @dcdfi
+  TRAJ IREAD 61 NREAD  1  SKIP @trajskip BEGIN 000 STOP 5000000
+
+  SET INDEX 1
+  LABEL CONT
+  
+  TRAJ READ
+  OPEN WRITE CARD UNIT 60 NAME pathway1.pdb
+  WRITE COOR PDB UNIT 60 sele (segid AZUA .and. resid 121:123) end
+  open write card unit 60 name pathway2.pdb
+  write coor pdb unit 60 sele (segid AZUA .and. resid 110:112) end
+  
+  coor statistics sele atom AZUA 120 C end
+  set xC120  ?xave
+  set yC120  ?yave
+  set zC120  ?zave
+  
+  coor statistics sele atom AZUA 120 CA end
+  set xCA120 ?xave
+  set yCA120 ?yave
+  set zCA120 ?zave
+  
+  coor statistics sele atom AZUA 120 O end
+  set xO120  ?xave
+  set yO120  ?yave
+  set zO120  ?zave
+
+  coor statistics sele atom AZUA 124 N end
+  set xN124  ?xave
+  set yN124  ?yave
+  set zN124  ?zave
+  
+  coor statistics sele atom AZUA 124 CA end
+  set xCA124 ?xave
+  set yCA124 ?yave
+  set zCA124 ?zave
+  
+  coor statistics sele atom AZUA 124 HN end
+  set xHN124 ?xave
+  set yHN124 ?yave
+  set zHN124 ?zave
+
+  coor statistics sele atom AZUA 109 C end
+  set xC109  ?xave
+  set yC109  ?yave
+  set zC109  ?zave
+  
+  coor statistics sele atom AZUA 109 CA end
+  set xCA109 ?xave
+  set yCA109 ?yave
+  set zCA109 ?zave
+  
+  coor statistics sele atom AZUA 109 O end
+  set xO109  ?xave
+  set yO109  ?yave
+  set zO109  ?zave
+
+  coor statistics sele atom AZUA 113 N end
+  set xN113  ?xave
+  set yN113  ?yave
+  set zN113  ?zave
+  
+  coor statistics sele atom AZUA 113 CA end
+  set xCA113 ?xave
+  set yCA113 ?yave
+  set zCA113 ?zave
+  
+  coor statistics sele atom AZUA 113 HN end
+  set xHN113 ?xave
+  set yHN113 ?yave
+  set zHN113 ?zave
+  
+  rename segid TEMP sele segid AZUA end
+    
+  open read card unit 60 name pathway1.pdb
+  read sequence pdb unit 60
+  generate AZUA setup warn first ACE last CT3
+  read coor pdb unit 60
+
+  scalar x set @xC120  sele (segid AZUA .and. resname MET .and. type  CY) end
+  scalar y set @yC120  sele (segid AZUA .and. resname MET .and. type  CY) end
+  scalar z set @zC120  sele (segid AZUA .and. resname MET .and. type  CY) end
+     
+  scalar x set @xCA120 sele (segid AZUA .and. resname MET .and. type CAY) end
+  scalar y set @yCA120 sele (segid AZUA .and. resname MET .and. type CAY) end
+  scalar z set @zCA120 sele (segid AZUA .and. resname MET .and. type CAY) end
+  
+  scalar x set @xO120  sele (segid AZUA .and. resname MET .and. type  OY) end
+  scalar y set @yO120  sele (segid AZUA .and. resname MET .and. type  OY) end
+  scalar z set @zO120  sele (segid AZUA .and. resname MET .and. type  OY) end
+
+  scalar x set @xN124  sele (segid AZUA .and. resname GLY .and. type  NT) end
+  scalar y set @yN124  sele (segid AZUA .and. resname GLY .and. type  NT) end
+  scalar z set @zN124  sele (segid AZUA .and. resname GLY .and. type  NT) end
+
+  scalar x set @xCA124 sele (segid AZUA .and. resname GLY .and. type CAT) end
+  scalar y set @yCA124 sele (segid AZUA .and. resname GLY .and. type CAT) end
+  scalar z set @zCA124 sele (segid AZUA .and. resname GLY .and. type CAT) end
+
+  scalar x set @xHN124 sele (segid AZUA .and. resname GLY .and. type HNT) end
+  scalar y set @yHN124 sele (segid AZUA .and. resname GLY .and. type HNT) end
+  scalar z set @zHN124 sele (segid AZUA .and. resname GLY .and. type HNT) end
+
+  hbuild
+  
+  rename segid PAR1 sele segid AZUA end
+
+! hack here: since we cannot do open-shell calculations, charges are
+! removed, and sulfur atoms replaced by oxygen atoms.
+
+  delete atom sele (segid PAR1 .and. resname LYS .and. type HZ3) end
+  rename atom OD sele (segid PAR1 .and. resname MET .and. type SD ) end
+  
+  label cont200
+  
+  open read card unit 60 name pathway2.pdb
+  read sequence pdb unit 60
+  generate AZUA setup warn first ACE last CT3
+  read coor pdb unit 60
+
+  scalar x set @xC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+  scalar y set @yC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+  scalar z set @zC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+     
+  scalar x set @xCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  scalar y set @yCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  scalar z set @zCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  
+  scalar x set @xO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+  scalar y set @yO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+  scalar z set @zO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+
+  scalar x set @xN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  scalar y set @yN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  scalar z set @zN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  
+  scalar x set @xCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+  scalar y set @yCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+  scalar z set @zCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+
+  scalar x set @xHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  scalar y set @yHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  scalar z set @zHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  
+  hbuild
+  
+  rename segid PAR2 sele segid AZUA end
+
+! hack here: since we cannot do open-shell calculations, charges are
+! removed, and sulfur atoms replaced by oxygen atoms.
+
+  rename atom OG sele (segid PAR2 .and. resname CYS .and. type SG ) end
+  rename atom OD sele (segid PAR2 .and. resname MET .and. type SD ) end
+ 
+  
+  OPEN WRITE CARD UNIT 60 NAME @PDBDir/@INDEX.pdb
+  WRITE COOR PDB UNIT 60 sele segid PAR1 .or. segid PAR2 end
+
+  delete atom sele segid PAR1 .or. segid PAR2 end
+  rename segid AZUA sele segid TEMP end
+  
+  INCR INDEX BY 1
+  IF INDEX GT @NumberofPDB GOTO EXIT
+  GOTO CONT
+  LABEL EXIT
+</pre>
+
+<br><br>
+<center>
+<table border=1>
+<tr><td>
+<center><img src="pix/betaSheet.gif"></center>
+</td></tr>
+</table>
+<font size=2 color="#0000ff"><i>The truncated beta-sheet.</i></font>
+</center>
+
+<p>A C-shell script loop-runs the above Charmm script, and
+deposits the PDB files into a series of segments.
+
+<pre>
+#!/bin/csh -f
+# script file for md and saving pdb files
+
+#initialize
+pwd
+date
+@ number_of_run = 200
+@ length_of_run = 50
+@ i0 = 0
+@ i = $i0
+set dir_of_md = /home/xie/charmm
+
+set a = `pwd`
+if ( $a != $dir_of_md ) then
+   echo We are not in the right starting directory!
+   exit
+endif
+
+cd ./azurin/
+
+label_one:
+
+@ i ++
+
+runch < azurin.main
+
+cd
+cd ./strk/pdb
+if ( -e 1.pdb ) then
+   tar -cvf azur.$i.tar *.pdb  
+   gzip azur.$i.tar
+   mv azur.$i.tar.gz /home/xie/strk/
+   rm -f *.pdb
+endif   
+
+cd ../../charmm/azurin/
+
+if ( $i - $i0 < $number_of_run ) goto label_one
+
+date
+pwd
+
+exit
+</pre>
+
+Some DCD trajectories for the beta-strands and beta-sheet are
+stored in <a href="/opt/data/sdata">a directory on thales</a>.
+
+<ul>
+<li><a href="/opt/data/sdata/110-112/">Phe<sup>110</sup>-Cys<sup>112</sup></a> strand.
+<li><a href="/opt/data/sdata/112-107/">Cys<sup>112</sup>-Gln<sup>107</sup></a> strand.
+<li><a href="/opt/data/sdata/112-123/">Cys<sup>112</sup>-Gly<sup>123</sup></a> half beta-sheet.
+<li><a href="/opt/data/sdata/112-124/">Cys<sup>112</sup>-Thr<sup>124</sup></a> strand.
+<li><a href="/opt/data/sdata/121-126/">Phe<sup>121</sup>-Thr<sup>126</sup></a> strand.
+<li><a href="/opt/data/sdata/107-126/">Cys<sup>112</sup>-Thr<sup>126</sup></a> the whole beta-sheet.
+</ul>
+
+For each trajectory, a 'tsign' file, a 'dmold' file, and an 'input'
+file are also presented in the corresponding directory.
+
+<center>
+<p><a href="index.html"><i>Back to the Index Page</i></a>
+<p><font size=1 color="#000000"><i>&copy; 2000, Qian Xie</i></font>
+</center>
+
+</body>
+</html>

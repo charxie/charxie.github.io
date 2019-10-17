@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+<engine>
+<itp>false</itp>
+<nx>200</nx>
+<ny>200</ny>
+<timestep>0.02</timestep>
+</engine>
+<state>
+<xmin>-2.0</xmin>
+<xmax>2.0</xmax>
+<ymin>-2.0</ymin>
+<ymax>2.0</ymax>
+<absorbing_boundary direction="x" length_percentage="0.1" absorption="0.01"/>
+<absorbing_boundary direction="y" length_percentage="0.1" absorption="0.01"/>
+<frank>false</frank>
+<ruler>true</ruler>
+<grid>false</grid>
+<contour>false</contour>
+<probonly>true</probonly>
+<dotmode>false</dotmode>
+<dotcellsize>0.035955057</dotcellsize>
+<drawenergy>false</drawenergy>
+<drawcurrent>false</drawcurrent>
+<energyscale>5.0</energyscale>
+<intensityscale>5.0</intensityscale>
+<drawexpectation>false</drawexpectation>
+<probcolor>99ff</probcolor>
+<particle mass="1.0"/>
+<efield intensity="7.5" frequency="0.0" angle="270.0"/>
+<potentials>
+<rectangular energy="-10.0" xcenter="-1.0" ycenter="-1.0" width="1.0" height="3.0" corner="1.0" color="ff6666" draggable="false"/>
+<rectangular energy="-10.0" xcenter="0.0" ycenter="1.6" width="4.0" height="1.4" color="cc9900"/>
+<elliptical energy="-10.0" xcenter="1.0" ycenter="0.85" rx="0.05" ry="0.05"/>
+<elliptical energy="-10.0" xcenter="0.0" ycenter="0.8" rx="0.1" ry="0.1"/>
+</potentials>
+<wavepackets>
+<gaussian magnitude="1.0" sigma="0.32" xcenter="-1.0" ycenter="-1.0" px="0.0" py="0.0"/>
+</wavepackets>
+<sources>
+<point period="0.5" amplitude="0.01" sigma="0.32" xcenter="-1.0" ycenter="-1.5" px="0.0" py="0.0"/>
+</sources>
+</state></model>

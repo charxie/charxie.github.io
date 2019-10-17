@@ -1,0 +1,114 @@
+<html> 
+<head> 
+<title>Biophysics Simulations</title> 
+</head>
+<body>
+ 
+<p>
+<center>
+<h1>Computer Simulation for Electron Transfer Dynamics in Proteins</h1>
+<p>
+Qian Xie
+</center>
+<hr>
+
+<center>
+<table width="100%">
+<tr><td align="center">
+<i><font size="2">
+This is a documentation of our work on computer simulation on quantum dynamics of electron transfer 
+in fluctuating proteins. All the text, images and code are presented without a warranty of any kind.
+</font>
+</i>
+</td></tr>
+</table>
+</center>
+<br><br>
+
+<b>Contents</b>  
+<ul>
+<li>Flowchart of the computer simulation (postscript)
+  <a href="paper/flowchart.pdf">(1)</a>,
+  <a href="paper/flowchart2.pdf">(2)</a></li>
+<li><a href="md.html">Classical molecular dynamics simulation</a></li>
+<ul>
+  <li><a href="md.html#graphics">Molecular graphics tools</a>
+  <li><a href="md.html#prepare">Preparing a structure</a>
+  <li><a href="md.html#parameter">Defining force fields</a>
+  <li><a href="md.html#script">Writing a Charmm script for MD simulation</a>
+  <li><a href="md.html#post">Postprocessing a MD simulation</a>
+  <li><a href="md.html#pdb">Pruning the structure and creating PDB time series</a>
+</ul>
+<li><a href="cndo.html">CNDO calculation</a></li>
+<ul>
+  <li><a href="cndo.html#core">Anatomy of the core of the CNDO code</a>
+  <li><a href="cndo.html#sub">CNDO subroutines</a>
+  <li><a href="cndo.html#product">Major product of CNDO</a>
+  <li><a href="cndo.html#csh">The C-shell script that controls the job flow</a>
+</ul>
+<li><a href="eh.html">Extended Huckel calculation</a></li>
+<ul>
+  <li><a href="eh.html#core">Anatomy of the core of the EH code</a>
+  <li><a href="eh.html#gap">Remedying the gap problem</a>
+  <li><a href="eh.html#product">Major product of the EH</a>
+  <li><a href="eh.html#csh">The C-shell script that controls the job flow</a>
+</ul>
+<li><a href="nbo.html">Transformation to the Natural Bond Orbitals</a></li>
+<ul>
+  <li><a href="nbo.html#sub">The subroutines</a>
+  <li><a href="nbo.html#aromatic">How to handle aromatic rings</a>
+  <li><a href="nbo.html#double">Dedegenerating double bonds and lone pairs</a>
+  <li><a href="nbo.html#avoid">Avoiding random orbital orientation flipping</a>
+  <li><a href="nbo.html#adiabatic">Computing the adiabatic couplings</a>
+</ul>
+<li><a href="green.html">Computing Green functions</a></li>
+<ul>
+  <li><a href="green.html#pole">Finding the poles in the energy domain</a>
+  <li><a href="green.html#larsson">Larsson equation for superexchange coupling</a>
+</ul>
+<li><a href="tdse.html">Integrating the time-dependent Schroedinger equation</a></li>
+<ul>
+  <li><a href="tdse.html#choose">Choosing an integrator</a>
+  <li><a href="tdse.html#step">Considerations on integration steplength</a>
+  <li><a href="tdse.html#restart">Saving a restart file</a>
+  <li><a href="tdse.html#interpolate">Interpolation between adjacent Hamiltonians</a>
+  <li><a href="tdse.html#nonorth">Propogation on the nonorthogonal basis</a>
+</ul>
+<li><a href="eigen.html">Dynamics in the eigen space</a></li>
+<ul>
+  <li><a href="eigen.html#kmatrix">Computing the K matrix</a>
+  <li><a href="eigen.html#avoid">Dealing with avoided-crossings</a>
+  <li><a href="eigen.html#unfold">Unfolding dynamics from eigen space to local space</a>
+</ul>
+<li><a href="tsa.html">The effective two-state approximation</a></li>
+<ul>
+  <li><a href="tsa.html#tsh">Constructing the two-state Hamiltonian</a>
+  <li><a href="tsa.html#tsprop">Propogating a two-state system</a>
+  <li><a href="tsa.html#signal">A signal processing point of view of the two-state approximation</a>
+</ul>
+<li><a href="misc.html">Miscellaneous</a></li>
+<ul>
+  <li><a href="misc.html#free">A simple molecular dynamics program and some 
+  thinkings about free energy calculations</a></li>
+  <li><a href="misc.html#tb">A tight-binding electron-transfer program</a></li>
+  <li><a href="misc.html#floquet">The Floquet program</a></li>
+  <li><a href="misc.html#small">Some trivial programs</a></li>
+</ul>
+<li>Publications</li>
+<ul>
+  <li><a href="paper/j.pdf">Computer Simulation of Electron Transfer Dynamics through a Fluctuating Protein</a> (unpublished)
+  <li><a href="paper/cpl.pdf">Chemical Physics Letters 312, 237 (1999)</a>
+  <li><a href="figures.html">Stuff for the 2nd paper</a>
+</ul>
+<li><a href="appendix.html">Appendices</a></li>
+<ul>
+  <li><a href="appendix.html#sitemap">CNDO/Charmm site map of amino acids</a></li>
+  <li><a href="hydan.html">Free energy calculations of Hydan</a>
+</ul>  
+</ul>
+<br><br>
+
+<center><font size=1 color="#000000"><i>&copy; 2000, Qian Xie</i></font></center>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+#!/bin/csh -f
+
+set name_of_protein = azur
+set dir_of_strk = /opt/data/sdata/121-126/330ps
+set dir_of_pdb = /home/xie/bet/strk
+@ number_of_pdb_per_seg = 50
+@ index_of_pdb = 1
+@ iseg = 1
+@ total = 1000
+
+#check if the directory is correct
+set a = `pwd`
+if ( $a != $dir_of_pdb ) then
+   echo "We are not in the right starting directory!"
+   exit
+endif
+
+label_100:
+
+echo $index_of_pdb, $iseg
+
+   cd $dir_of_strk
+   cp $name_of_protein.$iseg.tar.gz $dir_of_pdb
+   cd $dir_of_pdb
+   echo $name_of_protein.$iseg.tar.gz
+   gunzip $name_of_protein.$iseg.tar.gz
+   tar -xvf $name_of_protein.$iseg.tar
+   rm -f $name_of_protein.$iseg.tar
+
+   /bin/ls -1 *.pdb | sort -n -k 1.1 > tempo
+
+   @ j = ( $iseg - 1 ) * $number_of_pdb_per_seg
+
+   foreach ipdb ( `awk '{print $1}' tempo`) 
+
+   @ j ++
+   if($j < 10) then
+      mv $ipdb $name_of_protein.0000$j
+   else if($j >= 10 && $j < 100) then
+      mv $ipdb $name_of_protein.000$j
+   else if($j >= 100 && $j < 1000) then
+      mv $ipdb $name_of_protein.00$j
+   else if($j >= 1000 && $j < 10000) then
+      mv $ipdb $name_of_protein.0$j
+   else if($j >= 10000 && $j < 100000) then
+      mv $ipdb $name_of_protein.$j
+   endif
+
+   echo $iseg, $ipdb, $j
+   
+   end
+
+   @ iseg ++
+   if ( $iseg <= 60 ) goto label_100
+
+
+
+exit

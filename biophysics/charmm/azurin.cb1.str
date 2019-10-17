@@ -1,0 +1,92 @@
+* extract the pathway from the whole protein and patch ACE and CT3 to the
+* two ends of the pathway
+
+  OPEN READ FILE UNIT 61 NAME @dcdfi
+  TRAJ IREAD 61 NREAD  1  SKIP @trajskip BEGIN 000 STOP 5000000
+
+  SET INDEX 1
+  LABEL CONT
+  
+  TRAJ READ
+  OPEN WRITE CARD UNIT 60 NAME pathway1.pdb
+  write coor pdb unit 60 sele (segid AZUA .and. resid 110:112) end
+
+  coor statistics sele atom AZUA 109 C end
+  set xC109  ?xave
+  set yC109  ?yave
+  set zC109  ?zave
+  
+  coor statistics sele atom AZUA 109 CA end
+  set xCA109 ?xave
+  set yCA109 ?yave
+  set zCA109 ?zave
+  
+  coor statistics sele atom AZUA 109 O end
+  set xO109  ?xave
+  set yO109  ?yave
+  set zO109  ?zave
+
+  coor statistics sele atom AZUA 113 N end
+  set xN113  ?xave
+  set yN113  ?yave
+  set zN113  ?zave
+  
+  coor statistics sele atom AZUA 113 CA end
+  set xCA113 ?xave
+  set yCA113 ?yave
+  set zCA113 ?zave
+  
+  coor statistics sele atom AZUA 113 HN end
+  set xHN113 ?xave
+  set yHN113 ?yave
+  set zHN113 ?zave
+  
+  rename segid TEMP sele segid AZUA end
+
+  open read card unit 60 name pathway1.pdb
+  read sequence pdb unit 60
+  generate AZUA setup warn first ACE last CT3
+  read coor pdb unit 60
+
+  scalar x set @xC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+  scalar y set @yC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+  scalar z set @zC109  sele (segid AZUA .and. resname PHE .and. type  CY) end
+     
+  scalar x set @xCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  scalar y set @yCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  scalar z set @zCA109 sele (segid AZUA .and. resname PHE .and. type CAY) end
+  
+  scalar x set @xO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+  scalar y set @yO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+  scalar z set @zO109  sele (segid AZUA .and. resname PHE .and. type  OY) end
+
+  scalar x set @xN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  scalar y set @yN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  scalar z set @zN113  sele (segid AZUA .and. resname CYS .and. type  NT) end
+  
+  scalar x set @xCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+  scalar y set @yCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+  scalar z set @zCA113 sele (segid AZUA .and. resname CYS .and. type CAT) end
+
+  scalar x set @xHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  scalar y set @yHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  scalar z set @zHN113 sele (segid AZUA .and. resname CYS .and. type HNT) end
+  
+  hbuild
+  
+  rename segid PAR1 sele segid AZUA end
+  rename atom OG sele (segid PAR1 .and. resname CYS .and. type SG ) end
+  
+  OPEN WRITE CARD UNIT 60 NAME @PDBDir/@INDEX.pdb
+!  OPEN WRITE CARD UNIT 60 NAME test.pdb
+  WRITE COOR PDB UNIT 60 sele segid PAR1 end
+
+  delete atom sele segid PAR1 end
+  rename segid AZUA sele segid TEMP end
+  
+  INCR INDEX BY 1
+  IF INDEX GT @NumberofPDB GOTO EXIT
+  GOTO CONT
+  LABEL EXIT
+
+  

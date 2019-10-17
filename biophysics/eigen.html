@@ -1,0 +1,150 @@
+<html> 
+<head> 
+<title> 
+  Eigenspace dynamics
+</title> 
+</head>
+<body>
+
+<h4>Dynamics in the eigen space</h4>
+
+<a name="kmatrix">
+<h5><i>Computing the K matrix</i></h5>
+
+First of all, we need to understand three levels of time step. The 
+coarsest level is the molecular dynamics (MD) time step, 
+which is about 1 femtosecond. We know that this beats the fastest
+limit of atomic motion excluding those bond vibrations removed by SHAKE.
+The MD time step is mainly governed by the absolute magnitude of the
+force fields (too large a
+steplength would result in numerical divergence of the classical equations
+of motion that the MD employes, too small a steplength prolongs the
+simulations without significantly better gains).
+The middle level is the electronic dynamics (ED) time step, which
+should be 10<sup>-3</sup> femtosecond or so. As we have known, this
+is dictated by the absolute magnitude of the Hamiltonian.
+The finest level, which is often much less than 10<sup>-3</sup> femtosecond
+and only needed when we do eigen dynamics, is what we call
+the 'K-slice' time step. The K-slice time step is determined by
+the crossover time of avoided-crossings.
+
+<p>The K matrix is calculated using the following formula
+<br><br>
+<center>
+<em>K(t) = [Psi(t+dt)</em><b>x</b><em>Psi(t) -
+Psi(t)</em><b>x</b><em>Psi(t+dt)]/(2dt)</em>
+</center>
+<br>
+where <i>Psi(t)</i> is the eigenstate matrix at time <i>t</i>.
+This formula guarantees that the calculated K matrix is automatically
+antisymmetric, a requirement posed by the Hermanianity of the time propogator
+that appears in the Schroedinger equation. <i>dt</i> can be chosen
+to be as small as we want. If <i>dt</i> is greater than the crossover
+time and an avoided-crossing point happens to fall inside the interval
+[<i>t,t+dt</i>), we will get an <i>delta</i>-function-like behavior
+for the K matrix element between the two eigenstates involved in the
+avoided-crossing event. This might immediately pump electron from one
+eigenstate to the other. Therefore, in order to avoid this problem,
+<i>dt</i> should be smaller than the crossover time.
+
+<p>Due to the computational reality, what we can get are a discrete time
+series of K matrices. Between these discrete points, the K matrices are
+obtained by using spline interpolation like what we have done with the
+Hamiltonian. Although at the time that is far from avoided-crossings
+this is a fine approach, the interpolated K matrices at the avoided-crossing
+points may be far from being the true ones. Below we shall talk about
+the problem caused by avoided-crossings. (Of course, this is a computational
+problem, <b>not</b> a physical problem!)
+
+<p>Code: <a href="ed/kmatrix.f">kmatrix.f</a>
+
+<a name="avoid">
+<h5><i>Dealing with avoided-crossings</i></h5>
+
+In general, 
+the approach of eigenspace dynamics is severely hindered by failure
+in numerically obtaining reliable K matrices around avoided-crossings.
+
+<p>In order to get the electronic dynamics right, 
+<b><i>K<sub>+-</sub></i> has to be correctly calculated</b>. This turns
+out to be very difficult for an <i>N</i> X <i>N</i> system when the
+electronic dimension <i>N</i> is large (>200).
+
+<p>Why is it so difficult to get correct <i>K<sub>+-</sub></i>? Because
+in proximity to an avoided-crossing point, the eigenstates |-> and |+>
+changes dramatically. Before avoided-crossing, they may be composed of
+only D/A character, exactly at avoided-crossing, they consist of
+equal amounts of D and A characters, and after avoided-crossing, they
+are composed of only the other D/A character. (see the picture below.) 
+The time for such a
+change is determined by the magnitude of the energy splitting at
+the avoided-crossing point, namely, the non-perturbative superexchange
+coupling. If the coupling is very weak, the crossover time will be
+very short, because only a tiny amount of dynamical fluctuation of the 
+protein is enough to push the system off resonance. In a real MD simulation,
+the crossover time is normally of the magnitude of less than
+10<sup>-6</sup> femtosecond. As a result, if we use a steplength of
+about 10<sup>-1~-3</sup> femtosecond when computing the 
+<i>K<sub>+-</sub></i> for a weakly coupled system, most likely we would
+miss the crossover region, and get a false 
+<i>K<sub>+-</sub>(t<sub>AC</sub>)</i> (which is usually much greater than
+it should be---<i>K<sub>+-</sub>(t)</i> thus calculated looks like a
+delta function with the peak at <i>t<sub>AC</sub></i> but in reality
+<i>K<sub>+-</sub>(t)</i> should NOT have any peak if we zoom in to the
+appropriate level of time steplength).
+
+<p>A worse thing is that even in an adequately strong coupling case,
+the non-perturbative superexchange coupling can at some points be very
+small (though its statistical average value is not small), thus the
+problem may happen in whichever coupling case. The worst thing might
+be that it could be extremely hard to know where the AC point is exactly
+at if the coupling is extremely small, if there is no other way of
+getting it than zooming in and searching along the MD trajectories of 
+|+> and |-> inch by inch (this job is much more computationally expensive
+than finding the AC point by tuning the D, A energies for a static system,
+and it has to rely on the cubic spline functions).
+
+<br><br>
+<center>
+<img src="pix/avoided-crossing.gif"><br>
+<font color="#0000ff" size="2">
+<i>The origin of the avoided-crossing problem: Numerical calculation
+often gets wrong <i>K<sub>+-</sub>(t<sub>AC</sub>)</i> when the crossover
+time dt is far smaller than the K-slice timelength.</i></font>
+</center>
+
+<p>The consequence of miscalculating <i>K<sub>+-</sub>(t)</i> is
+that the propogation will no doubt be wrong at the crossovers (which
+happens to be the most important moments for electron transfer), 
+and because the propogation at longer time is a cumulative function
+dependent on its history, once it goes wrong at a crossover, it
+will keep the mistake for the remaining time of simulation.
+<a href="paper/slice.ps">A postscript file</a> about the relationship
+of the accuracy of the propogation dynamics with the K matrix steplength 
+(what I call slice length) well explains this. There are at least two
+avoided-crossing events in the case of this picture. Both resulted in
+a sudden rising of <i>P<sub>DA</sub>(t)</i> because of overestimating
+<i>K<sub>+-</sub>(t<sub>AC</sub>)</i> (which might mean the increment we
+have chosen in the calculations is greater than the crossover time).
+
+
+
+<a name="unfold">
+<h5><i>Unfolding dynamics from eigen space to local space</i></h5>
+
+For strongly coupled systems, the eigen dynamics approach has proven
+successful in reproducing the exact dynamics and elucidating the
+effectiveness of the two-state approximation. Here is a 
+<a href="paper/eigenAgreementStrongCoupling.ps">postscript plot</a>
+about the success.
+
+<p>Code: <a href="ed/dyneigen.f"><code>dyneigen.f</code></a>
+
+
+
+<center>
+<p><a href="index.html"><i>Back to the Index Page</i></a>
+<p><font size=1 color="#000000"><i>&copy; 2000, Qian Xie</i></font></center>
+
+</body>
+</html>

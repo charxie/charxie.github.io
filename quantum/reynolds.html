@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Energy2D simulations: fluid dynamics</title>
+  <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+  <script type="text/javascript" src="library.js"></script>
+</head>
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+	<div id="logo">
+		<h1>The Reynolds Number</h1>
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="http://molecularworkbench.blogspot.com/">Blog</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div><img src="../e2d_banner5.png"></div><br>
+	<div id="content">
+	<div class="post">
+
+	<h1 class="title">Laminar and turbulent flows</h1>
+	<div class="entry">
+
+<p>
+
+<p align="center">Re=VL<sub>c</sub>/&nu;</p>
+
+<p>where &nu; is the kinematic viscosity, V is the mean velocity of the fluid, 
+and L<sub>c</sub> is the characteristic length of the geometry.
+
+<p>The following simulation shows how fluids with different Reynolds numbers flow.
+
+<center>
+<applet id="applet1" archive="energy2d.jar" code="org.concord.energy2d.system.System2D" width="500" height="500">
+<param name="script" value="load reynolds.e2d;"/>
+</applet>
+<br>
+<form autocomplete="off">
+<input type="button" value="Run" onclick="run('applet1')">
+<input type="button" value="Stop" onclick="stop('applet1')">
+<input type="button" value="Reset" onclick="jsReset('applet1')">
+<input type="button" value="Reload" onclick="jsReload('applet1')">
+Graph: 
+<input type="button" value="on"  onclick="runScript('applet1', 'set graph true')"/>
+<input type="button" value="off" onclick="runScript('applet1', 'set graph false')"/>
+<br>
+Choose a kinematic viscosity (m<sup>2</sup>/s):<br>
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_viscosity 0.0001;')" checked/>0.0001
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_viscosity 0.0002;')"/>0.0002
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_viscosity 0.0005;')"/>0.0005
+</form>
+</center>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+	<!-- end #content -->
+	<div id="sidebar">
+		<div id="sidebar-bgtop"></div>
+		<div id="sidebar-content">
+			<div id="sidebar-bgbtm">
+			<ul>
+			<li>
+			<h2>Advanced topics</h2>
+			<ul>
+			 <li><a href="prandtl.html">Prandtl number</a></li>
+			 <li><b>Reynolds number</b></li>
+			</ul>
+			<ul>
+			 <li><a href="index.html">Return to Index</a></li>
+			</ul>
+			</li>
+			</ul>
+		</div>
+		</div>
+	</div>
+
+	<div id="sidebar2">
+
+<iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
+<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+
+	</div>
+	<!-- end #sidebar -->
+	<div style="clear:both; margin:0;"></div>
+</div>
+<!-- end #page -->
+
+</div>
+
+<div id="footer">
+<iframe src="nsf.html" width="100%" height="320" frameborder="0">
+<a href="nsf.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+</div>
+<br><br><br><br><br><br>
+<!-- end #footer -->
+</body>
+</html>

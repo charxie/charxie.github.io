@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Collision between a xenon atom and a buckyball</page_title>
+<text>Collision between a xenon atom and a buckyball
+
+ 
+ 
+Click here to observe this process from inside the buckyball.
+
+The kinetic energy shading mode is selected in the above simulation. The mass of a buckyball is 60x12 g/mol = 720 g/mol. The mass of a xenon atom is 131 g/mol. </text>
+<section start="0" end="276">
+<paragraph start="0" end="47">
+<Alignment>1</Alignment>
+<content start="0" end="46">
+<size>15</size><bold>true</bold></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="50">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageMd3d</class><resource>c60xe$0.mdd</resource><coordinate>c60xe$0.xyz</coordinate><width>500</width><height>400</height><border>Lowered Etched</border>
+</component></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Molecular display style</action>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="114">
+<Alignment>1</Alignment>
+<content start="52" end="58">
+</content>
+
+<content start="58" end="62">
+<href>c60xe2.cml</href></content>
+
+<content start="62" end="114">
+</content>
+
+</paragraph>
+<paragraph start="114" end="115">
+<content start="114" end="115">
+</content>
+
+</paragraph>
+<paragraph start="115" end="276">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="115" end="275">
+</content>
+
+</paragraph>
+</section>
+</document>

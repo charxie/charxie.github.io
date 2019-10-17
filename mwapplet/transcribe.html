@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="mw.js"></script>
+  <script type="text/javascript"> 
+	function sendCode(id) {
+		var msg = runScript(id, "mw2d:1:get DNA");
+        	document.getElementById("code").innerHTML="DNA code: " + msg;
+     	}
+     	function receiveCode(id) {
+		var x=prompt("Please enter DNA code:","")
+		runScript(id, "mw2d:1:set DNA " + x);
+     	}
+     	function stopRKey(evt) { 
+  		var evt = (evt) ? evt : ((event) ? event : null); 
+  		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+  		if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+	} 
+	document.onkeypress = stopRKey; 
+  </script>
+  <title>Transcription applet</title>
+</head>
+<body>
+
+<center><h2>Transcription</h2>
+
+<applet id="applet1" archive="mwapplet.jar" code="org.concord.modeler.MwApplet" width="100%" height="240">
+  <param name="script" value="page:0:import transcribe.cml; set frank false;"/> 
+  <param name="permissions" value="all-permissions"/>
+</applet>
+
+<br>
+Click the buttons below to transcribe DNA step by step. 
+The transcription will proceed only when you click the right button.
+<br><br>
+
+<form>
+<input type="button" value="Input DNA code" onclick="receiveCode('applet1')">
+<input type="button" value="Start" onclick="runScript('applet1', 'mw2d:1:transcribe START;')">
+<input type="button" value="Pause" onclick="runScript('applet1', 'mw2d:1:transcribe PAUSE;')">
+<input type="button" value="A" onclick="runScript('applet1', 'mw2d:1:transcribe A;')">
+<input type="button" value="C" onclick="runScript('applet1', 'mw2d:1:transcribe C;')">
+<input type="button" value="G" onclick="runScript('applet1', 'mw2d:1:transcribe G;')">
+<input type="button" value="U" onclick="runScript('applet1', 'mw2d:1:transcribe U;')">
+<input type="button" value="Print DNA code" onclick="sendCode('applet1')">
+</form>
+
+<div id="code"></div>
+
+</center>
+
+
+</body>
+</html>

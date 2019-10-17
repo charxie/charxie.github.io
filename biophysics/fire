@@ -1,0 +1,13 @@
+#!/bin/csh -f
+#
+
+pwd
+date
+
+if ( -e ./hami ) then
+  #do nothing
+else
+  mkdir hami
+endif   
+
+exit

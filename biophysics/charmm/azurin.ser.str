@@ -1,0 +1,114 @@
+* Time series analysis
+*
+
+  open read file name @dcdfi unit 61
+  
+  coor dyna firstunit 61 nunit 1 sele segid AZUA end
+  open write card unit 80 name azur_ave.pdb
+  write coor pdb unit 80 sele segid AZUA end
+
+  correl maxtime 100000 maxseries 200 maxat 100
+
+!  open write card unit 31 name cu-n1.time
+!  open write card unit 32 name cu-n2.time
+!  open write card unit 33 name cu-s1.time
+!  open write card unit 34 name cu-s2.time
+!  open write card unit 35 name cu-o1.time
+  
+!  open write card unit 41 name n1-cu-s1.time
+!  open write card unit 42 name n1-cu-n2.time
+!  open write card unit 43 name n2-cu-s1.time
+!  open write card unit 44 name n1-cu-o1.time
+!  open write card unit 45 name n2-cu-o1.time
+!  open write card unit 46 name s1-cu-o1.time
+!  open write card unit 47 name s2-cu-o1.time
+!  open write card unit 48 name n1-cu-s2.time
+!  open write card unit 49 name n2-cu-s2.time
+!  open write card unit 50 name s1-cu-s2.time
+!  open write card unit 51 name sum.time
+!  open write card unit 52 name devi.time
+  
+!  open write card unit 21 name cu-n1-n2-s1.time
+!  open write card unit 22 name cu-n2-s1-n1.time
+!  open write card unit 23 name cu-s1-n1-n2.time
+!  open write card unit 24 name cg-n1-cu-s2.time
+!  open write card unit 25 name cg-n2-cu-s2.time
+!  open write card unit 26 name cb-s1-cu-s2.time
+
+  open write card unit 15 name hb01.time
+  open write card unit 16 name hb02.time
+  open write card unit 17 name hb03.time
+  open write card unit 25 name pb01.time
+  open write card unit 26 name pb02.time
+  open write card unit 27 name pb03.time
+  
+!  enter cun1 bond  AZUA  46 CU  AZUA  46 ND1  geometry
+!  enter cus1 bond  AZUA  46 CU  AZUA 112 SG   geometry  
+!  enter cun2 bond  AZUA  46 CU  AZUA 117 ND1  geometry
+!  enter cus2 bond  AZUA  46 CU  AZUA 121 SD   geometry
+!  enter cuo1 bond  AZUA  46 CU  AZUA  45 O    geometry
+
+!  enter atot angl  AZUA 117 ND1 AZUA 46 CU AZUA 112 SG  geometry
+!  enter an01 angl  AZUA  46 ND1 AZUA 46 CU AZUA 112 SG  geometry
+!  enter an02 angl  AZUA  46 ND1 AZUA 46 CU AZUA 117 ND1 geometry
+!  enter an03 angl  AZUA 117 ND1 AZUA 46 CU AZUA 112 SG  geometry
+!  enter an04 angl  AZUA  45 O   AZUA 46 CU AZUA  46 ND1 geometry
+!  enter an05 angl  AZUA  45 O   AZUA 46 CU AZUA 117 ND1 geometry
+!  enter an06 angl  AZUA  45 O   AZUA 46 CU AZUA 112 SG  geometry
+!  enter an07 angl  AZUA  45 O   AZUA 46 CU AZUA 121 SD  geometry
+!  enter an08 angl  AZUA  46 ND1 AZUA 46 CU AZUA 121 SD  geometry
+!  enter an09 angl  AZUA 117 ND1 AZUA 46 CU AZUA 121 SD  geometry
+!  enter an10 angl  AZUA 112 SG  AZUA 46 CU AZUA 121 SD  geometry
+
+!  enter vec1 vect cros AZUA 46 ND1 AZUA 112 SG AZUA 46 ND1 AZUA 117 ND1 geometry
+!  enter vec2 vect xyz  AZUA 46 ND1 AZUA  46 CU  geometry
+
+!  enter imp1 impr AZUA  46  ND1  AZUA 112 SG  AZUA 46  CU  AZUA 117  ND1 geometry
+!  enter imp2 impr AZUA 112  SG   AZUA 117 ND1 AZUA 46  CU  AZUA  46  ND1 geometry
+!  enter imp3 impr AZUA 117  ND1  AZUA  46 ND1 AZUA 46  CU  AZUA 112  SG  geometry
+  
+!  enter dih1 dihe AZUA 46  CG AZUA  46 ND1 AZUA  46 CU  AZUA 121 SD geometry
+!  enter dih2 dihe AZUA 117 CG AZUA 117 ND1 AZUA  46 CU  AZUA 121 SD geometry
+!  enter dih3 dihe AZUA 112 CB AZUA 112 SG  AZUA  46 CU  AZUA 121 SD geometry
+
+  enter hb01 bond  AZUA 112 HN  AZUA 121 O    geometry
+  enter hb02 bond  AZUA 123 HN  AZUA 110 O    geometry
+  enter hb03 bond  AZUA 110 HN  AZUA 123 O    geometry
+  
+  open read file name @dcdfi unit 61
+  traj firstunit 61 nunit 1 skip @trajskip begin 0 stop 2000000
+
+!  mantime atot add an01
+!  mantime atot add an02
+!  mantime vec1 norm
+!  mantime vec1 dotp vec2
+
+!  write cun1 dumb time unit 31
+!  write cun2 dumb time unit 32
+!  write cus1 dumb time unit 33
+!  write cus2 dumb time unit 34
+!  write cuo1 dumb time unit 35
+
+!  write an01 dumb time unit 41
+!  write an02 dumb time unit 42
+!  write an03 dumb time unit 43
+!  write an04 dumb time unit 44
+!  write an05 dumb time unit 45
+!  write an06 dumb time unit 46
+!  write an07 dumb time unit 47
+!  write an08 dumb time unit 48
+!  write an09 dumb time unit 49
+!  write an10 dumb time unit 50
+!  write atot dumb time unit 51
+!  write vec1 dumb time unit 52
+
+!  write imp1 dumb time unit 21
+!  write imp2 dumb time unit 22
+!  write imp3 dumb time unit 23
+!  write dih1 dumb time unit 24
+!  write dih2 dumb time unit 25
+!  write dih3 dumb time unit 26
+  
+  write hb01 dumb time unit 15
+  write hb02 dumb time unit 16
+  write hb03 dumb time unit 17

@@ -1,0 +1,514 @@
+<html> 
+<head> 
+<title> 
+  Extended Huckel
+</title> 
+</head>
+<body>
+
+<h4>Extended Huckel calculation</h4>
+
+EH calculations are more realistic for electronic dynamics 
+because the orbital overlaps are taken into account. One of the motivations
+for EH simulations is to evaluate the role of the nonorthogonality of
+wave function basis on the propogation dynamics, though this hasn't been
+achieved.
+
+<a name="core">
+<h5><i>Anatomy of the core of the EH code</i></h5>
+
+The EH code we have used is from <code>EHMACC</code>, a QCPE program.
+We have seamlessly incorporated the code into ours. Hence, unlike
+the CNDO/ET code that separates the electronic structure part from
+the electronic dynamics part, the EH/ET code can do both in a single
+package.
+
+<p>The main subroutines are summarized here:
+
+<ul>
+<li><a href="eh/hpux/main.f">
+  <code>main.f</code></a>: The main program.
+<li><a href="eh/hpux/readh.f">
+  <code>readh(tau,natom,ndim,nstp,tmd,st,ht,ft)</code></a>: Reads the time
+  series of PDB files, calls <code>smat</code> and <code>hmat</code>, 
+  sets up the Hamiltonian series <code>ht</code> and the overlap series
+  <code>st</code>, and stores the trajectory into the common block
+  <code>traj</code>.
+  <ul>
+  <li><a href="eh/hpux/readc.f">
+    <code>getpos(natom,nstp)</code></a>: Gets the atomic positions from
+    the PDB file series.
+  <li><a href="eh/hpux/readp.f">
+    <code>getpar(natom,ndimen,nstp)</code></a>: Gets the atomic parameters
+    for EH calculation, from the <a href="eh/hpux/param.f">block data</a> 
+    that defines the atomic parameters 
+    (i.e., the number of valence electrons, the valence shell ionization 
+    potentials, the Slater type orbital exponents, and the weighting 
+    coefficients), which were taken from the table collected by S. 
+    Alvarez, Dept. de Quimica Inorganica, Univ. de Barcelona, Spain  
+  </ul>
+<li><a href="eh/hpux/smij.f">
+  <code>smat(natom2,natom,ndim)</code></a>: Constructs the overlap matrix. 
+  It calls the following subroutines:
+  <ul>
+  <li><code>movlap(natom2,natom,ndim)</code>: calculates the overlaps;
+  <li><code>mov(sigma,pi,delta,phi,i,j,rr,na,nb,la,lb,nn)</code>: 
+    calculates the overlap component independent of the angle 
+    between the atoms;
+  <li><code>abfns(a,b)</code>: calculate the A, B functions;
+  <li><code>lovlap(strad,a,b)</code>: called from <code>mov</code>;
+  </ul>
+<li><a href="eh/hpux/hmij.f">
+  <code>hmat(natom,ndim)</code></a>: Constructs the Huckel
+  Hamiltonians from overlaps.
+<li><a href="eh/hpux/nadb.f">
+<code>difov(natom,ndim,mtraj,ntraj)</code></a>: Computes (atomic)
+  advanced or retarded
+  overlap matrices. <code>mtraj</code> and <code>ntraj</code> stand for
+  two points along the trajectory.
+<li><a href="eh/hpux/friction.f">
+  <code>friction(natom,ndim,nstp,tmd,ft)</code></a>: Computes the 
+  nonadiabatic electronic
+  friction matrix (the K matrix) using third-order differentiation in
+  the AO basis.
+<li><a href="eh/hpux/friction.f">
+  <code>fribo(ndim,nstp,tmd,ft)</code></a>: Transforms the K matrix
+  to the NBO basis.
+<li><a href="eh/hpux/part1.f">
+  <code>part1(natom,ndim,nstp,tmd,st,ht,st2,ht2)</code></a>: Diagonalizes
+  the Hamiltonian time series step by step. The main entry to the static
+  calculation part.
+<li><a href="eh/hpux/denmat.f">
+  <code>denmat(natom,ndim,n,st,ht)</code></a>: Calculates the density matrix,
+  the molecular orbital populations, and the gross populations at atoms.
+<li><a href="eh/hpux/green.f">
+  <code>grn(istep,natom,ndim,e,green)</code></a>: Calculates the Green 
+  functions, <code>e</code> is the energy argument for the Green function
+  export <code>green</code>.
+<li><a href="eh/hpux/tda.f">
+  <code>caltda(natom,ndim,e,tda,hdd,haa)</code></a>: Calculates the
+  superexchange coupling <i>T<sub>DA</sub></i> using Larsson's equation, 
+  <i>T<sub>DD</sub></i> and <i>T<sub>AA</sub></i> are also output.
+<li><a href="eh/hpux/subblock.f">
+  <code>subdiag(natom,ndim,t,nstp,aring,nring)</code></a>: Constructs 
+  orthogonal matrix <i>T</i> for transformation from AO's to natural hybrid bond 
+  orbitals, using input density matrix. Maximum number of aromatic 
+  rings allowed = 10.
+<li><a href="eh/hpux/diage.f">
+  <code>diagm(ellow,elup,invs,all,eonly)</code></a>: Solves the secular 
+  equation for the general Hermitian eigenvalue problem. For systems with 
+  inversion (i.e. that reduce to a real symmetric matrix), real versions 
+  of the routines are used. For <code>all=.true.</code>, 
+  all eigenvalues and eigenvectors are determined. 
+  For <code>all=.false.</code>, only those between <code>ellow</code> 
+  and <code>elup</code> are determined. If <code>eonly=.true.</code>, 
+  then no eigenvectors are determined (only has an effect if 
+  <code>all=.false.</code>). This is my favorite diagonalization subroutine
+  in FORTRAN. It never disappoints me. In the NBO part of the EH/ET code,
+  we don't use <code>JACVEC</code> any longer.
+<li><a href="eh/hpux/subblock.f">
+  <code>load(isel,iat1,iat2,dblk,sblk,nb)</code></a>: Zeroes the 8x8 matrices
+  <code>dblk</code> and <code>sblk</code>,
+  loads in atomic blocks of density matrix (when <code>isel=1</code>),
+  Hamiltonian matrix (when <code>isel=2</code>), and overlap matrix for the 
+  atoms <code>iat1</code> and <code>iat2</code>.
+<li><a href="eh/hpux/subblock.f">
+  <code>ulll(natom,ndim)</code></a>: Finds the orbit index upper and lower 
+  bounds <code>ul</code> and <code>ll</code>.
+<li><a href="eh/hpux/extrct.f">
+  <code>deplet(borb,occ,nb,iat1,iat2)</code></a>: Depletes from the density 
+  matrix the contributions from lone pairs.
+<li><a href="eh/hpux/deplet.f">
+  <code>STASH(BORB,OCC,IBD,IAT1,IAT2,IAT3)</code></a>: Seperates bond 
+  orbital <code>BORB</code> into polarization coefficients 
+  (stored in <code>POL</code>) and renormalized
+  hybrids (stored in <code>Q</code>), 
+  keeps record of the number <code>INO(NA)</code> of hybrids 
+  accumulated for each atom <code>NA</code>.
+<li><a href="eh/hpux/aromatic.f">
+  <code>fourth(ibd,iring)</code></a>: Builds the fourth vector perpendicular 
+  to the three known <i>sp<sub>2</sub></i> hydrids for all the carbon atoms
+  at the <code>iring</code>-th aromatic ring, and stores it in the 
+  <code>Q</code> matrix.
+<li><a href="eh/hpux/reform.f">
+  <code>reform(t,natom,ndim,nring)</code></a>: Builds the final orthogonal 
+  transformation matrix <code>T</code> from polarization coefficients 
+  (<code>POL</code>) and atomic hybrids (stored in <code>Q</code>, 
+  identified in <code>IATHY</code>), 
+  for bonds and their antibond counterparts. Note that the subblock 
+  diagonalization method identifies only the bonding orbitals, 
+  the antibonds are then
+  constructed from the bonds by use of the orthogonality conditions.
+  Therefore, in the NBO, all antibonds are strictly orthogonal to their
+  bond counterparts. This is different from the fact that the natural
+  bonds constructed by the subblock diagonaliztion method are only 
+  marginally orthogonal to each other.
+<li><a href="eh/hpux/aromatic.f">
+  <code>reformaro(t,ndim,nring)</code></a>: Establishes the  
+  aromatic rings part of the <code>T</code> matrix.
+<li><a href="eh/hpux/anlyze.f">
+  <code>anlyze(t,ndim)</code></a>: Finally analyzes the <code>T</code> matrix.
+  It calls: 
+  <ul>
+  <li><code>htype(h,coef,pow,theta,phi)</code>: returns coefficients, 
+  <i>p</i>-characters, and directions of hybrids (<code>h(i),i=1,4</code>) 
+  from the transformation matrix. <code>pow=0,1,2,...</code> 
+  for <i>s, sp, sp<sub>2</sub>, ...</i> hybrids
+  (<code>pow=100</code> for pure <i>p</i> orbital),
+  <code>coef</code> = coefficient of hybrid, 
+  <code>theta,phi</code> = polar and azimuthal angles of directed hybrid.
+  Normally <code>pow</code> is not strictly an integer. The bigger it is,
+  the more <i>p</i> character the hybrid orbital contains.
+  </ul>
+<li><a href="eh/hpux/fixsign.f">
+  <code>findsign(ndim,t,signname)</code></a>: Remembers the orientations
+  of all natural bonds at the initial time. 
+<li><a href="eh/hpux/fixsign.f">
+  <code>compsign(ndim,t)</code></a>: Fixes the signs for the natural hybrids 
+  to avoid the random orientation flipping problem. A comparison phase is 
+  obtained from a reference structure. A sign array which carries the 
+  orientational information of the bonds is compared with the signs 
+  stored in the comparison array. Bond orientations are corrected if
+  any disagreement. (read a detailed 
+  <a href="nbo.html#avoid">explanation</a>.) 
+  <code>compsignaro(ndim,t)</code> is a separate subroutine special for
+  dealing with aromatic rings.
+<li><a href="eh/hpux/trans.f">
+  <code>trans(ndim,t,n,st,ht,aring,nring)</code></a>: Transforms overlap, 
+  Hamiltonian, and density matrices to the NBO basis.
+<li><a href="eh/hpux/matorb.f">
+  <code>subhdba(natom,ndim)</code></a>: Partitions Hamiltonian into
+  submatrices for donor, acceptor and bridge.
+<li><a href="eh/hpux/eigen.f">
+  <code>bspace(ndim,nstp)</code></a>: Diagonalizes the bridge Hamiltonian,
+  finds out the LUMO and HOMO of the bridge electronic structure.
+<li><a href="eh/hpux/faster.f">
+  <code>faster(ndim,nstp,diff)</code></a>: Faster calculation of 
+  propogation in static case, using the analytical formula of Green functions
+  in the time domain <i>G<sub>DA</sub>(t)</i>.
+  This subroutine can be used to check the accuracy of the integration.
+<li><a href="eh/hpux/part2.f">
+  <code>part2(tau,natom,ndim,nstp,tmd,st,ht,ft,st2,ht2)</code></a>: 
+  The main entry for the electronic dynamics part.
+<li><a href="eh/hpux/hamitime.f">
+  <code>hint(ndim,nstp,tmd,st,ht,ft,vtr,vti,cs,ch,cvr,cvi)</code></a>:
+  Prepares interpolation coefficients from the time series
+  for the overlap matrices, the Huckel matrices, together with
+  <i>S<sup>-1</sup>(t)H(t)</i> <code>(vtr)</code> and
+  <i>S<sup>-1</sup>(t)K(t)</i> <code>(vti)</code>.
+<li><a href="eh/hpux/util.f">
+  <code>icsccu(x,y,nx,c,ic,ier)</code></a>: The cubic spline interpolation
+  subroutine. <code>x,y</code> are the input arrays, the output array
+  <code>c</code> stores the spline coefficients.
+<li><a href="eh/hpux/dyn.f">
+  <code>dynamics(tau,ndim,nstp,tmd,st,ht,vtr,vti,cs,ch,cvr,cvi)</code></a>: 
+  Solves the time-dependent Schroedinger equation. Note that in nonorthogonal
+  basis, the site occupancies are not simply the module of the wave functions,
+  they should be a multiplication of the overlap matrix with the module.
+<li><a href="eh/hpux/tsa.f">
+  <code>dyntsa(tau,nstp,tmd,st2,ht2)</code></a>: Does the two-state dynamics.
+<li><a href="eh/hpux/matmat.f">
+  <code>strassen(ndim,nhaf,a,b,c)</code></a>: Matrix multiplication: The
+  Strassen method. The Strassen method is faster than <code>gaxpy</code>.
+  Since not every machine has BLAS library (hence <code>dgemm</code>), 
+  it is an acceptable cross-platform solution for matrix multiplication.
+<li><a href="eh/hpux/gear.f">
+  <code>predictor(tau,n,psi)</code> and 
+  <code>corrector(tau,n,psi,time,nstp,tmd,vtr,vti,cvr,cvi)</code></a>: 
+  Solves the second order differential equations using Gear's 
+  predictor-corrector method.
+<li><a href="eh/hpux/ruku.f">
+  <code>rk4(tau,n,psi,time,nstp,tmd,vtr,vti,cvr,cvi)</code></a>:
+  Solves the second order differential equations using the classical
+  fourth order Runge-Kutta method. 
+</ul>
+
+
+<p><a href="eh/hpux">HP-UX version</a> and 
+<a href="eh/linux">Linux version</a> 
+
+<a name="gap">
+<h5><i>Remedy the gap problem</i></h5>
+
+Usually the gap predicted by the EH method is about 4 eV (in contrast
+to approximately 12 eV by the CNDO method), immediately putting itself
+under criticism. We found, by chance, that the underestimation arises
+the failure of treating the <i>pi</i> bonds. If one analyzes the states
+near the LUMO and HOMO, one would find they actually are nothing but 
+the <i>pi</i> bonds. Here is an example:
+
+<pre>
+       1     BD          1.9859  -18.3210 C  1 H  2
+       2     BD          1.9963  -18.3619 C  1 H  3
+       3     BD          2.0075  -18.3691 C  1 H  4
+       .
+       .
+       .
+     111     LP          1.9962  -22.8611 O  6
+     112     LP          1.9687  -14.9379 O  6
+     113     LP          1.6838  -13.4116 N  7
+       .
+       .
+       .
+     139     BD*         -.0113    8.6579 C  1 H  2
+     140     BD*         -.0109    8.7869 C  1 H  3
+     141     BD*         -.0111    8.8078 C  1 H  4
+     142     BD*          .0036   14.3201 C  1 C  5
+     143     BD*          .0087    7.6065 C  5 O  6
+     144     BD*          .3747  -10.3492 C  5 O  6-->    1.6508
+     145     BD*          .0067   10.1146 C  5 N  7
+     146     BD*         -.0105    7.6999 N  7 H  8
+     147     BD*         -.0163    6.5060 N  7 C  9
+     148     BD*          .0014   11.2253 C  9 H 10
+     149     BD*         -.0210   12.1555 C  9 C 11
+     150     BD*          .0131   14.1056 C  9 C 22
+     151     BD*         -.0054    8.7886 C 11 H 12
+     152     BD*         -.0053    8.5700 C 11 H 13
+     153     BD*         -.0162   10.7885 C 11 C 14
+     154     BD*          .0038    9.0592 C 14 H 15
+     155     BD*         -.0001    8.6885 C 14 H 16
+     156     BD*          .0348   -8.2898 C 14 O 17-->    3.7102
+     157     BD*         -.0041   -8.2409 O 17 C 18-->    3.7591
+     
+
+     <font color="#ff0000">-----156 and 157 have p-characters of about 4 
+           and 11, respectively. see the log file.
+           They are not C=O pi bonds. (We replaced S
+           with O because we couldn't treat S properly.)</font>
+
+      
+     158     BD*         -.0015    9.0922 C 18 H 19
+     159     BD*         -.0051    8.8397 C 18 H 20
+     160     BD*         -.0025    8.8345 C 18 H 21
+     161     BD*          .0077   11.0615 C 22 O 23
+     162     BD*          .3804  -10.1526 C 22 O 23-->    1.8474
+     163     BD*         -.0014   16.5099 C 22 N 24
+     164     BD*         -.0072    7.6252 N 24 H 25
+     165     BD*         -.0198    6.1701 N 24 C 26
+     166     BD*          .0037   10.9273 C 26 H 27
+     167     BD*         -.0105    9.7218 C 26 C 28
+     168     BD*          .0143   11.1053 C 26 C 43
+     169     BD*         -.0003    8.8298 C 28 H 29
+     170     BD*         -.0037    8.6066 C 28 H 30
+     171     BD*         -.0222   11.2918 C 28 C 31
+     172     BD*         -.0010    9.0296 C 31 H 32
+     173     BD*         -.0048    8.1757 C 31 H 33
+     174     BD*         -.0263   16.8034 C 31 C 34
+     175     BD*         -.0007    9.0944 C 34 H 35
+     176     BD*         -.0042    7.9843 C 34 H 36
+     177     BD*         -.0194   10.6734 C 34 C 37
+     178     BD*          .0076    8.6021 C 37 H 38
+     179     BD*          .0064    9.3603 C 37 H 39
+     180     BD*         -.0186    5.1731 C 37 N 40
+     181     BD*         -.0186    4.2648 N 40 H 41
+     182     BD*         -.0128    5.0667 N 40 H 42
+     183     BD*          .0083    9.0537 C 43 O 44
+     184     BD*          .4143  -10.3166 C 43 O 44-->    1.6834
+     185     BD*         -.0001   19.6593 C 43 N 45
+     186     BD*         -.0159    7.4730 N 45 H 46
+     187     BD*         -.0244    5.4937 N 45 C 47
+     188     BD*         -.0023   11.2935 C 47 H 48
+     189     BD*         -.0037   10.9374 C 47 H 49
+     190     BD*          .0043   16.9445 C 47 C 50
+     191     BD*          .0065    7.2201 C 50 O 51
+     192     BD*          .3822  -10.3748 C 50 O 51-->    1.6252
+     193     BD*          .0028   12.0287 C 50 N 52
+     194     BD*         -.0127    7.5023 N 52 H 53
+     195     BD*         -.0158    6.0018 N 52 C 54
+     196     BD*         -.0012   10.6199 C 54 H 55
+     197     BD*          .0001   10.7547 C 54 C 56
+     198     BD*          .0052   17.1782 C 54 C 64
+     199     BD*          .0134    9.4255 C 56 H 57
+     200     BD*         -.0083    -.0686 C 56 O 58
+     201     BD*         -.0094    7.4706 C 56 C 60
+     202     BD*         -.0141    1.4505 O 58 H 59
+     203     BD*         -.0074    9.0127 C 60 H 61
+     204     BD*         -.0083    8.9262 C 60 H 62
+     205     BD*         -.0089    8.5174 C 60 H 63
+     206     BD*          .0066    9.4715 C 64 O 65
+     207     BD*          .4263  -10.2937 C 64 O 65-->    1.7063
+     208     BD*          .0017   18.1604 C 64 N 66
+     209     BD*         -.0169    7.5421 N 66 H 67
+     210     BD*         -.0145    5.4272 N 66 C 68
+     211     BD*          .0001   10.7664 C 68 H 69
+     212     BD*         -.0137    9.5187 C 68 C 70
+     213     BD*          .0087   16.3618 C 68 C 83
+     214     BD*         -.0029    8.8512 C 70 H 71
+     215     BD*         -.0027    8.6398 C 70 H 72
+     216     BD*         -.0182   11.4511 C 70 C 73
+     217     BD*         -.0006    8.4893 C 73 H 74
+     218     BD*         -.0191    5.8586 C 73 C 75
+     219     BD*         -.0239   12.8016 C 73 C 79
+     220     BD*         -.0093    8.4317 C 75 H 76
+     221     BD*         -.0075    8.9759 C 75 H 77
+     222     BD*         -.0030    9.5937 C 75 H 78
+     223     BD*         -.0053    9.0430 C 79 H 80
+     224     BD*         -.0064    8.7029 C 79 H 81
+     225     BD*         -.0073    8.6264 C 79 H 82
+     226     BD*          .0082   10.0190 C 83 O 84
+     227     BD*          .3862  -10.2289 C 83 O 84-->    1.7711
+     228     BD*          .0084   14.4269 C 83 N 85
+     229     BD*         -.0158    7.5028 N 85 H 86
+     230     BD*         -.0151    4.2080 N 85 C 87
+     231     BD*         -.0014   10.8179 C 87 H 88
+     232     BD*         -.0098   14.0006 C 87 C 89
+     233     BD*          .0066   16.3324 C 87 C 97
+     234     BD*          .0119    9.3137 C 89 H 90
+     235     BD*         -.0022   -1.1148 C 89 O 91
+     236     BD*         -.0078    8.8405 C 89 C 93
+     237     BD*         -.0042    1.2832 O 91 H 92
+     238     BD*         -.0079    8.7263 C 93 H 94
+     239     BD*         -.0111    8.2585 C 93 H 95
+     240     BD*         -.0066    8.8269 C 93 H 96
+     241     BD*          .0094   11.5446 C 97 O 98
+     242     BD*          .3371  -10.0943 C 97 O 98-->    1.9057
+     243     BD*          .0101   11.6049 C 97 N 99
+     244     BD*         -.0124    7.7769 N 99 H100
+     245     BD*         -.0229    4.9143 N 99 C101
+     246     BD*          .0010    9.1270 C101 H102
+     247     BD*         -.0013    9.1258 C101 H103
+     248     BD*         -.0042    9.1670 C101 H104
+ --------------------------------------------
+  minimum bond occupancy=  1.6555  at bond 130
+  maximum anti occupancy=   .4263  at bond 207
+  
+  <font color="#0000ff">------These two numbers mean that the electronic
+        wave functions of bonds are really very
+        localized. The Huckel approximation, as
+        the zero order approximation of the more
+        complicated CNDO method, is proven to have
+        embodied well-structured chemical bonds, 
+        though it is not as successful for pi
+        bonds as it is for sigma bonds.</font>
+        
+  
+</pre> (for the whole file, see 
+<a href="eh/hpux/log.staticCalculation">log.staticCalculation</a>.
+The antibond occupancies are sometimes negative because of the
+overlap transformation. Because the antibonds constructed by the
+NBO method are not exactly the eigenstates of sub density matrices,
+the numbers listed above are unimportant.)
+
+<p>Raising the antibond energies by 12 eV like shown in the above
+lines (equivalent to lifting those in-gap electronic states 
+up to the band), we found that the energy gap becomes about
+8 eV, compared with about 4 eV before changing. This is, apparently,
+a significant improvement for the gap problem.
+
+
+<a name="product">
+<h5><i>Major product of the EH</i></h5>
+
+The EH/ET code more or less succeeds in producing a satisfactory 
+picture of bond structure for proteins, and, despite of the many
+numerical approximations it has employed, succeeds as well in maintaining
+the numerical stability and the conservation law of particle number.
+
+
+<a name="csh">
+<h5><i>The C-shell script that controls the job flow</i></h5>
+
+This is the <a href="eh/convert">
+script</a> to create the input time series of structure
+(in PDB) for EH/ET simulation. The script converts the DCD
+segments and concatenates the segments into an integrated
+time series. 
+
+<pre>
+#!/bin/csh -f
+
+set name_of_protein = azur
+set dir_of_strk = /opt/data/sdata/121-126/330ps
+set dir_of_pdb = /home/xie/bet/strk
+@ number_of_pdb_per_seg = 50
+@ index_of_pdb = 1
+@ iseg = 1
+@ total = 1000
+
+#check if the directory is correct
+set a = `pwd`
+if ( $a != $dir_of_pdb ) then
+   echo "We are not in the right starting directory!"
+   exit
+endif
+
+label_100:
+
+echo $index_of_pdb, $iseg
+
+   cd $dir_of_strk
+   cp $name_of_protein.$iseg.tar.gz $dir_of_pdb
+   cd $dir_of_pdb
+   echo $name_of_protein.$iseg.tar.gz
+   gunzip $name_of_protein.$iseg.tar.gz
+   tar -xvf $name_of_protein.$iseg.tar
+   rm -f $name_of_protein.$iseg.tar
+
+   /bin/ls -1 *.pdb | sort -n -k 1.1 > tempo
+
+   @ j = ( $iseg - 1 ) * $number_of_pdb_per_seg
+
+   foreach ipdb ( `awk '{print $1}' tempo`) 
+
+   @ j ++
+   if($j < 10) then
+      mv $ipdb $name_of_protein.0000$j
+   else if($j >= 10 && $j < 100) then
+      mv $ipdb $name_of_protein.000$j
+   else if($j >= 100 && $j < 1000) then
+      mv $ipdb $name_of_protein.00$j
+   else if($j >= 1000 && $j < 10000) then
+      mv $ipdb $name_of_protein.0$j
+   else if($j >= 10000 && $j < 100000) then
+      mv $ipdb $name_of_protein.$j
+   endif
+
+   echo $iseg, $ipdb, $j
+   
+   end
+
+   @ iseg ++
+   if ( $iseg <= 60 ) goto label_100
+
+exit
+</pre>
+
+
+Because we have integrated the electronic structure calculation
+part with the time-dependent electronic dynamics one, the script
+is very simple:
+
+<pre>
+#!/bin/csh -f
+
+set dir_of_main  = /home/xie/bet
+
+#check if the directory is correct
+set a = `pwd`
+if ( $a != $dir_of_main ) then
+   echo "We are not in the right starting directory!"
+   exit
+endif
+
+@ irun = 0
+
+label_100:
+
+bet_ns < restart_yes
+
+
+@ irun ++
+  
+if ( $irun < 150 ) goto label_100 
+
+
+exit
+</pre>
+
+<center>
+<p><a href="index.html"><i>Back to the Index Page</i></a>
+<p><font size=1 color="#000000"><i>&copy; 2000, Qian Xie</i></font>
+</center>
+
+</body>
+</html>
