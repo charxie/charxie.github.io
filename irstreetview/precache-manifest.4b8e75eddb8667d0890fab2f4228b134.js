@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ef079ef024934467744b7f2af7605be1",
+    "revision": "edd627d247748969ae5f21b36c52f9e3",
     "url": "/irstreetview/index.html"
   },
   {
-    "revision": "eaa7b31215269c77cdb4",
+    "revision": "9239174c7287601c8d4b",
     "url": "/irstreetview/static/css/main.df9d2c1e.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/irstreetview/static/js/2.c88c744b.chunk.js"
   },
   {
-    "revision": "eaa7b31215269c77cdb4",
-    "url": "/irstreetview/static/js/main.eb16c9c4.chunk.js"
+    "revision": "9239174c7287601c8d4b",
+    "url": "/irstreetview/static/js/main.b11a6625.chunk.js"
   },
   {
     "revision": "eeb886a1fd84c33d7dd8",
