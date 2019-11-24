@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>The Quantum Workbench</title>
+<title>Quantum Leap: A Simulation and Design Environment for Quantum Mechanics</title>
   <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
   <script type="text/javascript" src="library.js"></script>
 </head>
@@ -14,7 +14,7 @@
 <div id="header">
 	<div id="logo">
 		<h1>Quantum Leap</h1>
-		<p>Interactive quantum design and simulation (under development)
+		<p>Interactive Quantum Simulation and Design (Under Development...)
             </p>
 	</div>
 	<!-- end #logo -->
@@ -33,102 +33,72 @@
 	<div><img src="banner.png"></div><br>
 	<div id="content">
 	<div class="post">
-	<h1 class="title">Demo applets (no longer working on most browsers)</h1>
+	<h1 class="title">Demos</h1>
 	<div class="entry">
 
 
 <table cellspacing=10 width="100%">
 
-<tr valign=top>
-<td><h5>Quantum wave in a box</h5>
-<font size=1>
-</font>
-</td>
-<td><h5>Quantum wave in a circle</h5>
-<font size=1>
-</font>
-</td>
-</tr>
-
-<tr>
-<td>
-<applet id="demo1" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
-<param name="script" value="load box1.qwb;"/> 
-<param name="permissions" value="sandbox"/>
-<param name="MAYSCRIPT" value="true"/>
-</applet>
-<br>
-<center>
-<form>
-<input type="button" value="Run" onclick="run('demo1')">
-<input type="button" value="Stop" onclick="stop('demo1')">
-<input type="button" value="Reset" onclick="jsReset('demo1')">
-<input type="button" value="Reload" onclick="jsReload('demo1')">
-</form>
-</center>
-</td>
-
-<td>
-<applet id="demo2" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
-<param name="script" value="load circle1.qwb"/> 
-<param name="permissions" value="sandbox"/>
-<param name="MAYSCRIPT" value="true"/>
-</applet>
-<br>
-<center>
-<form>
-<input type="button" value="Run" onclick="run('demo2')">
-<input type="button" value="Stop" onclick="stop('demo2')">
-<input type="button" value="Reset" onclick="jsReset('demo2')">
-<input type="button" value="Reload" onclick="jsReload('demo2')">
-</form>
-</center>
-</td>
-</tr>
 
 <tr valign=top>
-<td><h5>Quantum tunneling</h5>
-<font size=1>
-</font>
-</td>
-<td><h5>Quantum wave interference</h5>
-<font size=1>
-</font>
-</td>
-</tr>
-
-<tr>
 <td>
-<applet id="demo3" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
-<param name="script" value="load tunneling2d.qwb"/> 
-<param name="permissions" value="sandbox"/>
-<param name="MAYSCRIPT" value="true"/>
-</applet>
-<br>
+<h5>Quantum wave in a box</h5>
 <center>
-<form>
-<input type="button" value="Run" onclick="run('demo3')">
-<input type="button" value="Stop" onclick="stop('demo3')">
-<input type="button" value="Reset" onclick="jsReset('demo3')">
-<input type="button" value="Reload" onclick="jsReload('demo3')">
-</form>
+<video width="280" height="280" controls>
+  <source src="wave-in-box.mp4" type="video/mp4">
+</video>
 </center>
 </td>
 
 <td>
-<applet id="demo4" archive="qw-applet.jar" code="org.concord.qm2d.QuantumBox" width="250" height="250">
-<param name="script" value="load doubleslit.qwb"/> 
-<param name="permissions" value="sandbox"/>
-<param name="MAYSCRIPT" value="true"/>
-</applet>
-<br>
+<h5>Quantum wave in a circle</h5>
 <center>
-<form>
-<input type="button" value="Run" onclick="run('demo4')">
-<input type="button" value="Stop" onclick="stop('demo4')">
-<input type="button" value="Reset" onclick="jsReset('demo4')">
-<input type="button" value="Reload" onclick="jsReload('demo4')">
-</form>
+<video width="280" height="280" controls>
+  <source src="wave-in-circle.mp4" type="video/mp4">
+</video>
+</center>
+</td>
+</tr>
+
+
+<tr valign=top>
+<td>
+<h5>Quantum tunneling</h5>
+<center>
+<video width="280" height="280" controls>
+  <source src="tunneling.mp4" type="video/mp4">
+</video>
+</center>
+</td>
+
+<td>
+<h5>Scanning tunning microscopy</h5>
+<center>
+<video width="280" height="280" controls>
+  <source src="stm.mp4" type="video/mp4">
+</video>
+</center>
+</td>
+</tr>
+
+
+
+<tr valign=top>
+<td>
+<h5>Double slit</h5>
+<center>
+<video width="280" height="280" controls>
+  <source src="double-slit.mp4" type="video/mp4">
+</video>
+</center>
+</td>
+
+<td>
+<h5>Single and double slits</h5>
+<center>
+<video width="280" height="280" controls>
+  <source src="single-double-slits.mp4" type="video/mp4">
+</video>
 </center>
 </td>
 </tr>
@@ -160,7 +130,8 @@
 			<li>
 			<h2>Advanced topics</h2>
 			<ul>
-			 <li>The scanning tunneling microscopy</li>
+			 <li>Chemical reactions</li>
+			 <li>Scanning tunneling microscopy</li>
 			</ul>
 			</li>
 			<li>
@@ -177,8 +148,7 @@
 
 	<div id="sidebar2">
 
-<iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
-<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+<iframe src="app-instructions.html" width="100%" height="500" frameborder="0"/>
 </iframe>
 
 	</div>
