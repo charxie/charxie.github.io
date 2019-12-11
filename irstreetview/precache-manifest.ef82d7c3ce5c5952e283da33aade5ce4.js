@@ -1,27 +1,31 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fd658787235219a370c1e75dbba845e2",
+    "revision": "70183d42e4e0c5618dd93ff258fbacd3",
     "url": "/irstreetview/index.html"
   },
   {
-    "revision": "716855dba794b8e96c2d",
-    "url": "/irstreetview/static/css/main.05f6a8ee.chunk.css"
+    "revision": "fc76952760bd35bb7132",
+    "url": "/irstreetview/static/css/main.607797a5.chunk.css"
   },
   {
-    "revision": "9db324ccd9483a472abb",
-    "url": "/irstreetview/static/js/2.4c2f4c9f.chunk.js"
+    "revision": "8b1d5a412bab2e21155b",
+    "url": "/irstreetview/static/js/2.1f1ac155.chunk.js"
   },
   {
-    "revision": "716855dba794b8e96c2d",
-    "url": "/irstreetview/static/js/main.434c3602.chunk.js"
+    "revision": "fc76952760bd35bb7132",
+    "url": "/irstreetview/static/js/main.d4a9de5b.chunk.js"
   },
   {
     "revision": "eeb886a1fd84c33d7dd8",
     "url": "/irstreetview/static/js/runtime~main.a142e824.js"
   },
   {
-    "revision": "17996e69835fbd948f83b8a32c8535a7",
-    "url": "/irstreetview/static/media/compass.17996e69.svg"
+    "revision": "aa7ec710f8afb0b2bab8e2229b06a8de",
+    "url": "/irstreetview/static/media/compassBase.aa7ec710.svg"
+  },
+  {
+    "revision": "01b956a55b1e0f4903be4d993aa1baac",
+    "url": "/irstreetview/static/media/compassDiamond.01b956a5.svg"
   },
   {
     "revision": "072de3d6f2628a2292440adc5d058765",
@@ -130,5 +134,17 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "4957277e5d75886add8094f96bb49588",
     "url": "/irstreetview/static/media/rotating.4957277e.png"
+  },
+  {
+    "revision": "72cda6d6a45c90f240e7189759010ff8",
+    "url": "/irstreetview/static/media/zoomerBase.72cda6d6.svg"
+  },
+  {
+    "revision": "822d4c8d33cb85aeb2a45443474e5851",
+    "url": "/irstreetview/static/media/zoomerMinus.822d4c8d.svg"
+  },
+  {
+    "revision": "12a77a0bed6d0a96f351cb28664e8be5",
+    "url": "/irstreetview/static/media/zoomerPlus.12a77a0b.svg"
   }
 ]);

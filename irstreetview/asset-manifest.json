@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/irstreetview/static/css/main.05f6a8ee.chunk.css",
-    "main.js": "/irstreetview/static/js/main.434c3602.chunk.js",
-    "main.js.map": "/irstreetview/static/js/main.434c3602.chunk.js.map",
+    "main.css": "/irstreetview/static/css/main.607797a5.chunk.css",
+    "main.js": "/irstreetview/static/js/main.d4a9de5b.chunk.js",
+    "main.js.map": "/irstreetview/static/js/main.d4a9de5b.chunk.js.map",
     "runtime~main.js": "/irstreetview/static/js/runtime~main.a142e824.js",
     "runtime~main.js.map": "/irstreetview/static/js/runtime~main.a142e824.js.map",
-    "static/js/2.4c2f4c9f.chunk.js": "/irstreetview/static/js/2.4c2f4c9f.chunk.js",
-    "static/js/2.4c2f4c9f.chunk.js.map": "/irstreetview/static/js/2.4c2f4c9f.chunk.js.map",
+    "static/js/2.1f1ac155.chunk.js": "/irstreetview/static/js/2.1f1ac155.chunk.js",
+    "static/js/2.1f1ac155.chunk.js.map": "/irstreetview/static/js/2.1f1ac155.chunk.js.map",
     "index.html": "/irstreetview/index.html",
-    "precache-manifest.09712f3911f581dead249029b2f7834f.js": "/irstreetview/precache-manifest.09712f3911f581dead249029b2f7834f.js",
+    "precache-manifest.ef82d7c3ce5c5952e283da33aade5ce4.js": "/irstreetview/precache-manifest.ef82d7c3ce5c5952e283da33aade5ce4.js",
     "service-worker.js": "/irstreetview/service-worker.js",
-    "static/css/main.05f6a8ee.chunk.css.map": "/irstreetview/static/css/main.05f6a8ee.chunk.css.map",
-    "static/media/compass.svg": "/irstreetview/static/media/compass.17996e69.svg",
+    "static/css/main.607797a5.chunk.css.map": "/irstreetview/static/css/main.607797a5.chunk.css.map",
+    "static/media/compassBase.svg": "/irstreetview/static/media/compassBase.aa7ec710.svg",
+    "static/media/compassDiamond.svg": "/irstreetview/static/media/compassDiamond.01b956a5.svg",
     "static/media/pano-20190724143458-mx.png": "/irstreetview/static/media/pano-20190724143458-mx.072de3d6.png",
     "static/media/pano-20190724143833-mx.png": "/irstreetview/static/media/pano-20190724143833-mx.0732614b.png",
     "static/media/pano-20190724145944-mx.png": "/irstreetview/static/media/pano-20190724145944-mx.0c7531e1.png",
@@ -38,6 +39,9 @@
     "static/media/pano-20190925113109-mx.png": "/irstreetview/static/media/pano-20190925113109-mx.1c1e94e1.png",
     "static/media/pano-20190925113249-mx.png": "/irstreetview/static/media/pano-20190925113249-mx.798912fc.png",
     "static/media/pano-20190925113346-mx.png": "/irstreetview/static/media/pano-20190925113346-mx.0775a445.png",
-    "static/media/rotating.png": "/irstreetview/static/media/rotating.4957277e.png"
+    "static/media/rotating.png": "/irstreetview/static/media/rotating.4957277e.png",
+    "static/media/zoomerBase.svg": "/irstreetview/static/media/zoomerBase.72cda6d6.svg",
+    "static/media/zoomerMinus.svg": "/irstreetview/static/media/zoomerMinus.822d4c8d.svg",
+    "static/media/zoomerPlus.svg": "/irstreetview/static/media/zoomerPlus.12a77a0b.svg"
   }
 }
