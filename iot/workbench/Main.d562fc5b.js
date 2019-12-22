@@ -248,6 +248,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var Main_1 = require("./Main");
+
 var Workbench =
 /** @class */
 function () {
@@ -331,7 +333,7 @@ function () {
 
   Workbench.prototype.openContextMenu = function (e) {
     e.preventDefault();
-    var menu = document.getElementById("workbench-context-menu");
+    var menu = document.getElementById(Main_1.contextMenus.workbench.id);
     menu.style.left = e.clientX + "px";
     menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
     menu.classList.add("show-menu");
@@ -341,9 +343,11 @@ function () {
 }();
 
 exports.Workbench = Workbench;
-},{}],"components/Board.ts":[function(require,module,exports) {
+},{"./Main":"Main.ts"}],"components/Board.ts":[function(require,module,exports) {
 "use strict";
 /*
+ * A rectangular printed circuit board (PCB)
+ *
  * @author Charles Xie
  */
 
@@ -412,7 +416,60 @@ function () {
 }();
 
 exports.Board = Board;
-},{}],"math/Rectangle.ts":[function(require,module,exports) {
+},{}],"components/Mcu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * Microcontroller unit (MCU)
+ *
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Board_1 = require("./Board");
+
+var Mcu =
+/** @class */
+function (_super) {
+  __extends(Mcu, _super);
+
+  function Mcu() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  return Mcu;
+}(Board_1.Board);
+
+exports.Mcu = Mcu;
+},{"./Board":"components/Board.ts"}],"math/Rectangle.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -516,9 +573,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Board_1 = require("./Board");
+var Mcu_1 = require("./Mcu");
 
-var Rectangle_1 = require("../math/Rectangle"); // @ts-ignore
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main"); // this is needed as we use augmented methods of canvas defined in Main.ts
+// @ts-ignore
 
 
 var raspberry_pi_png_1 = __importDefault(require("../img/raspberry-pi.png"));
@@ -528,28 +588,24 @@ var RaspberryPi =
 function (_super) {
   __extends(RaspberryPi, _super);
 
-  function RaspberryPi(canvasId) {
+  function RaspberryPi(canvasId, uid) {
     var _this = _super.call(this, canvasId) || this;
 
     _this.openContextMenu = function (e) {
       e.preventDefault();
-      var menu = document.getElementById("raspberry-pi-context-menu");
+      var menu = document.getElementById(Main_1.contextMenus.raspberryPi.id);
       menu.style.left = e.clientX + "px";
       menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
       menu.classList.add("show-menu");
+      Main_1.contextMenus.raspberryPi.raspberryPi = _this;
     };
 
-    _this.mouseDown = function (e) {
-      e.preventDefault();
-    };
+    _this.mouseDown = function (e) {};
 
-    _this.mouseUp = function (e) {
-      e.preventDefault();
-    };
+    _this.mouseUp = function (e) {};
 
     _this.mouseMove = function (e) {
-      e.preventDefault();
-
+      // e.preventDefault();
       var rect = _this.canvas.getBoundingClientRect();
 
       var dx = e.clientX - rect.x;
@@ -575,7 +631,7 @@ function (_super) {
       _this.draw();
     };
 
-    _this.uid = "Raspberry Pi";
+    _this.uid = uid;
 
     _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
 
@@ -653,13 +709,13 @@ function (_super) {
   };
 
   return RaspberryPi;
-}(Board_1.Board);
+}(Mcu_1.Mcu);
 
 exports.RaspberryPi = RaspberryPi;
-},{"./Board":"components/Board.ts","../math/Rectangle":"math/Rectangle.ts","../img/raspberry-pi.png":"img/raspberry-pi.png"}],"components/Hat.ts":[function(require,module,exports) {
+},{"./Mcu":"components/Mcu.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/raspberry-pi.png":"img/raspberry-pi.png"}],"components/Hat.ts":[function(require,module,exports) {
 "use strict";
 /*
- * Hardware attached on top (HAT)
+ * Hardware attached on top (HAT) for Raspberry Pi, equivalent to shields for Arduino
  *
  * @author Charles Xie
  */
@@ -696,6 +752,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var Board_1 = require("./Board");
 
+var RaspberryPi_1 = require("./RaspberryPi");
+
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main");
+
 var Hat =
 /** @class */
 function (_super) {
@@ -715,13 +777,39 @@ function (_super) {
     }
 
     this.raspberryPi = raspberryPi;
+
+    if (raspberryPi != null) {
+      this.setX(raspberryPi.getX());
+      this.setY(raspberryPi.getY());
+      localStorage.setItem("Attachment: " + this.getUid(), raspberryPi.uid);
+    } else {
+      localStorage.removeItem("Attachment: " + this.getUid());
+    }
+  };
+
+  Hat.prototype.whichRaspberryPi = function () {
+    var r1 = new Rectangle_1.Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+    for (var i = Main_1.system.mcus.length - 1; i >= 0; i--) {
+      var mcu = Main_1.system.mcus[i];
+
+      if (mcu instanceof RaspberryPi_1.RaspberryPi) {
+        var a = 20;
+
+        if (r1.intersectRect(new Rectangle_1.Rectangle(mcu.getX() + a, mcu.getY() + a, mcu.getWidth() - 2 * a, mcu.getHeight() - 2 * a))) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
   };
 
   return Hat;
 }(Board_1.Board);
 
 exports.Hat = Hat;
-},{"./Board":"components/Board.ts"}],"components/LedDisplay.ts":[function(require,module,exports) {
+},{"./Board":"components/Board.ts","./RaspberryPi":"components/RaspberryPi.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts"}],"components/LedDisplay.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -780,8 +868,6 @@ exports.LedDisplay = LedDisplay;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var Main_1 = require("../Main");
 
 var Buzzer =
 /** @class */
@@ -854,7 +940,7 @@ function () {
     var that = this;
     setTimeout(function () {
       that.on = false;
-      Main_1.system.rainbowHat.draw();
+      that.board.draw();
     }, 200);
   };
 
@@ -862,7 +948,7 @@ function () {
 }();
 
 exports.Buzzer = Buzzer;
-},{"../Main":"Main.ts"}],"Util.ts":[function(require,module,exports) {
+},{}],"Util.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1490,6 +1576,8 @@ module.exports = "/rainbow-hat.151dd447.png";
 },{}],"components/RainbowHat.ts":[function(require,module,exports) {
 "use strict";
 /*
+ * Digital twin for the Rainbow HAT
+ *
  * @author Charles Xie
  */
 
@@ -1543,13 +1631,13 @@ var Sensor_1 = require("./Sensor");
 
 var System_1 = require("../System");
 
-var Main_1 = require("../Main");
-
 var Util_1 = require("../Util");
 
 var Rectangle_1 = require("../math/Rectangle");
 
-var ColorPicker_1 = require("../tools/ColorPicker"); // @ts-ignore
+var ColorPicker_1 = require("../tools/ColorPicker");
+
+var Main_1 = require("../Main"); // @ts-ignore
 
 
 var rainbow_hat_png_1 = __importDefault(require("../img/rainbow-hat.png"));
@@ -1559,7 +1647,7 @@ var RainbowHat =
 function (_super) {
   __extends(RainbowHat, _super);
 
-  function RainbowHat(canvasId) {
+  function RainbowHat(canvasId, uid) {
     var _this = _super.call(this, canvasId) || this;
 
     _this.rgbLedLights = [];
@@ -1585,7 +1673,8 @@ function (_super) {
       }
 
       if (_this.indexOfSelectedRgbLedLight >= 0) {
-        var menu = document.getElementById("colorpicker-context-menu");
+        Main_1.contextMenus.colorPicker.rainbowHat = _this;
+        var menu = document.getElementById(Main_1.contextMenus.colorPicker.id);
         menu.style.left = e.clientX + "px";
         menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
         menu.classList.add("show-menu");
@@ -1601,7 +1690,8 @@ function (_super) {
         Main_1.system.colorPicker.setSelectedPoint();
         document.getElementById("colorpicker-title").innerText = "RGB LED Light " + _this.indexOfSelectedRgbLedLight;
       } else {
-        var menu = document.getElementById("rainbow-hat-context-menu");
+        Main_1.contextMenus.rainbowHat.hat = _this;
+        var menu = document.getElementById(Main_1.contextMenus.rainbowHat.id);
         menu.style.left = e.clientX + "px";
         menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
         menu.classList.add("show-menu");
@@ -1612,10 +1702,9 @@ function (_super) {
           attachMenuItem.className = "menu-item disabled";
           detachMenuItem.className = "menu-item";
         } else {
-          var r1 = new Rectangle_1.Rectangle(_this.getX(), _this.getY(), _this.getWidth(), _this.getHeight());
-          var r2 = new Rectangle_1.Rectangle(Main_1.system.raspberryPi.getX(), Main_1.system.raspberryPi.getY(), Main_1.system.raspberryPi.getWidth(), Main_1.system.raspberryPi.getHeight());
-          var onTop = r1.intersectRect(r2);
-          attachMenuItem.className = onTop ? "menu-item" : "menu-item disabled";
+          var i = _this.whichRaspberryPi();
+
+          attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
           detachMenuItem.className = "menu-item disabled";
         }
       }
@@ -1864,7 +1953,7 @@ function (_super) {
       _this.draw();
     };
 
-    _this.uid = "Rainbow HAT";
+    _this.uid = uid;
 
     _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
 
@@ -1988,18 +2077,6 @@ function (_super) {
 
     for (var i = 0; i < this.decimalPointDisplays.length; i++) {
       this.decimalPointDisplays[i].draw(ctx);
-    }
-  };
-
-  RainbowHat.prototype.attach = function (raspberryPi) {
-    _super.prototype.attach.call(this, raspberryPi);
-
-    if (raspberryPi != null) {
-      this.setX(raspberryPi.getX());
-      this.setY(raspberryPi.getY());
-      localStorage.setItem("Attached: " + this.getUid(), "0");
-    } else {
-      localStorage.setItem("Attached: " + this.getUid(), "-1");
     }
   };
 
@@ -2150,376 +2227,1002 @@ function (_super) {
 }(Hat_1.Hat);
 
 exports.RainbowHat = RainbowHat;
-},{"./Hat":"components/Hat.ts","./LedDisplay":"components/LedDisplay.ts","./Buzzer":"components/Buzzer.ts","./LedLight":"components/LedLight.ts","./Button":"components/Button.ts","./Sensor":"components/Sensor.ts","../System":"System.ts","../Main":"Main.ts","../Util":"Util.ts","../math/Rectangle":"math/Rectangle.ts","../tools/ColorPicker":"tools/ColorPicker.ts","../img/rainbow-hat.png":"img/rainbow-hat.png"}],"tools/LineChart.ts":[function(require,module,exports) {
+},{"./Hat":"components/Hat.ts","./LedDisplay":"components/LedDisplay.ts","./Buzzer":"components/Buzzer.ts","./LedLight":"components/LedLight.ts","./Button":"components/Button.ts","./Sensor":"components/Sensor.ts","../System":"System.ts","../Util":"Util.ts","../math/Rectangle":"math/Rectangle.ts","../tools/ColorPicker":"tools/ColorPicker.ts","../Main":"Main.ts","../img/rainbow-hat.png":"img/rainbow-hat.png"}],"img/sense-hat.png":[function(require,module,exports) {
+module.exports = "/sense-hat.432da3f3.png";
+},{}],"components/SenseHat.ts":[function(require,module,exports) {
 "use strict";
 /*
- * This draws a line from the input sensor data stream (time series).
+ * Digital twin for the Sense HAT
  *
  * @author Charles Xie
  */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Util_1 = require("../Util");
+var Hat_1 = require("./Hat");
 
 var Rectangle_1 = require("../math/Rectangle");
 
-var LineChart =
+var Main_1 = require("../Main"); // @ts-ignore
+
+
+var sense_hat_png_1 = __importDefault(require("../img/sense-hat.png"));
+
+var SenseHat =
 /** @class */
-function () {
-  function LineChart(elementId, sensor) {
-    var _this = this;
+function (_super) {
+  __extends(SenseHat, _super);
 
-    this.minimumValue = 0;
-    this.maximumValue = 1;
-    this.autoscale = true;
-    this.xAxisLabel = "Time (s)";
-    this.yAxisLabel = "Temperature (°C)";
-    this.graphWindowColor = "white";
-    this.titleBarColor = "lightgray";
-    this.margin = {
-      left: 40,
-      right: 25,
-      top: 40,
-      bottom: 40
-    };
-    this.titleBarHeight = 24;
-    this.closeButton = new Rectangle_1.Rectangle(0, 0, 14, 14);
-    this.clearButton = new Rectangle_1.Rectangle(0, 0, 14, 14);
+  function SenseHat(canvasId, uid) {
+    var _this = _super.call(this, canvasId) || this;
 
-    this.onMouseMove = function (e) {
+    _this.openContextMenu = function (e) {
       e.preventDefault();
 
       var rect = _this.canvas.getBoundingClientRect();
 
-      var x = e.clientX - rect.x;
-      var y = e.clientY - rect.y;
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+      Main_1.contextMenus.senseHat.hat = _this;
+      var menu = document.getElementById(Main_1.contextMenus.senseHat.id);
+      menu.style.left = e.clientX + "px";
+      menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
+      menu.classList.add("show-menu");
+      var attachMenuItem = document.getElementById("sense-hat-attach-menu-item");
+      var detachMenuItem = document.getElementById("sense-hat-detach-menu-item");
 
-      var ctx = _this.canvas.getContext('2d');
+      if (_this.raspberryPi != null) {
+        attachMenuItem.className = "menu-item disabled";
+        detachMenuItem.className = "menu-item";
+      } else {
+        var i = _this.whichRaspberryPi();
 
-      _this.selectedButton = null;
+        attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
+        detachMenuItem.className = "menu-item disabled";
+      }
+    };
 
-      if (_this.closeButton.contains(x, y)) {
-        _this.canvas.style.cursor = "pointer";
-        _this.selectedButton = _this.closeButton;
-      } else if (_this.clearButton.contains(x, y)) {
-        _this.canvas.style.cursor = "pointer";
-        _this.selectedButton = _this.clearButton;
-      } else if (_this.handle.contains(x, y)) {
+    _this.mouseDown = function (e) {};
+
+    _this.mouseUp = function (e) {};
+
+    _this.mouseMove = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+
+      if (_this.handles[0].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[0];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[1].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[1];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[2].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[2];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[3].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[3];
         _this.canvas.style.cursor = "move";
       } else {
+        _this.mouseOverObject = null;
         _this.canvas.style.cursor = "default";
       }
 
       _this.draw();
     };
 
-    this.onMouseLeave = function (e) {
-      e.preventDefault();
+    _this.uid = uid;
 
-      _this.draw();
+    _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
+
+    _this.canvas.addEventListener("mouseup", _this.mouseUp, false);
+
+    _this.canvas.addEventListener("mousemove", _this.mouseMove, false);
+
+    _this.canvas.addEventListener('contextmenu', _this.openContextMenu, false);
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 250, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 250, 30, 30));
+
+    _this.boardImage = new Image();
+    _this.boardImage.src = sense_hat_png_1.default;
+
+    _this.setY(20);
+
+    _this.updateFromFirebase();
+
+    return _this;
+  }
+
+  SenseHat.prototype.draw = function () {
+    var ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.save();
+    ctx.shadowOffsetX = 8;
+    ctx.shadowOffsetY = 8;
+    ctx.shadowColor = "rgb(96, 96, 96)";
+    ctx.shadowBlur = 8;
+    ctx.drawImage(this.boardImage, 0, 0);
+    ctx.restore();
+    this.drawToolTips();
+  };
+
+  SenseHat.prototype.drawToolTips = function () {
+    var context = this.canvas.getContext('2d');
+    var x = 0;
+    var y = -25;
+
+    if (this.mouseOverObject == this.handles[0]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[0].getXmax() + 20;
+      y += this.handles[0].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-left handle', true);
+    } else if (this.mouseOverObject == this.handles[1]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[1].getXmin() - 30;
+      y += this.handles[1].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-right handle', true);
+    } else if (this.mouseOverObject == this.handles[2]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[2].getXmin() - 30;
+      y += this.handles[2].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-right handle', true);
+    } else if (this.mouseOverObject == this.handles[3]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[3].getXmax() + 20;
+      y += this.handles[3].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-left handle', true);
+    }
+  };
+
+  SenseHat.prototype.updateFirebase = function (value) {}; // by default, sensors transmit data every second. This can be adjusted through Firebase.
+
+
+  SenseHat.prototype.updateFromFirebase = function () {};
+
+  return SenseHat;
+}(Hat_1.Hat);
+
+exports.SenseHat = SenseHat;
+},{"./Hat":"components/Hat.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/sense-hat.png":"img/sense-hat.png"}],"img/capacitive-touch-hat.png":[function(require,module,exports) {
+module.exports = "/capacitive-touch-hat.f7ea211b.png";
+},{}],"components/CapacitiveTouchHat.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * Digital twin for the Capacitive Touch HAT
+ *
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
     };
 
-    this.onTouchMove = function (e) {
-      e.preventDefault();
-    };
+    return _extendStatics(d, b);
+  };
 
-    this.onMouseClick = function (e) {
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Hat_1 = require("./Hat");
+
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main"); // @ts-ignore
+
+
+var capacitive_touch_hat_png_1 = __importDefault(require("../img/capacitive-touch-hat.png"));
+
+var CapacitiveTouchHat =
+/** @class */
+function (_super) {
+  __extends(CapacitiveTouchHat, _super);
+
+  function CapacitiveTouchHat(canvasId, uid) {
+    var _this = _super.call(this, canvasId) || this;
+
+    _this.openContextMenu = function (e) {
       e.preventDefault();
 
       var rect = _this.canvas.getBoundingClientRect();
 
-      var x = e.clientX - rect.x;
-      var y = e.clientY - rect.y;
-
-      if (_this.closeButton.contains(x, y)) {
-        _this.setVisible(false);
-
-        localStorage.setItem("Visible: " + _this.getUid(), "false");
-      } else if (_this.clearButton.contains(x, y)) {
-        _this.sensor.data.length = 0;
-      } else {
-        _this.bringForward();
-      }
-    };
-
-    this.onMouseDoubleClick = function (e) {
-      e.preventDefault();
-    };
-
-    this.openContextMenu = function (e) {
-      e.preventDefault();
-      var menu = document.getElementById("linechart-context-menu");
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+      Main_1.contextMenus.capacitiveTouchHat.hat = _this;
+      var menu = document.getElementById(Main_1.contextMenus.capacitiveTouchHat.id);
       menu.style.left = e.clientX + "px";
       menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
       menu.classList.add("show-menu");
+      var attachMenuItem = document.getElementById("capacitive-touch-hat-attach-menu-item");
+      var detachMenuItem = document.getElementById("capacitive-touch-hat-detach-menu-item");
+
+      if (_this.raspberryPi != null) {
+        attachMenuItem.className = "menu-item disabled";
+        detachMenuItem.className = "menu-item";
+      } else {
+        var i = _this.whichRaspberryPi();
+
+        attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
+        detachMenuItem.className = "menu-item disabled";
+      }
     };
 
-    this.uid = sensor.name + " graph";
-    this.canvas = document.getElementById(elementId);
-    this.sensor = sensor;
-    this.yAxisLabel = sensor.name + " (" + sensor.unit + ")";
-    this.handle = new Rectangle_1.Rectangle(0, 0, this.canvas.width, this.titleBarHeight);
-    this.closeButton.x = this.canvas.width - this.closeButton.width - 4;
-    this.closeButton.y += 4;
-    this.clearButton.x = this.canvas.width - 2 * (this.clearButton.width + 4);
-    this.clearButton.y += 4;
+    _this.mouseDown = function (e) {};
+
+    _this.mouseUp = function (e) {};
+
+    _this.mouseMove = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+
+      if (_this.handles[0].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[0];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[1].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[1];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[2].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[2];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[3].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[3];
+        _this.canvas.style.cursor = "move";
+      } else {
+        _this.mouseOverObject = null;
+        _this.canvas.style.cursor = "default";
+      }
+
+      _this.draw();
+    };
+
+    _this.uid = uid;
+
+    _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
+
+    _this.canvas.addEventListener("mouseup", _this.mouseUp, false);
+
+    _this.canvas.addEventListener("mousemove", _this.mouseMove, false);
+
+    _this.canvas.addEventListener('contextmenu', _this.openContextMenu, false);
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 250, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 250, 30, 30));
+
+    _this.boardImage = new Image();
+    _this.boardImage.src = capacitive_touch_hat_png_1.default;
+
+    _this.setY(20);
+
+    _this.updateFromFirebase();
+
+    return _this;
   }
 
-  LineChart.prototype.getUid = function () {
-    return this.uid;
-  };
-
-  LineChart.prototype.setVisible = function (visible) {
-    this.canvas.style.display = visible ? "block" : "none";
-    this.visible = visible;
-  };
-
-  LineChart.prototype.isVisible = function () {
-    return this.visible;
-  };
-
-  LineChart.prototype.onHandle = function (x, y) {
-    return this.handle.contains(x, y);
-  };
-
-  LineChart.prototype.draw = function () {
-    this.canvas.addEventListener('click', this.onMouseClick, false);
-    this.canvas.addEventListener('dblclick', this.onMouseDoubleClick, false);
-    this.canvas.addEventListener('mousemove', this.onMouseMove, false);
-    this.canvas.addEventListener('mouseleave', this.onMouseLeave, false);
-    this.canvas.addEventListener('touchmove', this.onTouchMove, false);
-    this.canvas.addEventListener('contextmenu', this.openContextMenu, false);
+  CapacitiveTouchHat.prototype.draw = function () {
     var ctx = this.canvas.getContext('2d');
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    if (this.sensor.data) {
-      this.drawGraphWindow(ctx);
-      this.drawAxisLabels(ctx);
-
-      if (this.sensor.data.length > 1) {
-        this.drawLineCharts(ctx);
-      }
-    }
-
-    this.drawTitleBar(ctx);
-    this.drawToolTips(ctx);
-  };
-
-  LineChart.prototype.drawLineCharts = function (ctx) {
-    // detect minimum and maximum of y values
-    var min = Number.MAX_VALUE;
-    var max = -min;
-
-    if (this.autoscale) {
-      for (var i = 0; i < this.sensor.data.length; i++) {
-        if (this.sensor.data[i] > max) {
-          max = this.sensor.data[i];
-        }
-
-        if (this.sensor.data[i] < min) {
-          min = this.sensor.data[i];
-        }
-      }
-    } else {
-      min = this.minimumValue;
-      max = this.maximumValue;
-    } // determine the graph window
-
-
-    var graphWindowWidth = this.canvas.width - this.margin.left - this.margin.right;
-    var graphWindowHeight = this.canvas.height - this.margin.bottom - this.margin.top;
-    var dx = graphWindowWidth / (this.sensor.data.length - 1);
-    var yOffset = 0.1 * graphWindowHeight;
-    var dy = (graphWindowHeight - 2 * yOffset) / (max - min); // draw the data line
-
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "black";
-    ctx.font = "10px Arial";
-    ctx.fillStyle = "black";
-    ctx.beginPath();
-    var horizontalAxisY = this.canvas.height - this.margin.bottom;
-    var tmpX = this.margin.left;
-    var tmpY = yOffset + (this.sensor.data[0] - min) * dy;
-    ctx.moveTo(tmpX, horizontalAxisY - tmpY);
-    ctx.fillText("0", tmpX - 4, horizontalAxisY + 10);
-
-    for (var i = 1; i < this.sensor.data.length; i++) {
-      tmpX = this.margin.left + dx * i;
-      tmpY = yOffset + (this.sensor.data[i] - min) * dy;
-      ctx.lineTo(tmpX, horizontalAxisY - tmpY);
-    }
-
-    ctx.stroke(); // draw symbols on top of the line
-
-    for (var i = 0; i < this.sensor.data.length; i++) {
-      tmpX = this.margin.left + dx * i;
-      tmpY = yOffset + (this.sensor.data[i] - min) * dy;
-      ctx.beginPath();
-      ctx.arc(tmpX, horizontalAxisY - tmpY, 3, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.fillStyle = "white";
-      ctx.fill();
-      ctx.fillStyle = "black";
-      ctx.stroke();
-    } // draw x-axis tick marks
-
-
-    var timeLength = this.sensor.data.length * this.sensor.collectionInterval;
-    var spacing = Math.pow(10, Util_1.Util.countDigits(Math.round(timeLength)) - 1);
-
-    for (var i = 0; i < this.sensor.data.length; i++) {
-      var j = i * this.sensor.collectionInterval;
-
-      if (Math.abs(j - Math.floor(j)) < 0.0001) {
-        // only plot at whole seconds
-        if (j % spacing == 0 || timeLength < 10) {
-          tmpX = this.margin.left + dx * i;
-          ctx.beginPath();
-          ctx.moveTo(tmpX, horizontalAxisY);
-          ctx.lineTo(tmpX, horizontalAxisY - 4);
-          ctx.stroke();
-          ctx.fillText(j.toString(), tmpX - 4, horizontalAxisY + 10);
-        }
-      }
-    } // draw y-axis tick marks
-
-
-    tmpY = yOffset;
-    var minString = min.toFixed(2);
-    ctx.beginPath();
-    ctx.moveTo(this.margin.left, horizontalAxisY - tmpY);
-    ctx.lineTo(this.margin.left + 4, horizontalAxisY - tmpY);
-    ctx.stroke();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.save();
-    ctx.translate(this.margin.left - 10, horizontalAxisY - tmpY + ctx.measureText(minString).width / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText(minString, 0, 0);
+    ctx.shadowOffsetX = 8;
+    ctx.shadowOffsetY = 8;
+    ctx.shadowColor = "rgb(96, 96, 96)";
+    ctx.shadowBlur = 8;
+    ctx.drawImage(this.boardImage, 0, 0);
     ctx.restore();
-    tmpY = yOffset + (max - min) * dy;
-    var maxString = max.toFixed(2);
-    ctx.beginPath();
-    ctx.moveTo(this.margin.left, horizontalAxisY - tmpY);
-    ctx.lineTo(this.margin.left + 4, horizontalAxisY - tmpY);
-    ctx.stroke();
-    ctx.save();
-    ctx.translate(this.margin.left - 10, horizontalAxisY - tmpY + ctx.measureText(maxString).width / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText(maxString, 0, 0);
-    ctx.restore();
+    this.drawToolTips();
   };
 
-  LineChart.prototype.drawAxisLabels = function (ctx) {
-    var graphWindowWidth = this.canvas.width - this.margin.left - this.margin.right;
-    var horizontalAxisY = this.canvas.height - this.margin.bottom;
-    ctx.font = "15px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText(this.xAxisLabel, this.margin.left + graphWindowWidth / 2 - ctx.measureText(this.xAxisLabel).width / 2, horizontalAxisY + 30);
-    ctx.save();
-    ctx.translate(20, this.canvas.height / 2 + ctx.measureText(this.yAxisLabel).width / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText(this.yAxisLabel, 0, 0);
-    ctx.restore();
-  };
+  CapacitiveTouchHat.prototype.drawToolTips = function () {
+    var context = this.canvas.getContext('2d');
+    var x = 0;
+    var y = -25;
 
-  LineChart.prototype.drawGraphWindow = function (ctx) {
-    var canvas = this.canvas;
-    var margin = this.margin;
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.rect(margin.left, margin.top, canvas.width - margin.left - margin.right, canvas.height - margin.top - margin.bottom);
-    ctx.stroke();
-    ctx.fillStyle = this.graphWindowColor;
-    ctx.fillRect(margin.left, margin.top, canvas.width - margin.left - margin.right, canvas.height - margin.top - margin.bottom);
-  };
-
-  LineChart.prototype.drawTitleBar = function (ctx) {
-    // draw bar
-    ctx.fillStyle = this.titleBarColor;
-    ctx.fillRect(0, 0, this.canvas.width, 24);
-    ctx.fillStyle = "black";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, 24);
-    ctx.lineTo(this.canvas.width, this.titleBarHeight);
-    ctx.stroke();
-    this.drawButton(ctx, this.closeButton);
-    this.drawButton(ctx, this.clearButton);
-  };
-
-  LineChart.prototype.drawButton = function (ctx, button) {
-    ctx.beginPath();
-    ctx.rect(button.x, button.y, button.width, button.height);
-    ctx.stroke();
-    ctx.lineWidth = 0.5;
-
-    if (button == this.closeButton) {
-      ctx.moveTo(button.x + 2, button.y + 2);
-      ctx.lineTo(button.x + button.width - 2, button.y + button.height - 2);
-      ctx.moveTo(button.x + button.width - 2, button.y + 2);
-      ctx.lineTo(button.x + 2, button.y + button.height - 2);
-    } else if (button == this.clearButton) {
-      ctx.moveTo(button.x + 2, button.getCenterY());
-      ctx.lineTo(button.x + button.width - 2, button.getCenterY());
-    }
-
-    ctx.stroke();
-  };
-
-  LineChart.prototype.drawToolTips = function (ctx) {
-    switch (this.selectedButton) {
-      case this.closeButton:
-        ctx.drawTooltip(this.closeButton.getCenterX() - 20, this.closeButton.getCenterY() + 20, 20, 8, 10, "Close", true);
-        break;
-
-      case this.clearButton:
-        ctx.drawTooltip(this.clearButton.getCenterX() - 20, this.clearButton.getCenterY() + 20, 20, 8, 10, "Clear", true);
-        break;
+    if (this.mouseOverObject == this.handles[0]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[0].getXmax() + 20;
+      y += this.handles[0].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-left handle', true);
+    } else if (this.mouseOverObject == this.handles[1]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[1].getXmin() - 30;
+      y += this.handles[1].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-right handle', true);
+    } else if (this.mouseOverObject == this.handles[2]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[2].getXmin() - 30;
+      y += this.handles[2].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-right handle', true);
+    } else if (this.mouseOverObject == this.handles[3]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[3].getXmax() + 20;
+      y += this.handles[3].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-left handle', true);
     }
   };
 
-  LineChart.prototype.bringForward = function () {
-    this.canvas.style.zIndex = (parseInt(this.canvas.style.zIndex) + 2).toString();
+  CapacitiveTouchHat.prototype.updateFirebase = function (value) {}; // by default, sensors transmit data every second. This can be adjusted through Firebase.
+
+
+  CapacitiveTouchHat.prototype.updateFromFirebase = function () {};
+
+  return CapacitiveTouchHat;
+}(Hat_1.Hat);
+
+exports.CapacitiveTouchHat = CapacitiveTouchHat;
+},{"./Hat":"components/Hat.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/capacitive-touch-hat.png":"img/capacitive-touch-hat.png"}],"img/unicorn-hat.png":[function(require,module,exports) {
+module.exports = "/unicorn-hat.9a311ef5.png";
+},{}],"components/UnicornHat.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * Digital twin for the Unicorn HAT
+ *
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
   };
 
-  LineChart.prototype.getX = function () {
-    return this.canvas.offsetLeft;
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
-
-  LineChart.prototype.setX = function (x) {
-    this.canvas.style.left = x + "px";
-  };
-
-  LineChart.prototype.getY = function () {
-    return this.canvas.offsetTop;
-  };
-
-  LineChart.prototype.setY = function (y) {
-    this.canvas.style.top = y + "px";
-  };
-
-  LineChart.prototype.getWidth = function () {
-    return this.canvas.width;
-  };
-
-  LineChart.prototype.getHeight = function () {
-    return this.canvas.height;
-  }; // detect if (x, y) is inside this chart
-
-
-  LineChart.prototype.contains = function (x, y) {
-    return x > this.canvas.offsetLeft && x < this.canvas.offsetLeft + this.canvas.width && y > this.canvas.offsetTop && y < this.canvas.offsetTop + this.canvas.height;
-  };
-
-  return LineChart;
 }();
 
-exports.LineChart = LineChart;
-},{"../Util":"Util.ts","../math/Rectangle":"math/Rectangle.ts"}],"System.ts":[function(require,module,exports) {
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Hat_1 = require("./Hat");
+
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main"); // @ts-ignore
+
+
+var unicorn_hat_png_1 = __importDefault(require("../img/unicorn-hat.png"));
+
+var UnicornHat =
+/** @class */
+function (_super) {
+  __extends(UnicornHat, _super);
+
+  function UnicornHat(canvasId, uid) {
+    var _this = _super.call(this, canvasId) || this;
+
+    _this.openContextMenu = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+      Main_1.contextMenus.unicornHat.hat = _this;
+      var menu = document.getElementById(Main_1.contextMenus.unicornHat.id);
+      menu.style.left = e.clientX + "px";
+      menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
+      menu.classList.add("show-menu");
+      var attachMenuItem = document.getElementById("unicorn-hat-attach-menu-item");
+      var detachMenuItem = document.getElementById("unicorn-hat-detach-menu-item");
+
+      if (_this.raspberryPi != null) {
+        attachMenuItem.className = "menu-item disabled";
+        detachMenuItem.className = "menu-item";
+      } else {
+        var i = _this.whichRaspberryPi();
+
+        attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
+        detachMenuItem.className = "menu-item disabled";
+      }
+    };
+
+    _this.mouseDown = function (e) {};
+
+    _this.mouseUp = function (e) {};
+
+    _this.mouseMove = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+
+      if (_this.handles[0].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[0];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[1].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[1];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[2].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[2];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[3].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[3];
+        _this.canvas.style.cursor = "move";
+      } else {
+        _this.mouseOverObject = null;
+        _this.canvas.style.cursor = "default";
+      }
+
+      _this.draw();
+    };
+
+    _this.uid = uid;
+
+    _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
+
+    _this.canvas.addEventListener("mouseup", _this.mouseUp, false);
+
+    _this.canvas.addEventListener("mousemove", _this.mouseMove, false);
+
+    _this.canvas.addEventListener('contextmenu', _this.openContextMenu, false);
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 250, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 250, 30, 30));
+
+    _this.boardImage = new Image();
+    _this.boardImage.src = unicorn_hat_png_1.default;
+
+    _this.setY(20);
+
+    _this.updateFromFirebase();
+
+    return _this;
+  }
+
+  UnicornHat.prototype.draw = function () {
+    var ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.save();
+    ctx.shadowOffsetX = 8;
+    ctx.shadowOffsetY = 8;
+    ctx.shadowColor = "rgb(96, 96, 96)";
+    ctx.shadowBlur = 8;
+    ctx.drawImage(this.boardImage, 0, 0);
+    ctx.restore();
+    this.drawToolTips();
+  };
+
+  UnicornHat.prototype.drawToolTips = function () {
+    var context = this.canvas.getContext('2d');
+    var x = 0;
+    var y = -25;
+
+    if (this.mouseOverObject == this.handles[0]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[0].getXmax() + 20;
+      y += this.handles[0].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-left handle', true);
+    } else if (this.mouseOverObject == this.handles[1]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[1].getXmin() - 30;
+      y += this.handles[1].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-right handle', true);
+    } else if (this.mouseOverObject == this.handles[2]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[2].getXmin() - 30;
+      y += this.handles[2].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-right handle', true);
+    } else if (this.mouseOverObject == this.handles[3]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[3].getXmax() + 20;
+      y += this.handles[3].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-left handle', true);
+    }
+  };
+
+  UnicornHat.prototype.updateFirebase = function (value) {}; // by default, sensors transmit data every second. This can be adjusted through Firebase.
+
+
+  UnicornHat.prototype.updateFromFirebase = function () {};
+
+  return UnicornHat;
+}(Hat_1.Hat);
+
+exports.UnicornHat = UnicornHat;
+},{"./Hat":"components/Hat.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/unicorn-hat.png":"img/unicorn-hat.png"}],"img/crickit-hat.png":[function(require,module,exports) {
+module.exports = "/crickit-hat.0ec2493d.png";
+},{}],"components/CrickitHat.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * Digital twin for the Crickit HAT
+ *
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Hat_1 = require("./Hat");
+
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main"); // @ts-ignore
+
+
+var crickit_hat_png_1 = __importDefault(require("../img/crickit-hat.png"));
+
+var CrickitHat =
+/** @class */
+function (_super) {
+  __extends(CrickitHat, _super);
+
+  function CrickitHat(canvasId, uid) {
+    var _this = _super.call(this, canvasId) || this;
+
+    _this.openContextMenu = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+      Main_1.contextMenus.crickitHat.hat = _this;
+      var menu = document.getElementById(Main_1.contextMenus.crickitHat.id);
+      menu.style.left = e.clientX + "px";
+      menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
+      menu.classList.add("show-menu");
+      var attachMenuItem = document.getElementById("crickit-hat-attach-menu-item");
+      var detachMenuItem = document.getElementById("crickit-hat-detach-menu-item");
+
+      if (_this.raspberryPi != null) {
+        attachMenuItem.className = "menu-item disabled";
+        detachMenuItem.className = "menu-item";
+      } else {
+        var i = _this.whichRaspberryPi();
+
+        attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
+        detachMenuItem.className = "menu-item disabled";
+      }
+    };
+
+    _this.mouseDown = function (e) {};
+
+    _this.mouseUp = function (e) {};
+
+    _this.mouseMove = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+
+      if (_this.handles[0].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[0];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[1].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[1];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[2].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[2];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[3].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[3];
+        _this.canvas.style.cursor = "move";
+      } else {
+        _this.mouseOverObject = null;
+        _this.canvas.style.cursor = "default";
+      }
+
+      _this.draw();
+    };
+
+    _this.uid = uid;
+
+    _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
+
+    _this.canvas.addEventListener("mouseup", _this.mouseUp, false);
+
+    _this.canvas.addEventListener("mousemove", _this.mouseMove, false);
+
+    _this.canvas.addEventListener('contextmenu', _this.openContextMenu, false);
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 250, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 250, 30, 30));
+
+    _this.boardImage = new Image();
+    _this.boardImage.src = crickit_hat_png_1.default;
+
+    _this.setY(20);
+
+    _this.updateFromFirebase();
+
+    return _this;
+  }
+
+  CrickitHat.prototype.draw = function () {
+    var ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.save();
+    ctx.shadowOffsetX = 8;
+    ctx.shadowOffsetY = 8;
+    ctx.shadowColor = "rgb(96, 96, 96)";
+    ctx.shadowBlur = 8;
+    ctx.drawImage(this.boardImage, 0, 0);
+    ctx.restore();
+    this.drawToolTips();
+  };
+
+  CrickitHat.prototype.drawToolTips = function () {
+    var context = this.canvas.getContext('2d');
+    var x = 0;
+    var y = -25;
+
+    if (this.mouseOverObject == this.handles[0]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[0].getXmax() + 20;
+      y += this.handles[0].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-left handle', true);
+    } else if (this.mouseOverObject == this.handles[1]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[1].getXmin() - 30;
+      y += this.handles[1].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-right handle', true);
+    } else if (this.mouseOverObject == this.handles[2]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[2].getXmin() - 30;
+      y += this.handles[2].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-right handle', true);
+    } else if (this.mouseOverObject == this.handles[3]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[3].getXmax() + 20;
+      y += this.handles[3].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-left handle', true);
+    }
+  };
+
+  CrickitHat.prototype.updateFirebase = function (value) {}; // by default, sensors transmit data every second. This can be adjusted through Firebase.
+
+
+  CrickitHat.prototype.updateFromFirebase = function () {};
+
+  return CrickitHat;
+}(Hat_1.Hat);
+
+exports.CrickitHat = CrickitHat;
+},{"./Hat":"components/Hat.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/crickit-hat.png":"img/crickit-hat.png"}],"img/pan-tilt-hat.png":[function(require,module,exports) {
+module.exports = "/pan-tilt-hat.76b1fdf6.png";
+},{}],"components/PanTiltHat.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * Digital twin for the Unicorn HAT
+ *
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Hat_1 = require("./Hat");
+
+var Rectangle_1 = require("../math/Rectangle");
+
+var Main_1 = require("../Main"); // @ts-ignore
+
+
+var pan_tilt_hat_png_1 = __importDefault(require("../img/pan-tilt-hat.png"));
+
+var PanTiltHat =
+/** @class */
+function (_super) {
+  __extends(PanTiltHat, _super);
+
+  function PanTiltHat(canvasId, uid) {
+    var _this = _super.call(this, canvasId) || this;
+
+    _this.openContextMenu = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+      Main_1.contextMenus.panTiltHat.hat = _this;
+      var menu = document.getElementById(Main_1.contextMenus.panTiltHat.id);
+      menu.style.left = e.clientX + "px";
+      menu.style.top = e.clientY - document.getElementById("tabs").getBoundingClientRect().bottom + "px";
+      menu.classList.add("show-menu");
+      var attachMenuItem = document.getElementById("pan-tilt-hat-attach-menu-item");
+      var detachMenuItem = document.getElementById("pan-tilt-hat-detach-menu-item");
+
+      if (_this.raspberryPi != null) {
+        attachMenuItem.className = "menu-item disabled";
+        detachMenuItem.className = "menu-item";
+      } else {
+        var i = _this.whichRaspberryPi();
+
+        attachMenuItem.className = i >= 0 ? "menu-item" : "menu-item disabled";
+        detachMenuItem.className = "menu-item disabled";
+      }
+    };
+
+    _this.mouseDown = function (e) {};
+
+    _this.mouseUp = function (e) {};
+
+    _this.mouseMove = function (e) {
+      e.preventDefault();
+
+      var rect = _this.canvas.getBoundingClientRect();
+
+      var dx = e.clientX - rect.x;
+      var dy = e.clientY - rect.y;
+
+      if (_this.handles[0].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[0];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[1].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[1];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[2].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[2];
+        _this.canvas.style.cursor = "move";
+      } else if (_this.handles[3].contains(dx, dy)) {
+        _this.mouseOverObject = _this.handles[3];
+        _this.canvas.style.cursor = "move";
+      } else {
+        _this.mouseOverObject = null;
+        _this.canvas.style.cursor = "default";
+      }
+
+      _this.draw();
+    };
+
+    _this.uid = uid;
+
+    _this.canvas.addEventListener("mousedown", _this.mouseDown, false);
+
+    _this.canvas.addEventListener("mouseup", _this.mouseUp, false);
+
+    _this.canvas.addEventListener("mousemove", _this.mouseMove, false);
+
+    _this.canvas.addEventListener('contextmenu', _this.openContextMenu, false);
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 5, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(290, 250, 30, 30));
+
+    _this.handles.push(new Rectangle_1.Rectangle(5, 250, 30, 30));
+
+    _this.boardImage = new Image();
+    _this.boardImage.src = pan_tilt_hat_png_1.default;
+
+    _this.setY(20);
+
+    _this.updateFromFirebase();
+
+    return _this;
+  }
+
+  PanTiltHat.prototype.draw = function () {
+    var ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.save();
+    ctx.shadowOffsetX = 8;
+    ctx.shadowOffsetY = 8;
+    ctx.shadowColor = "rgb(96, 96, 96)";
+    ctx.shadowBlur = 8;
+    ctx.drawImage(this.boardImage, 0, 0);
+    ctx.restore();
+    this.drawToolTips();
+  };
+
+  PanTiltHat.prototype.drawToolTips = function () {
+    var context = this.canvas.getContext('2d');
+    var x = 0;
+    var y = -25;
+
+    if (this.mouseOverObject == this.handles[0]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[0].getXmax() + 20;
+      y += this.handles[0].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-left handle', true);
+    } else if (this.mouseOverObject == this.handles[1]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[1].getXmin() - 30;
+      y += this.handles[1].getYmax() + 30;
+      context.drawTooltip(x, y, 20, 8, 10, 'Upper-right handle', true);
+    } else if (this.mouseOverObject == this.handles[2]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[2].getXmin() - 30;
+      y += this.handles[2].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-right handle', true);
+    } else if (this.mouseOverObject == this.handles[3]) {
+      this.drawHandle(this.mouseOverObject, context);
+      x += this.handles[3].getXmax() + 20;
+      y += this.handles[3].getYmin() - 5;
+      context.drawTooltip(x, y, 20, 8, 10, 'Lower-left handle', true);
+    }
+  };
+
+  PanTiltHat.prototype.updateFirebase = function (value) {}; // by default, sensors transmit data every second. This can be adjusted through Firebase.
+
+
+  PanTiltHat.prototype.updateFromFirebase = function () {};
+
+  return PanTiltHat;
+}(Hat_1.Hat);
+
+exports.PanTiltHat = PanTiltHat;
+},{"./Hat":"components/Hat.ts","../math/Rectangle":"math/Rectangle.ts","../Main":"Main.ts","../img/pan-tilt-hat.png":"img/pan-tilt-hat.png"}],"System.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -2533,9 +3236,23 @@ var Workbench_1 = require("./Workbench");
 
 var RaspberryPi_1 = require("./components/RaspberryPi");
 
+var Hat_1 = require("./components/Hat");
+
 var RainbowHat_1 = require("./components/RainbowHat");
 
-var LineChart_1 = require("./tools/LineChart");
+var SenseHat_1 = require("./components/SenseHat");
+
+var CapacitiveTouchHat_1 = require("./components/CapacitiveTouchHat");
+
+var UnicornHat_1 = require("./components/UnicornHat");
+
+var CrickitHat_1 = require("./components/CrickitHat");
+
+var PanTiltHat_1 = require("./components/PanTiltHat");
+
+var Main_1 = require("./Main");
+
+var Rectangle_1 = require("./math/Rectangle");
 
 var System =
 /** @class */
@@ -2543,25 +3260,37 @@ function () {
   function System() {
     var _this = this;
 
-    this.mouseDown = function (e) {
-      e.preventDefault();
+    this.mcus = [];
+    this.hats = [];
 
+    this.mouseDown = function (e) {
       var rect = _this.playground.getBoundingClientRect();
 
       var x = e.clientX - rect.x;
       var y = e.clientY - rect.y;
+      _this.selectedMovable = null; // if (this.temperatureGraph.isVisible() && this.temperatureGraph.onHandle(x - this.temperatureGraph.getX(), y - this.temperatureGraph.getY())) {
+      //   this.selectedMovable = this.temperatureGraph;
+      // } else if (this.pressureGraph.isVisible() && this.pressureGraph.onHandle(x - this.pressureGraph.getX(), y - this.pressureGraph.getY())) {
+      //   this.selectedMovable = this.pressureGraph;
+      // } else {
+      // always prioritize HATs over Raspberry Pi
 
-      if (_this.rainbowHat.whichHandle(x - _this.rainbowHat.getX(), y - _this.rainbowHat.getY()) >= 0) {
-        _this.selectedMovable = _this.rainbowHat;
-      } else if (_this.temperatureGraph.isVisible() && _this.temperatureGraph.onHandle(x - _this.temperatureGraph.getX(), y - _this.temperatureGraph.getY())) {
-        _this.selectedMovable = _this.temperatureGraph;
-      } else if (_this.pressureGraph.isVisible() && _this.pressureGraph.onHandle(x - _this.pressureGraph.getX(), y - _this.pressureGraph.getY())) {
-        _this.selectedMovable = _this.pressureGraph;
-      } else if (_this.raspberryPi.whichHandle(x - _this.raspberryPi.getX(), y - _this.raspberryPi.getY()) >= 0) {
-        _this.selectedMovable = _this.raspberryPi;
-      } else {
-        _this.selectedMovable = null;
+      for (var i = 0; i < _this.hats.length; i++) {
+        if (_this.hats[i].whichHandle(x - _this.hats[i].getX(), y - _this.hats[i].getY()) >= 0) {
+          _this.selectedMovable = _this.hats[i];
+          break;
+        }
       }
+
+      if (_this.selectedMovable == null) {
+        for (var i = 0; i < _this.mcus.length; i++) {
+          if (_this.mcus[i].whichHandle(x - _this.mcus[i].getX(), y - _this.mcus[i].getY()) >= 0) {
+            _this.selectedMovable = _this.mcus[i];
+            break;
+          }
+        }
+      } //}
+
 
       if (_this.selectedMovable != null) {
         _this.mouseDownRelativeX = e.clientX - _this.selectedMovable.getX();
@@ -2570,29 +3299,19 @@ function () {
     };
 
     this.mouseUp = function (e) {
-      e.preventDefault();
       _this.selectedMovable = null; // close all menus upon mouse left click
 
-      var menu = document.getElementById("workbench-context-menu");
-      menu.classList.remove("show-menu");
-      menu = document.getElementById("raspberry-pi-context-menu");
-      menu.classList.remove("show-menu");
-      menu = document.getElementById("rainbow-hat-context-menu");
-      menu.classList.remove("show-menu");
-      menu = document.getElementById("linechart-context-menu");
-      menu.classList.remove("show-menu");
-      menu = document.getElementById("colorpicker-context-menu");
-      menu.classList.remove("show-menu");
+      Object.keys(Main_1.contextMenus).forEach(function (key) {
+        var menu = document.getElementById(Main_1.contextMenus[key].id);
+        menu.classList.remove("show-menu");
+      });
     };
 
     this.mouseLeave = function (e) {
-      e.preventDefault();
       _this.selectedMovable = null;
     };
 
     this.mouseMove = function (e) {
-      e.preventDefault();
-
       if (_this.selectedMovable != null) {
         _this.moveTo(e.clientX, e.clientY, _this.selectedMovable);
 
@@ -2614,29 +3333,271 @@ function () {
       System.database = firebase.database();
     }
 
-    this.workbench = new Workbench_1.Workbench("workbench");
-    this.raspberryPi = new RaspberryPi_1.RaspberryPi("raspberry-pi");
-    this.rainbowHat = new RainbowHat_1.RainbowHat("rainbow-hat");
-    this.temperatureGraph = new LineChart_1.LineChart("temperature-linechart", this.rainbowHat.temperatureSensor);
-    this.pressureGraph = new LineChart_1.LineChart("pressure-linechart", this.rainbowHat.barometricPressureSensor);
+    this.workbench = new Workbench_1.Workbench("workbench"); //this.temperatureGraph = new LineChart("temperature-linechart", rainbowHat.temperatureSensor);
+    //this.pressureGraph = new LineChart("pressure-linechart", rainbowHat.barometricPressureSensor);
+
     this.playground = document.getElementById("digital-twins-playground");
     this.playground.addEventListener("mousedown", this.mouseDown, false);
     this.playground.addEventListener("mouseup", this.mouseUp, false);
     this.playground.addEventListener("mousemove", this.mouseMove, false);
-    document.addEventListener("mouseleave", this.mouseLeave, false);
+    document.addEventListener("mouseleave", this.mouseLeave, false); // drag and drop support
+
+    var that = this;
+    this.playground.addEventListener("dragstart", function (e) {
+      that.draggedElementId = e.target.id;
+    });
+    this.playground.addEventListener("drag", function (e) {// console.log("dragging: " + (<HTMLElement>e.target).id);
+    });
+    this.playground.addEventListener("dragend", function (e) {// console.log("end drag: " + (<HTMLElement>e.target).id);
+    }); // prevent default to allow drop
+
+    this.playground.addEventListener("dragover", function (e) {
+      e.preventDefault();
+    }, false);
+    this.playground.addEventListener("drop", function (e) {
+      e.preventDefault();
+      console.log("drop: " + that.draggedElementId + ", " + e.target.id);
+
+      if (e.target.id == "workbench") {
+        switch (that.draggedElementId) {
+          case "raspberry-pi-image":
+            that.storeLocation(that.addRaspberryPi(e.offsetX, e.offsetY, "Raspberry Pi " + Date.now().toString(16)));
+            that.storeMcuSequence();
+            break;
+
+          case "rainbow-hat-image":
+            that.addHatByAction("Rainbow HAT", e.offsetX, e.offsetY);
+            break;
+
+          case "sense-hat-image":
+            that.addHatByAction("Sense HAT", e.offsetX, e.offsetY);
+            break;
+
+          case "capacitive-touch-hat-image":
+            that.addHatByAction("Capacitive Touch HAT", e.offsetX, e.offsetY);
+            break;
+
+          case "unicorn-hat-image":
+            that.addHatByAction("Unicorn HAT", e.offsetX, e.offsetY);
+            break;
+
+          case "crickit-hat-image":
+            that.addHatByAction("Crickit HAT", e.offsetX, e.offsetY);
+            break;
+
+          case "pan-tilt-hat-image":
+            that.addHatByAction("Pan-Tilt HAT", e.offsetX, e.offsetY);
+            break;
+        }
+      }
+    }, false);
   }
+
+  System.prototype.addHatByAction = function (name, x, y) {
+    this.storeLocation(this.addHat(name, x, y, name + " #" + Date.now().toString(16)));
+    this.storeHatSequence();
+  };
+  /* Raspberry Pi methods */
+
+
+  System.prototype.getRaspberryPiById = function (uid) {
+    for (var i = 0; i < this.mcus.length; i++) {
+      if (this.mcus[i] instanceof RaspberryPi_1.RaspberryPi) {
+        if (this.mcus[i].uid == uid) {
+          return this.mcus[i];
+        }
+      }
+    }
+
+    return null;
+  };
+
+  System.prototype.removeRaspberryPiByIndex = function (selectedIndex) {
+    var canvas = this.mcus[selectedIndex].canvas;
+    this.playground.removeChild(canvas);
+    this.mcus.splice(selectedIndex, 1);
+    this.storeMcuSequence();
+  };
+
+  System.prototype.removeRaspberryPi = function (raspberryPi) {
+    this.removeRaspberryPiByIndex(this.mcus.indexOf(raspberryPi));
+  };
+
+  System.prototype.addRaspberryPi = function (x, y, uid) {
+    var canvas = document.createElement("canvas");
+    canvas.id = "raspberry-pi-" + this.mcus.length;
+    canvas.width = 435;
+    canvas.height = 295;
+    canvas.style.display = "block";
+    canvas.style.margin = "auto";
+    canvas.style.position = "absolute";
+    canvas.style.left = "10px";
+    canvas.style.top = "10px";
+    canvas.style.zIndex = "49";
+    this.playground.appendChild(canvas);
+    var pi = new RaspberryPi_1.RaspberryPi(canvas.id, uid);
+    this.mcus.push(pi);
+    pi.setX(x - canvas.width / 2);
+    pi.setY(y - canvas.height / 2);
+    this.draw();
+    return pi;
+  };
+
+  System.prototype.whichRaspberryPi = function (x, y) {
+    for (var i = 0; i < this.mcus.length; i++) {
+      var mcu = this.mcus[i];
+
+      if (mcu instanceof RaspberryPi_1.RaspberryPi) {
+        var r = new Rectangle_1.Rectangle(mcu.getX(), mcu.getY(), mcu.getWidth(), mcu.getHeight());
+
+        if (r.contains(x, y)) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
+  };
+  /* HAT methods */
+
+
+  System.prototype.getHatById = function (uid) {
+    for (var i = 0; i < this.hats.length; i++) {
+      if (this.mcus[i].uid == uid) {
+        return this.hats[i];
+      }
+    }
+
+    return null;
+  };
+
+  System.prototype.removeHatByIndex = function (selectedIndex) {
+    var canvas = this.hats[selectedIndex].canvas;
+    this.playground.removeChild(canvas);
+    this.hats.splice(selectedIndex, 1);
+    this.storeHatSequence();
+  };
+
+  System.prototype.removeHat = function (hat) {
+    this.removeHatByIndex(this.hats.indexOf(hat));
+  };
+
+  System.prototype.addHat = function (type, x, y, uid) {
+    var canvas = document.createElement("canvas");
+    canvas.style.display = "block";
+    canvas.style.margin = "auto";
+    canvas.style.position = "absolute";
+    canvas.style.left = "10px";
+    canvas.style.top = "10px";
+    canvas.style.zIndex = "99";
+    this.playground.appendChild(canvas);
+    var hat = null;
+
+    switch (type) {
+      case "Rainbow HAT":
+        canvas.id = "rainbow-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 290;
+        hat = new RainbowHat_1.RainbowHat(canvas.id, uid);
+        break;
+
+      case "Sense HAT":
+        canvas.id = "sense-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 290;
+        hat = new SenseHat_1.SenseHat(canvas.id, uid);
+        break;
+
+      case "Capacitive Touch HAT":
+        canvas.id = "capacitive-touch-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 290;
+        hat = new CapacitiveTouchHat_1.CapacitiveTouchHat(canvas.id, uid);
+        break;
+
+      case "Unicorn HAT":
+        canvas.id = "unicorn-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 380;
+        hat = new UnicornHat_1.UnicornHat(canvas.id, uid);
+        break;
+
+      case "Crickit HAT":
+        canvas.id = "crickit-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 290;
+        hat = new CrickitHat_1.CrickitHat(canvas.id, uid);
+        break;
+
+      case "Pan-Tilt HAT":
+        canvas.id = "pan-tilt-hat-" + this.hats.length;
+        canvas.width = 330;
+        canvas.height = 290;
+        hat = new PanTiltHat_1.PanTiltHat(canvas.id, uid);
+        break;
+    }
+
+    if (hat != null) {
+      this.hats.push(hat);
+      hat.setX(x - canvas.width / 2);
+      hat.setY(y - canvas.height / 2);
+      this.draw();
+    }
+
+    return hat;
+  };
+
+  System.prototype.whichHat = function (x, y) {
+    for (var i = 0; i < this.hats.length; i++) {
+      var hat = this.hats[i];
+      var r = new Rectangle_1.Rectangle(hat.getX(), hat.getY(), hat.getWidth(), hat.getHeight());
+
+      if (r.contains(x, y)) {
+        return i;
+      }
+    }
+
+    return -1;
+  };
 
   System.prototype.draw = function () {
     this.workbench.draw();
-    this.raspberryPi.draw();
-    this.rainbowHat.draw();
+    var i;
+
+    for (i = 0; i < this.mcus.length; i++) {
+      this.mcus[i].draw();
+    }
+
+    for (i = 0; i < this.hats.length; i++) {
+      this.hats[i].draw();
+    }
+  };
+
+  System.prototype.storeMcuSequence = function () {
+    var s = "";
+
+    for (var i = 0; i < this.mcus.length; i++) {
+      s += this.mcus[i].getUid() + ", ";
+    }
+
+    localStorage.setItem("MCU Sequence", s.substring(0, s.length - 2));
+  };
+
+  System.prototype.storeHatSequence = function () {
+    var s = "";
+
+    for (var i = 0; i < this.hats.length; i++) {
+      s += this.hats[i].getUid() + ", ";
+    }
+
+    localStorage.setItem("HAT Sequence", s.substring(0, s.length - 2));
   };
 
   System.prototype.storeLocation = function (m) {
     localStorage.setItem("X: " + m.getUid(), m.getX().toString());
     localStorage.setItem("Y: " + m.getUid(), m.getY().toString());
 
-    if (m instanceof RainbowHat_1.RainbowHat) {
+    if (m instanceof Hat_1.Hat) {
       if (m.raspberryPi != null) {
         localStorage.setItem("X: " + m.raspberryPi.getUid(), m.raspberryPi.getX().toString());
         localStorage.setItem("Y: " + m.raspberryPi.getUid(), m.raspberryPi.getY().toString());
@@ -2671,7 +3632,7 @@ function () {
     m.setX(dx);
     m.setY(dy);
 
-    if (m instanceof RainbowHat_1.RainbowHat) {
+    if (m instanceof Hat_1.Hat) {
       if (m.raspberryPi != null) {
         m.raspberryPi.setX(m.getX());
         m.raspberryPi.setY(m.getY());
@@ -2688,17 +3649,7 @@ function () {
 }();
 
 exports.System = System;
-},{"./Workbench":"Workbench.ts","./components/RaspberryPi":"components/RaspberryPi.ts","./components/RainbowHat":"components/RainbowHat.ts","./tools/LineChart":"tools/LineChart.ts"}],"img/sense-hat.png":[function(require,module,exports) {
-module.exports = "/sense-hat.432da3f3.png";
-},{}],"img/unicorn-hat.png":[function(require,module,exports) {
-module.exports = "/unicorn-hat.9a311ef5.png";
-},{}],"img/crickit-hat.png":[function(require,module,exports) {
-module.exports = "/crickit-hat.0ec2493d.png";
-},{}],"img/capacitive-touch-hat.png":[function(require,module,exports) {
-module.exports = "/capacitive-touch-hat.f7ea211b.png";
-},{}],"img/pan-tilt-hat.png":[function(require,module,exports) {
-module.exports = "/pan-tilt-hat.76b1fdf6.png";
-},{}],"img/full-breadboard.png":[function(require,module,exports) {
+},{"./Workbench":"Workbench.ts","./components/RaspberryPi":"components/RaspberryPi.ts","./components/Hat":"components/Hat.ts","./components/RainbowHat":"components/RainbowHat.ts","./components/SenseHat":"components/SenseHat.ts","./components/CapacitiveTouchHat":"components/CapacitiveTouchHat.ts","./components/UnicornHat":"components/UnicornHat.ts","./components/CrickitHat":"components/CrickitHat.ts","./components/PanTiltHat":"components/PanTiltHat.ts","./Main":"Main.ts","./math/Rectangle":"math/Rectangle.ts"}],"img/full-breadboard.png":[function(require,module,exports) {
 module.exports = "/full-breadboard.fbf8f80b.png";
 },{}],"img/half-breadboard.png":[function(require,module,exports) {
 module.exports = "/half-breadboard.d3670523.png";
@@ -2785,7 +3736,7 @@ function () {
   function ComponentsPanel() {}
 
   ComponentsPanel.prototype.getUi = function () {
-    return "<h2 style=\"text-align: center; vertical-align: top; margin-top: 0;\">\n                <span style=\"font-size: 1.2em; color: teal; vertical-align: middle;\"><i class=\"fas fa-cubes\"></i></span> Components</h2>\n            <hr>\n            <div id=\"components-scroller\" style=\"overflow-y: auto; height: 360px;\">\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> Microcontrollers</h3>\n              <div class=\"row\" style=\"margin-right: 10px; background-color: lightskyblue; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + raspberry_pi_png_1.default + "\" draggable=\"true\" id=\"raspberry-pi-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Raspberry Pi\">\n                </div>\n              </div>\n              <div class=\"vertical-divider\"></div>\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> HATs</h3>\n              <div class=\"row\" style=\"margin-right: 10px;  background-color: lightblue; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + rainbow_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Rainbow HAT\">\n                  <img src=\"" + sense_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Sense HAT\">\n                  <img src=\"" + capacitive_touch_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Capacitive Touch HAT\">\n               </div>\n                <div class=\"column\">\n                  <img src=\"" + unicorn_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Unicorn HAT\">\n                  <img src=\"" + crickit_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Crickit HAT\">\n                  <img src=\"" + pan_tilt_hat_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Pan-Tilt HAT\">\n               </div>\n              </div>\n              <div class=\"vertical-divider\"></div>\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> Others</h3>\n              <div class=\"row\" style=\"margin-right: 10px;  background-color: lightyellow; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + full_breadboard_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Full Breadboard\">\n                  <img src=\"" + red_led_light_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Red LED Light\">\n                  <img src=\"" + green_led_light_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Green LED Light\">\n                  <img src=\"" + blue_led_light_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Blue LED Light\">\n                 <img src=\"" + tricolor_led_light_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Tricolor LED Light\">\n                </div>\n                <div class=\"column\">\n                  <img src=\"" + half_breadboard_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Half Breadboard\">\n                  <img src=\"" + momentary_button_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Momentary Button\">\n                  <img src=\"" + toggle_switch_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Toggle Switch\">\n                  <img src=\"" + piezo_buzzer_png_1.default + "\" draggable=\"true\" style=\"width:100%; cursor: pointer;\" title=\"Piezo Buzzer\">\n                </div>\n              </div>\n            </div>";
+    return "<h2 style=\"text-align: center; vertical-align: top; margin-top: 0;\">\n                <span style=\"font-size: 1.2em; color: teal; vertical-align: middle;\"><i class=\"fas fa-cubes\"></i></span> Components</h2>\n            <hr>\n            <div id=\"components-scroller\" style=\"overflow-y: auto; height: 360px;\">\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> Microcontrollers</h3>\n              <div class=\"row\" style=\"margin-right: 10px; background-color: lightskyblue; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + raspberry_pi_png_1.default + "\" draggable=\"true\" id=\"raspberry-pi-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Raspberry Pi\" alt=\"Raspberry Pi\">\n                </div>\n              </div>\n              <div class=\"vertical-divider\"></div>\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> HATs</h3>\n              <div class=\"row\" style=\"margin-right: 10px;  background-color: lightblue; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + rainbow_hat_png_1.default + "\" draggable=\"true\" id=\"rainbow-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Rainbow HAT\" alt=\"Rainbow HAT\">\n                  <img src=\"" + sense_hat_png_1.default + "\" draggable=\"true\" id=\"sense-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Sense HAT\" alt=\"Sense HAT\">\n                  <img src=\"" + capacitive_touch_hat_png_1.default + "\" draggable=\"true\" id=\"capacitive-touch-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Capacitive Touch HAT\" alt=\"Capacitive Touch HAT\">\n               </div>\n                <div class=\"column\">\n                  <img src=\"" + unicorn_hat_png_1.default + "\" draggable=\"true\" id=\"unicorn-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Unicorn HAT\" alt=\"Unicorn HAT\">\n                  <img src=\"" + crickit_hat_png_1.default + "\" draggable=\"true\" id=\"crickit-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Crickit HAT\" alt=\"Crickit HAT\">\n                  <img src=\"" + pan_tilt_hat_png_1.default + "\" draggable=\"true\" id=\"pan-tilt-hat-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Pan-Tilt HAT\" alt=\"Pan-Tilt HAT\">\n               </div>\n              </div>\n              <div class=\"vertical-divider\"></div>\n              <h3 style=\"text-align: left\"><span style=\"font-size: 1.2em; color: teal; vertical-align: middle\"><i class=\"fas fa-cube\"></i></span> Others</h3>\n              <div class=\"row\" style=\"margin-right: 10px;  background-color: lightyellow; border: 1px solid #b81900; border-radius: 4px\">\n                <div class=\"column\">\n                  <img src=\"" + full_breadboard_png_1.default + "\" draggable=\"true\" id=\"full-breadboard-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Full Breadboard\" alt=\"Full Breadboard\">\n                  <img src=\"" + red_led_light_png_1.default + "\" draggable=\"true\" id=\"red-led-light-image\" style=\"width:100%; cursor: pointer;\" title=\"Red LED Light\" alt=\"Red LED Light\">\n                  <img src=\"" + green_led_light_png_1.default + "\" draggable=\"true\" id=\"green-led-light-image\" style=\"width:100%; cursor: pointer;\" title=\"Green LED Light\" alt=\"Green LED Light\">\n                  <img src=\"" + blue_led_light_png_1.default + "\" draggable=\"true\" id=\"blue-led-light-image\" style=\"width:100%; cursor: pointer;\" title=\"Blue LED Light\" alt=\"Blue LED Light\">\n                 <img src=\"" + tricolor_led_light_png_1.default + "\" draggable=\"true\" id=\"tricolor-led-light-image\" style=\"width:100%; cursor: pointer;\" title=\"Tricolor LED Light\" alt=\"Tricolor LED Light\">\n                </div>\n                <div class=\"column\">\n                  <img src=\"" + half_breadboard_png_1.default + "\" draggable=\"true\" id=\"half-breadboard-image\" style=\"width:100%; cursor: pointer; box-shadow: 5px 5px 5px gray;\" title=\"Half Breadboard\" alt=\"Half Breadboard\">\n                  <img src=\"" + momentary_button_png_1.default + "\" draggable=\"true\" id=\"momentary-button-image\" style=\"width:100%; cursor: pointer;\" title=\"Momentary Button\" alt=\"Momentary Button\">\n                  <img src=\"" + toggle_switch_png_1.default + "\" draggable=\"true\" id=\"toggle-switch-image\" style=\"width:100%; cursor: pointer;\" title=\"Toggle Switch\" alt=\"Toggle Switch\">\n                  <img src=\"" + piezo_buzzer_png_1.default + "\" draggable=\"true\" id=\"piezo-buzzer-image\" style=\"width:100%; cursor: pointer;\" title=\"Piezo Buzzer\" alt=\"Piezo Buzzer\">\n                </div>\n              </div>\n            </div>";
   };
 
   ComponentsPanel.prototype.render = function (selectorId) {
@@ -2797,7 +3748,7 @@ function () {
 }();
 
 exports.ComponentsPanel = ComponentsPanel;
-},{"./img/raspberry-pi.png":"img/raspberry-pi.png","./img/rainbow-hat.png":"img/rainbow-hat.png","./img/sense-hat.png":"img/sense-hat.png","./img/unicorn-hat.png":"img/unicorn-hat.png","./img/crickit-hat.png":"img/crickit-hat.png","./img/capacitive-touch-hat.png":"img/capacitive-touch-hat.png","./img/pan-tilt-hat.png":"img/pan-tilt-hat.png","./img/full-breadboard.png":"img/full-breadboard.png","./img/half-breadboard.png":"img/half-breadboard.png","./img/red-led-light.png":"img/red-led-light.png","./img/green-led-light.png":"img/green-led-light.png","./img/blue-led-light.png":"img/blue-led-light.png","./img/tricolor-led-light.png":"img/tricolor-led-light.png","./img/momentary-button.png":"img/momentary-button.png","./img/toggle-switch.png":"img/toggle-switch.png","./img/piezo-buzzer.png":"img/piezo-buzzer.png"}],"RainbowHatContextMenu.ts":[function(require,module,exports) {
+},{"./img/raspberry-pi.png":"img/raspberry-pi.png","./img/rainbow-hat.png":"img/rainbow-hat.png","./img/sense-hat.png":"img/sense-hat.png","./img/unicorn-hat.png":"img/unicorn-hat.png","./img/crickit-hat.png":"img/crickit-hat.png","./img/capacitive-touch-hat.png":"img/capacitive-touch-hat.png","./img/pan-tilt-hat.png":"img/pan-tilt-hat.png","./img/full-breadboard.png":"img/full-breadboard.png","./img/half-breadboard.png":"img/half-breadboard.png","./img/red-led-light.png":"img/red-led-light.png","./img/green-led-light.png":"img/green-led-light.png","./img/blue-led-light.png":"img/blue-led-light.png","./img/tricolor-led-light.png":"img/tricolor-led-light.png","./img/momentary-button.png":"img/momentary-button.png","./img/toggle-switch.png":"img/toggle-switch.png","./img/piezo-buzzer.png":"img/piezo-buzzer.png"}],"ui/ComponentContextMenu.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -2807,77 +3758,225 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Main_1 = require("./Main");
+var ComponentContextMenu =
+/** @class */
+function () {
+  function ComponentContextMenu() {}
+
+  ComponentContextMenu.prototype.render = function (selectorId) {
+    var element = document.getElementById(selectorId);
+    element.innerHTML = this.getUi();
+  };
+
+  return ComponentContextMenu;
+}();
+
+exports.ComponentContextMenu = ComponentContextMenu;
+},{}],"ui/HatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Main_1 = require("../Main");
+
+var ComponentContextMenu_1 = require("./ComponentContextMenu");
+
+var HatContextMenu =
+/** @class */
+function (_super) {
+  __extends(HatContextMenu, _super);
+
+  function HatContextMenu() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  HatContextMenu.prototype.addListeners = function () {
+    var attachButton = document.getElementById(this.id + "-attach-button");
+    attachButton.addEventListener("click", this.attachButtonClick.bind(this), false);
+    var detachButton = document.getElementById(this.id + "-detach-button");
+    detachButton.addEventListener("click", this.detachButtonClick.bind(this), false);
+    var deleteButton = document.getElementById(this.id + "-delete-button");
+    deleteButton.addEventListener("click", this.deleteButtonClick.bind(this), false);
+  };
+
+  HatContextMenu.prototype.deleteButtonClick = function (e) {
+    if (this.hat) {
+      if (confirm("Are you sure you want to delete " + this.hat.uid + "?")) {
+        Main_1.system.removeHat(this.hat);
+      }
+    }
+  };
+
+  HatContextMenu.prototype.attachButtonClick = function (e) {
+    e.preventDefault();
+    var menu = document.getElementById(this.id);
+    menu.classList.remove("show-menu");
+    var i = this.hat.whichRaspberryPi();
+
+    if (i >= 0) {
+      this.hat.attach(Main_1.system.mcus[i]);
+    }
+  };
+
+  HatContextMenu.prototype.detachButtonClick = function (e) {
+    e.preventDefault();
+    var menu = document.getElementById(this.id);
+    menu.classList.remove("show-menu");
+    this.hat.attach(null);
+  };
+
+  return HatContextMenu;
+}(ComponentContextMenu_1.ComponentContextMenu);
+
+exports.HatContextMenu = HatContextMenu;
+},{"../Main":"Main.ts","./ComponentContextMenu":"ui/ComponentContextMenu.ts"}],"ui/RainbowHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
 
 var RainbowHatContextMenu =
 /** @class */
-function () {
-  function RainbowHatContextMenu() {}
+function (_super) {
+  __extends(RainbowHatContextMenu, _super);
+
+  function RainbowHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "rainbow-hat-context-menu";
+    return _this;
+  }
 
   RainbowHatContextMenu.prototype.getUi = function () {
-    return "<menu id=\"rainbow-hat-context-menu\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"rainbow-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"rainbow-hat-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"rainbow-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"rainbow-hat-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
-  };
-
-  RainbowHatContextMenu.prototype.render = function (selectorId) {
-    var element = document.getElementById(selectorId);
-    element.innerHTML = this.getUi();
-  };
-
-  RainbowHatContextMenu.prototype.addListeners = function () {
-    var attachButton = document.getElementById("rainbow-hat-attach-button");
-    attachButton.addEventListener("click", this.attachButtonClick.bind(this), false);
-    var detachButton = document.getElementById("rainbow-hat-detach-button");
-    detachButton.addEventListener("click", this.detachButtonClick.bind(this), false);
-  };
-
-  RainbowHatContextMenu.prototype.attachButtonClick = function (e) {
-    e.preventDefault();
-    var menu = document.getElementById("rainbow-hat-context-menu");
-    menu.classList.remove("show-menu");
-    Main_1.system.rainbowHat.attach(Main_1.system.raspberryPi);
-  };
-
-  RainbowHatContextMenu.prototype.detachButtonClick = function (e) {
-    e.preventDefault();
-    console.log("detach");
-    var menu = document.getElementById("rainbow-hat-context-menu");
-    menu.classList.remove("show-menu");
-    Main_1.system.rainbowHat.attach(null);
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"rainbow-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"rainbow-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"rainbow-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
   };
 
   return RainbowHatContextMenu;
-}();
+}(HatContextMenu_1.HatContextMenu);
 
 exports.RainbowHatContextMenu = RainbowHatContextMenu;
-},{"./Main":"Main.ts"}],"WorkbenchContextMenu.ts":[function(require,module,exports) {
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"ui/WorkbenchContextMenu.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
  */
 
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var ComponentContextMenu_1 = require("./ComponentContextMenu");
+
 var WorkbenchContextMenu =
 /** @class */
-function () {
-  function WorkbenchContextMenu() {}
+function (_super) {
+  __extends(WorkbenchContextMenu, _super);
+
+  function WorkbenchContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "workbench-context-menu";
+    return _this;
+  }
 
   WorkbenchContextMenu.prototype.getUi = function () {
-    return "<menu id=\"workbench-context-menu\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-folder-open\"></i><span class=\"menu-text\">Open</span></button>\n              </li>\n              <li class=\"menu-item disabled\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-download\"></i><span class=\"menu-text\">Save</span></button>\n              </li>\n              <li class=\"menu-separator\"></li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item submenu\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-file-import\"></i><span class=\"menu-text\">Import</span></button>\n\n                <menu class=\"menu\" style=\"width: 160px;\">\n                  <li class=\"menu-item\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Breadboard</span></button>\n                  </li>\n\n                  <li class=\"menu-item submenu\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Sensors</span></button>\n                    <menu class=\"menu\" style=\"width: 120px;\">\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">BME280</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">TSL2561</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">HCSR04</span></button>\n                      </li>\n                    </menu>\n                  </li>\n\n                  <li class=\"menu-item submenu\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Actuators</span></button>\n                    <menu class=\"menu\" style=\"width: 180px;\">\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Buzzer</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Servo Motor</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">LED Light</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Multicolor LED Light</span></button>\n                      </li>\n                    </menu>\n                  </li>\n\n                </menu>\n              </li>\n            </menu>";
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-folder-open\"></i><span class=\"menu-text\">Open</span></button>\n              </li>\n              <li class=\"menu-item disabled\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-download\"></i><span class=\"menu-text\">Save</span></button>\n              </li>\n              <li class=\"menu-separator\"></li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item submenu\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-file-import\"></i><span class=\"menu-text\">Import</span></button>\n\n                <menu class=\"menu\" style=\"width: 160px;\">\n                  <li class=\"menu-item\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Breadboard</span></button>\n                  </li>\n\n                  <li class=\"menu-item submenu\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Sensors</span></button>\n                    <menu class=\"menu\" style=\"width: 120px;\">\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">BME280</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">TSL2561</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">HCSR04</span></button>\n                      </li>\n                    </menu>\n                  </li>\n\n                  <li class=\"menu-item submenu\">\n                    <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Actuators</span></button>\n                    <menu class=\"menu\" style=\"width: 180px;\">\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Buzzer</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Servo Motor</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">LED Light</span></button>\n                      </li>\n                      <li class=\"menu-item\">\n                        <button type=\"button\" class=\"menu-btn\"><span class=\"menu-text\">Multicolor LED Light</span></button>\n                      </li>\n                    </menu>\n                  </li>\n\n                </menu>\n              </li>\n            </menu>";
   };
 
-  WorkbenchContextMenu.prototype.render = function (selectorId) {
-    var element = document.getElementById(selectorId);
-    element.innerHTML = this.getUi();
+  WorkbenchContextMenu.prototype.addListeners = function () {// TODO
   };
 
   return WorkbenchContextMenu;
-}();
+}(ComponentContextMenu_1.ComponentContextMenu);
 
 exports.WorkbenchContextMenu = WorkbenchContextMenu;
-},{}],"LineChartContextMenu.ts":[function(require,module,exports) {
+},{"./ComponentContextMenu":"ui/ComponentContextMenu.ts"}],"ui/LineChartContextMenu.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -2890,10 +3989,12 @@ Object.defineProperty(exports, "__esModule", {
 var LineChartContextMenu =
 /** @class */
 function () {
-  function LineChartContextMenu() {}
+  function LineChartContextMenu() {
+    this.id = "linechart-context-menu";
+  }
 
   LineChartContextMenu.prototype.getUi = function () {
-    return "<menu id=\"linechart-context-menu\" class=\"menu\" style=\"z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-palette\"></i><span class=\"menu-text\">Colors</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-cog\"></i><span class=\"menu-text\">Options</span></button>\n              </li>\n            </menu>";
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-palette\"></i><span class=\"menu-text\">Colors</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-cog\"></i><span class=\"menu-text\">Options</span></button>\n              </li>\n            </menu>";
   };
 
   LineChartContextMenu.prototype.render = function (selectorId) {
@@ -2905,35 +4006,80 @@ function () {
 }();
 
 exports.LineChartContextMenu = LineChartContextMenu;
-},{}],"RaspberryPiContextMenu.ts":[function(require,module,exports) {
+},{}],"ui/RaspberryPiContextMenu.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
  */
 
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var Main_1 = require("../Main");
+
+var ComponentContextMenu_1 = require("./ComponentContextMenu");
 
 var RaspberryPiContextMenu =
 /** @class */
-function () {
-  function RaspberryPiContextMenu() {}
+function (_super) {
+  __extends(RaspberryPiContextMenu, _super);
+
+  function RaspberryPiContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "raspberry-pi-context-menu";
+    return _this;
+  }
 
   RaspberryPiContextMenu.prototype.getUi = function () {
-    return "<menu id=\"raspberry-pi-context-menu\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\"><i class=\"fas fa-cogs\"></i><span class=\"menu-text\">Settings</span></button>\n              </li>\n            </menu>";
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\">\n                <button type=\"button\" id=\"raspberry-pi-context-menu-delete-button\" class=\"menu-btn\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" id=\"raspberry-pi-context-menu-settings-button\" class=\"menu-btn\"><i class=\"fas fa-cog\"></i><span class=\"menu-text\">Settings</span></button>\n              </li>\n            </menu>";
   };
 
-  RaspberryPiContextMenu.prototype.render = function (selectorId) {
-    var element = document.getElementById(selectorId);
-    element.innerHTML = this.getUi();
+  RaspberryPiContextMenu.prototype.addListeners = function () {
+    var deleteButton = document.getElementById("raspberry-pi-context-menu-delete-button");
+    deleteButton.addEventListener("click", this.deleteButtonClick.bind(this), false);
+  };
+
+  RaspberryPiContextMenu.prototype.deleteButtonClick = function (e) {
+    if (this.raspberryPi) {
+      if (confirm("Are you sure you want to delete " + this.raspberryPi.uid + "?")) {
+        Main_1.system.removeRaspberryPi(this.raspberryPi);
+      }
+    }
   };
 
   return RaspberryPiContextMenu;
-}();
+}(ComponentContextMenu_1.ComponentContextMenu);
 
 exports.RaspberryPiContextMenu = RaspberryPiContextMenu;
-},{}],"ColorPickerContextMenu.ts":[function(require,module,exports) {
+},{"../Main":"Main.ts","./ComponentContextMenu":"ui/ComponentContextMenu.ts"}],"ui/ColorPickerContextMenu.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2943,15 +4089,17 @@ Object.defineProperty(exports, "__esModule", {
  * @author Charles Xie
  */
 
-var Main_1 = require("./Main");
+var Main_1 = require("../Main");
 
 var ColorPickerContextMenu =
 /** @class */
 function () {
-  function ColorPickerContextMenu() {}
+  function ColorPickerContextMenu() {
+    this.id = "colorpicker-context-menu";
+  }
 
   ColorPickerContextMenu.prototype.getUi = function () {
-    return "<menu id=\"colorpicker-context-menu\" class=\"menu\" style=\"width: 338px; z-index: 10000\">\n              <li class=\"menu-item\">\n                <div id=\"colorpicker-title\" style=\"text-align: center; padding: 4px; font-family: inherit; font-size: 14px;\"></div>\n                <div id=\"colorpicker\" style=\"cursor: crosshair; margin: 1px 1px 1px 1px\">\n                  <canvas id=\"color-block\" height=\"300\" width=\"300\"></canvas>\n                  <canvas id=\"color-strip\" height=\"300\" width=\"30\"></canvas>\n                </div>\n                <div style=\"display: table; margin: auto; padding: 5px 5px 5px 5px;\">\n                  <input type=\"text\" readonly id=\"colorpicker-hex-code\" value=\"#FFFFFF\" style=\"width: 60px; height: 20px; border: 1px solid black; vertical-align: middle; text-align: center; font: 12px Verdana;\">\n                  <div class=\"horizontal-divider\"></div>\n                  <div id=\"colorpicker-label\" style=\"vertical-align: middle; width: 20px; height: 20px; border: 2px solid black; display: inline-block;\"></div>\n                  <div class=\"horizontal-divider\"></div>\n                  <button id=\"colorpicker-cancel-button\" style=\"font: 12px Verdana\">Cancel</button>\n                  <div class=\"horizontal-divider\"></div>\n                  <button id=\"colorpicker-ok-button\" style=\"font: 12px Verdana\">OK</button>\n                </div>\n              </li>\n            </menu>";
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 338px; z-index: 10000;\">\n              <li class=\"menu-item\">\n                <div id=\"colorpicker-title\" style=\"text-align: center; padding: 4px; font-family: inherit; font-size: 14px;\"></div>\n                <div id=\"colorpicker\" style=\"cursor: crosshair; margin: 1px 1px 1px 1px\">\n                  <canvas id=\"color-block\" height=\"300\" width=\"300\"></canvas>\n                  <canvas id=\"color-strip\" height=\"300\" width=\"30\"></canvas>\n                </div>\n                <div style=\"display: table; margin: auto; padding: 5px 5px 5px 5px;\">\n                  <input type=\"text\" readonly id=\"colorpicker-hex-code\" value=\"#FFFFFF\" style=\"width: 60px; height: 20px; border: 1px solid black; vertical-align: middle; text-align: center; font: 12px Verdana;\">\n                  <div class=\"horizontal-divider\"></div>\n                  <div id=\"colorpicker-label\" style=\"vertical-align: middle; width: 20px; height: 20px; border: 2px solid black; display: inline-block;\"></div>\n                  <div class=\"horizontal-divider\"></div>\n                  <button id=\"colorpicker-cancel-button\" style=\"font: 12px Verdana\">Cancel</button>\n                  <div class=\"horizontal-divider\"></div>\n                  <button id=\"colorpicker-ok-button\" style=\"font: 12px Verdana\">OK</button>\n                </div>\n              </li>\n            </menu>";
   };
 
   ColorPickerContextMenu.prototype.render = function (selectorId) {
@@ -2960,16 +4108,35 @@ function () {
     var cancelButton = document.getElementById("colorpicker-cancel-button");
 
     cancelButton.onclick = function () {
-      var menu = document.getElementById("colorpicker-context-menu");
+      var menu = document.getElementById(that.id);
       menu.classList.remove("show-menu");
     };
 
     var okButton = document.getElementById("colorpicker-ok-button");
+    var that = this;
 
     okButton.onclick = function () {
-      Main_1.system.rainbowHat.setSelectedRgbLedLightColor(Main_1.system.colorPicker.getSelectedColor());
-      var menu = document.getElementById("colorpicker-context-menu");
+      if (that.rainbowHat) {
+        that.rainbowHat.setSelectedRgbLedLightColor(Main_1.system.colorPicker.getSelectedColor());
+      }
+
+      var menu = document.getElementById(that.id);
       menu.classList.remove("show-menu");
+    }; // prevent the mouse event from being propagated to the playground
+
+
+    var menu = document.getElementById(this.id);
+
+    menu.onmousedown = function (e) {
+      e.stopPropagation();
+    };
+
+    menu.onmouseup = function (e) {
+      e.stopPropagation();
+    };
+
+    menu.onmousemove = function (e) {
+      e.stopPropagation();
     };
   };
 
@@ -2977,7 +4144,7 @@ function () {
 }();
 
 exports.ColorPickerContextMenu = ColorPickerContextMenu;
-},{"./Main":"Main.ts"}],"code/Block.ts":[function(require,module,exports) {
+},{"../Main":"Main.ts"}],"code/Block.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -3201,7 +4368,297 @@ function () {
 }();
 
 exports.Code = Code;
-},{"./Codespace":"code/Codespace.ts"}],"Main.ts":[function(require,module,exports) {
+},{"./Codespace":"code/Codespace.ts"}],"ui/SenseHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
+
+var SenseHatContextMenu =
+/** @class */
+function (_super) {
+  __extends(SenseHatContextMenu, _super);
+
+  function SenseHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "sense-hat-context-menu";
+    return _this;
+  }
+
+  SenseHatContextMenu.prototype.getUi = function () {
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"sense-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"sense-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"sense-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
+  };
+
+  return SenseHatContextMenu;
+}(HatContextMenu_1.HatContextMenu);
+
+exports.SenseHatContextMenu = SenseHatContextMenu;
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"ui/CapacitiveTouchHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
+
+var CapacitiveTouchHatContextMenu =
+/** @class */
+function (_super) {
+  __extends(CapacitiveTouchHatContextMenu, _super);
+
+  function CapacitiveTouchHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "capacitive-touch-hat-context-menu";
+    return _this;
+  }
+
+  CapacitiveTouchHatContextMenu.prototype.getUi = function () {
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"capacitive-touch-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"capacitive-touch-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"capacitive-touch-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
+  };
+
+  return CapacitiveTouchHatContextMenu;
+}(HatContextMenu_1.HatContextMenu);
+
+exports.CapacitiveTouchHatContextMenu = CapacitiveTouchHatContextMenu;
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"ui/UnicornHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
+
+var UnicornHatContextMenu =
+/** @class */
+function (_super) {
+  __extends(UnicornHatContextMenu, _super);
+
+  function UnicornHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "unicorn-hat-context-menu";
+    return _this;
+  }
+
+  UnicornHatContextMenu.prototype.getUi = function () {
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"unicorn-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"unicorn-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"unicorn-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
+  };
+
+  return UnicornHatContextMenu;
+}(HatContextMenu_1.HatContextMenu);
+
+exports.UnicornHatContextMenu = UnicornHatContextMenu;
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"ui/CrickitHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
+
+var CrickitHatContextMenu =
+/** @class */
+function (_super) {
+  __extends(CrickitHatContextMenu, _super);
+
+  function CrickitHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "crickit-hat-context-menu";
+    return _this;
+  }
+
+  CrickitHatContextMenu.prototype.getUi = function () {
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"crickit-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"crickit-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"crickit-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
+  };
+
+  return CrickitHatContextMenu;
+}(HatContextMenu_1.HatContextMenu);
+
+exports.CrickitHatContextMenu = CrickitHatContextMenu;
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"ui/PanTiltHatContextMenu.ts":[function(require,module,exports) {
+"use strict";
+/*
+ * @author Charles Xie
+ */
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var HatContextMenu_1 = require("./HatContextMenu");
+
+var PanTiltHatContextMenu =
+/** @class */
+function (_super) {
+  __extends(PanTiltHatContextMenu, _super);
+
+  function PanTiltHatContextMenu() {
+    var _this = _super.call(this) || this;
+
+    _this.id = "pan-tilt-hat-context-menu";
+    return _this;
+  }
+
+  PanTiltHatContextMenu.prototype.getUi = function () {
+    return "<menu id=\"" + this.id + "\" class=\"menu\" style=\"width: 120px; z-index: 10000\">\n              <li class=\"menu-item\" id=\"pan-tilt-hat-attach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-attach-button\"><i class=\"fas fa-angle-double-down\"></i><span class=\"menu-text\">Attach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"pan-tilt-hat-detach-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-detach-button\"><i class=\"fas fa-angle-double-up\"></i><span class=\"menu-text\">Detach</span></button>\n              </li>\n              <li class=\"menu-item\" id=\"pan-tilt-hat-delete-menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-delete-button\"><i class=\"fas fa-trash\"></i><span class=\"menu-text\">Delete</span></button>\n              </li>\n              <li class=\"menu-item\">\n                <button type=\"button\" class=\"menu-btn\" id=\"" + this.id + "-code-button\"><i class=\"fas fa-code\"></i><span class=\"menu-text\">Code</span></button>\n              </li>\n            </menu>";
+  };
+
+  return PanTiltHatContextMenu;
+}(HatContextMenu_1.HatContextMenu);
+
+exports.PanTiltHatContextMenu = PanTiltHatContextMenu;
+},{"./HatContextMenu":"ui/HatContextMenu.ts"}],"Main.ts":[function(require,module,exports) {
 "use strict";
 /*
  * @author Charles Xie
@@ -3231,21 +4688,32 @@ var System_1 = require("./System");
 
 var ComponentsPanel_1 = require("./ComponentsPanel");
 
-var RainbowHatContextMenu_1 = require("./RainbowHatContextMenu");
+var RainbowHatContextMenu_1 = require("./ui/RainbowHatContextMenu");
 
-var WorkbenchContextMenu_1 = require("./WorkbenchContextMenu");
+var WorkbenchContextMenu_1 = require("./ui/WorkbenchContextMenu");
 
-var LineChartContextMenu_1 = require("./LineChartContextMenu");
+var LineChartContextMenu_1 = require("./ui/LineChartContextMenu");
 
-var RaspberryPiContextMenu_1 = require("./RaspberryPiContextMenu");
+var RaspberryPiContextMenu_1 = require("./ui/RaspberryPiContextMenu");
 
-var ColorPickerContextMenu_1 = require("./ColorPickerContextMenu");
+var ColorPickerContextMenu_1 = require("./ui/ColorPickerContextMenu");
 
 var Code_1 = require("./code/Code");
+
+var SenseHatContextMenu_1 = require("./ui/SenseHatContextMenu");
+
+var CapacitiveTouchHatContextMenu_1 = require("./ui/CapacitiveTouchHatContextMenu");
+
+var UnicornHatContextMenu_1 = require("./ui/UnicornHatContextMenu");
+
+var CrickitHatContextMenu_1 = require("./ui/CrickitHatContextMenu");
+
+var PanTiltHatContextMenu_1 = require("./ui/PanTiltHatContextMenu");
 
 exports.system = new System_1.System();
 exports.code = new Code_1.Code();
 exports.user = new User_1.User("Charles", null, "Xie");
+exports.contextMenus = {};
 var social = "<span style=\"font-size: 2em; vertical-align: middle; cursor: pointer;\"><i class=\"fab fa-facebook-square\"></i></span>\n              <span style=\"font-size: 2em; vertical-align: middle; cursor: pointer;\"><i class=\"fab fa-weixin\"></i></span>\n              <span style=\"font-size: 2em; vertical-align: middle; cursor: pointer;\"><i class=\"fab fa-twitter\"></i></span>\n              <span style=\"font-size: 2em; vertical-align: middle; cursor: pointer;\"><i class=\"fab fa-weibo\"></i></span>\n              <span style=\"font-size: 2em; vertical-align: middle; cursor: pointer;\"><i class=\"fab fa-youtube\"></i></span>";
 
 window.onload = function () {
@@ -3271,33 +4739,49 @@ window.onload = function () {
   });
   var workbenchContextMenu = new WorkbenchContextMenu_1.WorkbenchContextMenu();
   workbenchContextMenu.render("workbench-context-menu-placeholder");
+  exports.contextMenus.workbench = workbenchContextMenu;
   var raspberryPiContextMenu = new RaspberryPiContextMenu_1.RaspberryPiContextMenu();
   raspberryPiContextMenu.render("raspberry-pi-context-menu-placeholder");
+  raspberryPiContextMenu.addListeners();
+  exports.contextMenus.raspberryPi = raspberryPiContextMenu;
   var rainbowHatContextMenu = new RainbowHatContextMenu_1.RainbowHatContextMenu();
   rainbowHatContextMenu.render("rainbow-hat-context-menu-placeholder");
   rainbowHatContextMenu.addListeners();
+  exports.contextMenus.rainbowHat = rainbowHatContextMenu;
+  var senseHatContextMenu = new SenseHatContextMenu_1.SenseHatContextMenu();
+  senseHatContextMenu.render("sense-hat-context-menu-placeholder");
+  senseHatContextMenu.addListeners();
+  exports.contextMenus.senseHat = senseHatContextMenu;
+  var unicornHatContextMenu = new UnicornHatContextMenu_1.UnicornHatContextMenu();
+  unicornHatContextMenu.render("unicorn-hat-context-menu-placeholder");
+  unicornHatContextMenu.addListeners();
+  exports.contextMenus.unicornHat = unicornHatContextMenu;
+  var crickitHatContextMenu = new CrickitHatContextMenu_1.CrickitHatContextMenu();
+  crickitHatContextMenu.render("crickit-hat-context-menu-placeholder");
+  crickitHatContextMenu.addListeners();
+  exports.contextMenus.crickitHat = crickitHatContextMenu;
+  var panTiltHatContextMenu = new PanTiltHatContextMenu_1.PanTiltHatContextMenu();
+  panTiltHatContextMenu.render("pan-tilt-hat-context-menu-placeholder");
+  panTiltHatContextMenu.addListeners();
+  exports.contextMenus.panTiltHat = panTiltHatContextMenu;
+  var capacitiveTouchHatContextMenu = new CapacitiveTouchHatContextMenu_1.CapacitiveTouchHatContextMenu();
+  capacitiveTouchHatContextMenu.render("capacitive-touch-hat-context-menu-placeholder");
+  capacitiveTouchHatContextMenu.addListeners();
+  exports.contextMenus.capacitiveTouchHat = capacitiveTouchHatContextMenu;
   var lineChartContextMenu = new LineChartContextMenu_1.LineChartContextMenu();
   lineChartContextMenu.render("linechart-context-menu-placeholder");
+  exports.contextMenus.lineChart = lineChartContextMenu;
   var colorPickerContextMenu = new ColorPickerContextMenu_1.ColorPickerContextMenu();
   colorPickerContextMenu.render("colorpicker-context-menu-placeholder");
+  exports.contextMenus.colorPicker = colorPickerContextMenu;
   var componentsPanel = new ComponentsPanel_1.ComponentsPanel();
-  componentsPanel.render("components-panel"); // read locally stored properties
+  componentsPanel.render("digital-twins-playground-components-panel"); // read locally stored properties
 
-  restoreLocation(exports.system.raspberryPi);
-  restoreLocation(exports.system.rainbowHat);
-  restoreLocation(exports.system.temperatureGraph);
-  restoreLocation(exports.system.pressureGraph);
-  restoreVisibility(exports.system.temperatureGraph);
-  restoreVisibility(exports.system.pressureGraph);
-  var x = localStorage.getItem("Attached: " + exports.system.rainbowHat.getUid());
-
-  if (x != null) {
-    var i = parseInt(x);
-
-    if (i >= 0) {
-      exports.system.rainbowHat.attach(exports.system.raspberryPi);
-    }
-  }
+  restoreMcus();
+  restoreHats(); // restoreLocation(system.temperatureGraph);
+  // restoreLocation(system.pressureGraph);
+  // restoreVisibility(system.temperatureGraph);
+  // restoreVisibility(system.pressureGraph);
 
   resize();
   draw();
@@ -3329,6 +4813,73 @@ function restoreVisibility(g) {
   if (x != null) {
     g.setVisible("true" == x);
     g.draw();
+  }
+}
+
+function restoreHats() {
+  var s = localStorage.getItem("HAT Sequence");
+
+  if (s != null) {
+    var t = s.split(",");
+
+    if (t.length > 0) {
+      exports.system.hats = [];
+    }
+
+    for (var i = 0; i < t.length; i++) {
+      t[i] = t[i].trim();
+      var name = t[i].substring(0, t[i].indexOf("#") - 1);
+      exports.system.addHat(name, 0, 0, t[i]);
+    }
+  }
+
+  restoreLocations(exports.system.hats);
+
+  for (var i = 0; i < exports.system.hats.length; i++) {
+    var id = localStorage.getItem("Attachment: " + exports.system.hats[i].getUid());
+
+    if (id != null) {
+      var pi = exports.system.getRaspberryPiById(id);
+
+      if (pi) {
+        exports.system.hats[i].attach(pi);
+      }
+    }
+  }
+
+  setTimeout(function () {
+    exports.system.draw();
+  }, 100);
+}
+
+function restoreMcus() {
+  var s = localStorage.getItem("MCU Sequence");
+
+  if (s != null) {
+    var t = s.split(",");
+
+    if (t.length > 0) {
+      exports.system.mcus = [];
+    }
+
+    for (var i = 0; i < t.length; i++) {
+      t[i] = t[i].trim();
+
+      if (t[i].startsWith("Raspberry Pi")) {
+        exports.system.addRaspberryPi(0, 0, t[i]);
+      }
+    }
+  }
+
+  restoreLocations(exports.system.mcus);
+  setTimeout(function () {
+    exports.system.draw();
+  }, 0);
+}
+
+function restoreLocations(m) {
+  for (var i = 0; i < m.length; i++) {
+    restoreLocation(m[i]);
   }
 }
 
@@ -3366,7 +4917,7 @@ function draw() {
   exports.system.draw();
   exports.code.draw();
 }
-},{"@fortawesome/fontawesome-free/css/all.css":"node_modules/@fortawesome/fontawesome-free/css/all.css","./Constants":"Constants.ts","./User":"User.ts","./System":"System.ts","./ComponentsPanel":"ComponentsPanel.ts","./RainbowHatContextMenu":"RainbowHatContextMenu.ts","./WorkbenchContextMenu":"WorkbenchContextMenu.ts","./LineChartContextMenu":"LineChartContextMenu.ts","./RaspberryPiContextMenu":"RaspberryPiContextMenu.ts","./ColorPickerContextMenu":"ColorPickerContextMenu.ts","./code/Code":"code/Code.ts"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@fortawesome/fontawesome-free/css/all.css":"node_modules/@fortawesome/fontawesome-free/css/all.css","./Constants":"Constants.ts","./User":"User.ts","./System":"System.ts","./ComponentsPanel":"ComponentsPanel.ts","./ui/RainbowHatContextMenu":"ui/RainbowHatContextMenu.ts","./ui/WorkbenchContextMenu":"ui/WorkbenchContextMenu.ts","./ui/LineChartContextMenu":"ui/LineChartContextMenu.ts","./ui/RaspberryPiContextMenu":"ui/RaspberryPiContextMenu.ts","./ui/ColorPickerContextMenu":"ui/ColorPickerContextMenu.ts","./code/Code":"code/Code.ts","./ui/SenseHatContextMenu":"ui/SenseHatContextMenu.ts","./ui/CapacitiveTouchHatContextMenu":"ui/CapacitiveTouchHatContextMenu.ts","./ui/UnicornHatContextMenu":"ui/UnicornHatContextMenu.ts","./ui/CrickitHatContextMenu":"ui/CrickitHatContextMenu.ts","./ui/PanTiltHatContextMenu":"ui/PanTiltHatContextMenu.ts"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3394,7 +4945,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65500" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53169" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
