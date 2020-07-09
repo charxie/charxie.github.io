@@ -1,0 +1,2 @@
+#color-input{display:none}#color-label{margin-left:15px;position:absolute;height:30px;width:50px}#color-input:checked~#color-picker{opacity:1}#color-picker{position:absolute;left:70px;background-color:#fff;height:150px;width:185px;border:1px solid #ccc;opacity:0;padding:5px}
+/*# sourceMappingURL=/iot/workbench/colorpicker.d80a7040.css.map */
